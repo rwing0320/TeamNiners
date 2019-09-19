@@ -4,6 +4,26 @@ import axios from 'axios';
 export class Home extends Component {
   displayName = Home.name
 
+    constructor(props) {
+    super(props);
+    this.state = { businessCity: "" };
+        this.getData = this.getData.bind(this);
+  }
+
+    getData() {
+    
+    console.log("test");
+    axios.get('http://localhost:54047/api/APIBusinesses')
+        .then(res => {
+            console.log(res.data);
+            this.setState({
+                businessCity: res.data[0].businessCity
+            });
+        })
+    
+  }
+
+
     myFunction = () => {
         console.log("test");
         axios.get('http://localhost:54047/api/APIBusinesses')
@@ -31,7 +51,9 @@ export class Home extends Component {
           <li><strong>Efficient production builds</strong>. In production mode, development-time features are disabled, and your <code>dotnet publish</code> configuration produces minified, efficiently bundled JavaScript files.</li>
         </ul>
             <p>The <code>ClientApp</code> subdirectory is a standard React application based on the <code>create-react-app</code> template. If you open a command prompt in that directory, you can run <code>npm</code> commands such as <code>npm test</code> or <code>npm install</code>.</p>
-            <button onClick={this.myFunction}>Click Me</button>
+            <button onClick={this.getData}>Click Me</button>
+            <p>{this.state.businessCity}</p>
+
         </div>
     );
   }
