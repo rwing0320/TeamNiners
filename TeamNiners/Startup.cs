@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using TeamNiners.Models;
 
 namespace TeamNiners
 {
@@ -28,6 +29,9 @@ namespace TeamNiners
             {
                 configuration.RootPath = "ClientApp/build";
             });
+
+            services.AddDbContext<dbo_NinersContext>(options =>
+            options.UseSqlServer(Configuration.GetConnectionString("NinersConnection")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
