@@ -8,13 +8,38 @@ export class Login extends Component {
 
     constructor(props) {
         super(props);
-        this.state = { email: "", password: "", isLoggedIn: false };
+        this.state = { email: "", password: "", isLoggedIn: false, error: "" };
         this.setEmail = this.setEmail.bind(this);
         this.setPassword = this.setPassword.bind(this);
         this.makeChange = this.makeChange.bind(this);
         //this.getData = this.getData.bind(this);
         //this.getBusinessLoginData = this.getBusinessLoginData.bind(this);
+        this.getData = this.getData.bind(this);
     }
+
+    getData() {
+
+        console.log("test");
+        axios.get('http://localhost:55899/api/BusinessLogins')
+            .then(res => {
+                console.log(res.data);
+
+                if (this.state.email == res.data[0].email && this.state.password == res.data[0].psswd) {
+                    this.setState({
+                        isLoggedIn: true
+                    });
+                }
+                else {
+                    this.setState({
+                        error: "The credentials used are incorrect"
+                    });
+                }
+                //this.setState({
+                //    businessCity: res.data[0].businessCity
+                //});
+            })
+    }
+
 
     makeChange() {
         if (this.state.isLoggedIn === false) {
@@ -77,7 +102,7 @@ export class Login extends Component {
             return (
                 <div>
                     <h2> Login Page </h2>
-                    <button onClick={this.makeChange}> Click Me</button>
+                    <button onClick={this.getData}> Click Me</button>
 
                     <form>
                         <h1>Hello</h1>
@@ -90,7 +115,7 @@ export class Login extends Component {
                         />
                         <p>Password</p>
                         <input type="password" name="psw" onChange={this.setPassword} />
-
+                        <p>{this.state.error}</p>
 
                     </form>
                 </div>
@@ -103,6 +128,7 @@ export class Login extends Component {
                     <Row>
                         <Col sm={3}>
                             <NavMenu />
+                            
                         </Col>
                         <Col sm={9}>
                             {this.props.children}
