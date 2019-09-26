@@ -1,0 +1,25 @@
+﻿#employeeNavBar{
+    width:100%;
+}
+
+.navbar{
+    margin: 0;
+}
+
+#logo{
+    width:50px;
+    height: 50px;
+    float:left;
+    margin-right: 15px;
+
+}
+
+#logoutSpan{
+    float: right;
+    color: white;
+    margin-top: 13px;
+}
+
+#logout{
+    margin-left: 4px;
+}

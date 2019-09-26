@@ -4,6 +4,7 @@ import { NavMenu } from './NavMenu';
 import { Dashboard } from './Dashboard';
 import { Col, Grid, Row, Button, Accordion, Panel } from 'react-bootstrap';
 import './LoginPage.css';
+import { EmployeeNav } from './EmployeeNav';
 
 export class Login extends Component {
     displayName = Login.name
@@ -61,38 +62,46 @@ export class Login extends Component {
     }
 
     makeChange() {
-        if (this.state.isLoggedIn === false && this.state.email != "" && this.state.password != "") {
-            console.log("hit me")
+        if (this.state.isLoggedIn === true) {
             this.setState({
-                isLoggedIn: true
+                isLoggedIn: false
             });
+        }
+        else {
 
-        } else {
-
-            if (this.state.email == "" && this.state.password == "") {
+            if (this.state.isLoggedIn === false && this.state.email != "" && this.state.password != "") {
+                console.log("hit me")
                 this.setState({
-                    isLoggedIn: false,
-                    error: "Please Fill out both the username and the password! "
+                    isLoggedIn: true
                 });
 
-                this.emailInput.focus();
-            }
-            else if (this.state.email == "") {
-                this.setState({
-                    isLoggedIn: false,
-                    error: "Please Fill out the username! "
-                });
-                this.emailInput.focus();
-            }
-            else {
-                this.setState({
-                    isLoggedIn: false,
-                    error: "Please Fill out the password! "
-                });
-                this.passwordInput.focus();
-            }
+            } else {
+
+                if (this.state.email == "" && this.state.password == "") {
+                    this.setState({
+                        isLoggedIn: false,
+                        error: "Please Fill out both the username and the password! "
+                    });
+
+                    this.emailInput.focus();
+                }
+                else if (this.state.email == "") {
+                    this.setState({
+                        isLoggedIn: false,
+                        error: "Please Fill out the username! "
+                    });
+                    this.emailInput.focus();
+                }
+                else {
+                    this.setState({
+                        isLoggedIn: false,
+                        error: "Please Fill out the password! "
+                    });
+                    this.passwordInput.focus();
+                }
 
 
+            }
         }
     }
 
@@ -194,9 +203,10 @@ export class Login extends Component {
         else {
             return (
                 <div>
+                    <EmployeeNav updateParentState={this.makeChange.bind(this)}>
+                    </EmployeeNav>
                     <Dashboard>
                     </Dashboard>
-
                 </div>
                 //<Grid fluid>
                 //    <Row>
