@@ -6,6 +6,7 @@ import ryansRacerImage from './Images/ryansRacerCarouselImage.jpg';
 
 export class Dashboard extends Component {
     displayName = "Employee Dashboard"
+    displayName = Dashboard.name
 
     constructor(props) {
         super(props);
@@ -31,15 +32,15 @@ export class Dashboard extends Component {
                     <Grid fluid>
                         <Row>
                             <Col xl={12} id="gameButtons">
-                                <button href="#" class="btn btn-info">
+                                <button href="#" className="btn btn-info">
                                     Add Game
                                 </button>
 
-                                <button href="" class="btn btn-info">
+                                <button href="" className="btn btn-info">
                                     Show Games
                                 </button>
 
-                                <button href="" class="btn btn-info">
+                                <button href="" className="btn btn-info">
                                     Reports
                                 </button>
                             </Col>
@@ -49,7 +50,7 @@ export class Dashboard extends Component {
                         <Row>
                             <Col xl={12} id="widgetOne">
                                 <h3 id="widgetTitle">Game Insights</h3>
-                                <table class="table">
+                                <table className="table">
                                     <thead>
                                         <tr>
                                             <th>Game Name</th>
@@ -89,7 +90,7 @@ export class Dashboard extends Component {
 
                                 <Carousel>
                                     <Carousel.Item>
-                                        <img src={ryansRacerImage} class="d-block w 100" id="ryansRacerImage" />
+                                        <img src={ryansRacerImage} className="d-block w 100" id="ryansRacerImage" />
                                         <Carousel.Caption id="ryansRacerCaption">
                                             <h2 id="captionTitle">Ryan's Racer</h2>
                                             <h3 id="captionDescription">A next generation street racing game by RatedGeek based in Toronto, Canada.</h3>
@@ -98,7 +99,7 @@ export class Dashboard extends Component {
 
 
                                     <Carousel.Item>
-                                        <img src={ryansRacerImage} class="d-block w 100" id="ryansRacerImage" />
+                                        <img src={ryansRacerImage} className="d-block w 100" id="ryansRacerImage" />
                                         <Carousel.Caption id="ryansRacerCaption">
                                             <h2 id="captionTitle">Fahad's Platformer</h2>
                                             <h3 id="captionDescription">A new take on a classic jumping game.</h3>
@@ -111,31 +112,31 @@ export class Dashboard extends Component {
                             <Col md={6} id="widgetThree">
                                 <h3 id="widgetTitle">Account Settings</h3>
                                 <form>
-                                    <div class="form-group" id="oldPassword">
+                                    <div className="form-group" id="oldPassword">
                                         <label>Old Password</label>
                                         <span> <br /> <br /> </span>
-                                        <input type="password" class="form-control" />
+                                        <input type="password" className="form-control" />
                                         <span> <br /> <br /> </span>
 
                                     </div>
 
 
-                                    <div class="form-group" id="newPassword">
+                                    <div className="form-group" id="newPassword">
                                         <label>New Password</label>
                                         <span> <br /> <br /> </span>
-                                        <input type="password" class="form-control" />
+                                        <input type="password" className="form-control" />
                                         <span> <br /> <br /> </span>
                                     </div>
 
-                                    <div class="form-group" id="confirmPassword">
+                                    <div className="form-group" id="confirmPassword">
                                         <label>Confirm Password</label>
                                         <span> <br /> <br /> </span>
-                                        <input type="password" class="form-control" />
+                                        <input type="password" className="form-control" />
                                         <span> <br /> <br /> </span>
                                     </div>
 
-                                    <div class="form-group" id="submissionDiv">
-                                        <button class="btn btn-light">Submit</button>
+                                    <div className="form-group" id="submissionDiv">
+                                        <button className="btn btn-light">Submit</button>
                                     </div>
                                 </form>
                             </Col>

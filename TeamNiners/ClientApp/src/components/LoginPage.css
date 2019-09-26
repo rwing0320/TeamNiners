@@ -1,0 +1,34 @@
+﻿.rowLogin {
+    display: grid;
+    place-items: center;
+    height: 100vh;
+    width: 100%;
+    background-color: #eeeeee;
+}
+
+.rowLogin form {
+    width: 400px;
+    border-radius: 5px;
+    background-color: white;
+    padding: 20px;
+    text-align: center;
+}
+
+.rowLogin .login_icon {
+        display: block;
+        justify-content: center;
+        align-items: center;
+        margin: auto;
+ }
+
+.rowLogin #employeeEmail {
+    margin-bottom: 15px;
+}
+
+.rowLogin #forgotPassword {
+    text-align: left;
+}
+
+.rowLogin #errorMessage {
+    color: red;
+}
