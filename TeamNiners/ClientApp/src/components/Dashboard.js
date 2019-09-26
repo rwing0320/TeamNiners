@@ -1,5 +1,5 @@
 ﻿import React, { Component } from 'react';
-import { Col, Grid, Row, Glyphicon, Carousel } from 'react-bootstrap';
+import { Col, Grid, Row, Glyphicon, Carousel, Button } from 'react-bootstrap';
 import axios from 'axios';
 import './Dashboard.css';
 import ryansRacerImage from './Images/ryansRacerCarouselImage.jpg';
@@ -31,16 +31,16 @@ export class Dashboard extends Component {
                 <div id="dashboardContainer">
                     <Grid fluid>
                         <Row>
-                            <Col xl={12} id="gameButtons">
-                                <button href="#" className="btn btn-info">
+                            <Col xl={12} id="gameButtonsColumn">
+                                <button href="#" id="gameButton">
                                     Add Game
                                 </button>
 
-                                <button href="" className="btn btn-info">
+                                <button href="" id="gameButton">
                                     Show Games
                                 </button>
 
-                                <button href="" className="btn btn-info">
+                                <button href="" id="gameButton">
                                     Reports
                                 </button>
                             </Col>
@@ -137,6 +137,8 @@ export class Dashboard extends Component {
 
                                     <div className="form-group" id="submissionDiv">
                                         <button className="btn btn-light">Submit</button>
+
+                                        <span> <br /> <br /> </span>
                                     </div>
                                 </form>
                             </Col>
