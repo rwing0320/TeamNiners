@@ -2,6 +2,8 @@
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
@@ -26,6 +28,61 @@ namespace TeamNiners.Services
             new BusinessLogin { Id = 1, Email = "Test", Psswd = "User"}
         };
 
+        string connectionString = "Server=(localdb)\\mssqllocaldb;Database=dbo_Niners;Trusted_Connection=True;";
+        List<BusinessLogin> generatedList = new List<BusinessLogin>();
+
+        public List<String> FillList(string password)
+        {
+            List<String> generatedList = new List<String>();
+
+            //Create a SqlConnection to the Northwind database.
+            //using (SqlConnection connection =
+            //           new SqlConnection(connectionString))
+            //{
+            //    //Create a SqlDataAdapter for the Suppliers table.
+            //    SqlDataAdapter adapter = new SqlDataAdapter();
+
+            //    // A table mapping names the DataTable.
+            //    adapter.TableMappings.Add("BusinessLogin", "Logins");
+
+            //    connection.Open();
+
+            //    SqlCommand command = new SqlCommand(
+            //        "SELECT * FROM dbo.BusinessLogin;",
+            //        connection);
+            //    command.CommandType = CommandType.Text;
+
+            //    // Set the SqlDataAdapter's SelectCommand.
+            //    adapter.SelectCommand = command;
+
+            //    // Fill the DataSet.
+            //    DataSet dataSet = new DataSet("LoginValues");
+            //    adapter.Fill(dataSet);
+
+            //    connection.Close();
+
+            //    foreach (DataRow dr in dataSet)
+            //    {
+
+            //    }
+
+
+            //}
+
+            // return users without passwords
+            string temp = _users.Select(x => {
+                x.Psswd = password;
+                return x;
+            }).ToString();
+
+
+            return generatedList;
+
+        }
+
+ 
+
+
         private readonly AppSettings _appSettings;
 
         public UserService(IOptions<AppSettings> appSettings)
@@ -35,6 +92,9 @@ namespace TeamNiners.Services
 
         public BusinessLogin Authenticate(string username, string password)
         {
+            /* not working as intended, will fix soon
+            List<String> tempList = FillList(password);
+            */
             var user = _users.SingleOrDefault(x => x.Email == username && x.Psswd == password);
 
             // return null if user not found
