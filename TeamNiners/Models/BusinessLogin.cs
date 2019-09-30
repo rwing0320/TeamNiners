@@ -9,6 +9,8 @@ namespace TeamNiners.Models
         public string Email { get; set; }
         public string Psswd { get; set; }
 
+        public string Token { get; set; }
+
         public Business IdNavigation { get; set; }
     }
 }

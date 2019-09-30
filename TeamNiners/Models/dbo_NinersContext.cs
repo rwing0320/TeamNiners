@@ -15,20 +15,36 @@ namespace TeamNiners.Models
         {
         }
 
+        public virtual DbSet<AccountStatus> AccountStatus { get; set; }
         public virtual DbSet<Business> Business { get; set; }
         public virtual DbSet<BusinessLogin> BusinessLogin { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-//            if (!optionsBuilder.IsConfigured)
-//            {
-//#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-//                optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=dbo_Niners;Trusted_Connection=True;");
-//            }
+            if (!optionsBuilder.IsConfigured)
+            {
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
+                optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=dbo_Niners;Integrated Security=True;Trusted_Connection=True;");
+            }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<AccountStatus>(entity =>
+            {
+                entity.HasKey(e => e.AccountId);
+
+                entity.Property(e => e.AccountId)
+                    .HasColumnName("AccountID")
+                    .ValueGeneratedNever();
+
+                entity.HasOne(d => d.Account)
+                    .WithOne(p => p.AccountStatus)
+                    .HasForeignKey<AccountStatus>(d => d.AccountId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__AccountSt__Accou__276EDEB3");
+            });
+
             modelBuilder.Entity<Business>(entity =>
             {
                 entity.Property(e => e.BusinessId).HasColumnName("businessID");
@@ -48,6 +64,12 @@ namespace TeamNiners.Models
                 entity.Property(e => e.BusinessCountry)
                     .IsRequired()
                     .HasColumnName("businessCountry")
+                    .HasMaxLength(255)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.BusinessName)
+                    .IsRequired()
+                    .HasColumnName("businessName")
                     .HasMaxLength(255)
                     .IsUnicode(false);
 
@@ -86,7 +108,7 @@ namespace TeamNiners.Models
                     .WithOne(p => p.BusinessLogin)
                     .HasForeignKey<BusinessLogin>(d => d.Id)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__BusinessLogi__ID__2F10007B");
+                    .HasConstraintName("FK__BusinessLogi__ID__286302EC");
             });
         }
     }

@@ -23,28 +23,45 @@ export class Login extends Component {
         this.passwordInput = null;
     }
 
+
+
     getData() {
 
+        let employee = {
+            email: this.state.email,
+            psswd: this.state.password
+        }
 
-        console.log("test");
-        axios.get('http://localhost:58397/api/BusinessLogins')
-            .then(res => {
-                console.log(res.data);
 
-                if (this.state.email == res.data[0].email && this.state.password == res.data[0].psswd) {
-                    this.setState({
-                        isLoggedIn: true
-                    });
-                }
-                else {
-                    this.setState({
-                        error: "The credentials used are incorrect"
-                    });
-                }
-                //this.setState({
-                //    businessCity: res.data[0].businessCity
-                //});
+        axios.post('http://localhost:63567/api/BusinessLogins/authenticate', {
+            email: this.state.email,
+            psswd: this.state.password
+        })
+            .then(function (response) {
+                console.log(response);
             })
+            .catch(function (error) {
+                console.log(error);
+            });
+        console.log("test");
+        //axios.get('http://localhost:63567/api/BusinessLogins')
+        //    .then(res => {
+        //        console.log(res.data);
+
+        //        if (this.state.email == res.data[0].email && this.state.password == res.data[0].psswd) {
+        //            this.setState({
+        //                isLoggedIn: true
+        //            });
+        //        }
+        //        else {
+        //            this.setState({
+        //                error: "The credentials used are incorrect"
+        //            });
+        //        }
+        //        //this.setState({
+        //        //    businessCity: res.data[0].businessCity
+        //        //});
+        //    })
     }
 
 
@@ -157,7 +174,8 @@ export class Login extends Component {
                         <label htmlFor="employeepassword" className="sr-only">Password</label>
                         <input type="password" ref={elem => (this.passwordInput = elem)} onChange={this.setPassword} id="employeepassword" className="form-control" placeholder="Password" required />
                         <br />
-                        <Button onClick={this.makeChange} className="btn btn-lg btn-primary btn-block"> Login </Button>
+                       
+                        <Button onClick={this.getData} className="btn btn-lg btn-primary btn-block"> Login </Button>
                         <br />
 
                         <Accordion>
