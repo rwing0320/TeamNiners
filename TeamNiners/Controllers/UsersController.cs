@@ -31,17 +31,15 @@ namespace TeamNiners.Controllers
 
         [AllowAnonymous]
         [HttpPost]
-        [ActionName("Authenticate")]
-        public IActionResult Authenticate()
+        [Route("/api/users/authenticate")]
+        public IActionResult Authenticate([FromBody] BusinessLogin userParam)
         {
-            //var user = _userService.Authenticate(userParam.Email, userParam.Psswd);
+            var user = _userService.Authenticate(userParam.Email, userParam.Psswd);
 
-            var model = new BusinessLogin();
-            return Ok(model);
-            //if (user == null)
-            //    return BadRequest(new { message = "Username or password is incorrect" });
+            if (user == null)
+                return BadRequest(new { message = "Username or password is incorrect" });
 
-            //return Ok(user);
+            return Ok(user);
         }
 
     }
