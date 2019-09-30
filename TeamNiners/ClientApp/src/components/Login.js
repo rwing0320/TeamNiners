@@ -68,7 +68,7 @@ export class Login extends Component {
         }
     }
 
-    getData() {
+    async getData() {
 
         let successFlag = false;
 
@@ -77,7 +77,7 @@ export class Login extends Component {
             psswd: this.state.password
         }
 
-        axios.post('http://localhost:57575/api/users/authenticate', {
+        await axios.post('http://localhost:57575/api/users/authenticate', {
             email: this.state.email,
             psswd: this.state.password
         })
