@@ -15,6 +15,8 @@ namespace TeamNiners.Controllers
     public class UsersController : ControllerBase
     {
         private IUserService _userService;
+        
+
 
         public UsersController(IUserService userService)
         {
@@ -40,6 +42,23 @@ namespace TeamNiners.Controllers
                 return BadRequest(new { message = "Username or password is incorrect" });
 
             return Ok(user);
+        }
+
+        [HttpPost]
+        [Route("/api/users/logout")]
+        public IActionResult Logout([FromBody] BusinessLogin userParam)
+        {
+            
+            //set user token to nothing
+            var user = _userService.Logout();
+            //var user = _userService.Logout();
+
+            return Ok(user);
+
+            //if (user == null)
+            //    return BadRequest(new { message = "Username or password is incorrect" });
+
+            //return Ok(user);
         }
 
     }

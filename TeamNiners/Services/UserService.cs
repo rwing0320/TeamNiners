@@ -14,13 +14,20 @@ using TeamNiners.Models;
 using Microsoft.Extensions.Configuration;
 using System.IO;
 
+
+
 namespace TeamNiners.Services
 {
+    
+    public static class userInfo {
+        
+    }
 
     public interface IUserService
     {
         BusinessLogin Authenticate(string username, string password);
         IEnumerable<BusinessLogin> GetAll();
+        string Logout();
     }
     public class UserService : IUserService
     {
@@ -39,6 +46,12 @@ namespace TeamNiners.Services
 
         Dictionary<string, string> userList = new Dictionary<string, string>();
         //List<BusinessLogin> generatedList = new List<BusinessLogin>();
+
+        public string Logout()
+        {
+            
+            return "";
+        }
 
         public DataTable GetBusinessLoginData()
         {

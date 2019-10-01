@@ -6,43 +6,63 @@ import { LinkContainer } from 'react-router-bootstrap';
 import logo from './img/9ners_Logo.svg';
 import './employeeNavBar.css';
 import { Login } from './Login';
+import axios from 'axios';
 
 
 export class EmployeeNav extends Component {
     displayName = EmployeeNav.name
     constructor(props) {
         super(props);
-        this.state = { email: "", password: "", isLoggedIn: false, error: "" };
-        this.setEmail = this.setEmail.bind(this);
-        this.setPassword = this.setPassword.bind(this);
-        this.makeChange = this.makeChange.bind(this);
+        //this.state = { email: "", password: "", isLoggedIn: false, error: "" };
         //this.getData = this.getData.bind(this);
         //this.getBusinessLoginData = this.getBusinessLoginData.bind(this);
-        this.getData = this.getData.bind(this);
+        this.logout = this.logout.bind(this);
 
-        this.emailInput = null;
-        this.passwordInput = null;
+     
     }
 
-    logout() {
+    async logout() {
         //call api to delete key
+        await axios.post('http://localhost:51797/api/users/Logout', {
+           
+        })
+            .then(function (response) {
+                console.log(response);
+                
+            })
+            .catch(function (error) {
+                console.log("this is the error: " + error);
+            });
 
-        //then redirect to login page
     }
+        //then redirect to login page
+    
 
     render() {
+        
+
         return (
+            
+
             <Navbar  inverse id="employeeNavBar">
                 <img id="logo" src={logo}></img>
               
                 <Navbar.Brand href="#dashboard"> TeamNiners  </Navbar.Brand>
 
-                <span id="logoutSpan" onClick={() => this.props.updateParentState()}>
-                    <Glyphicon glyph='log-out'/>
+                <span id="logoutSpan" onClick={this.logout}>
+                    <Glyphicon glyph='log-out' />
                     <span id="logout">Logout</span>
                 </span>
 
+              
+
             </Navbar>
+
+            //<span id="logoutSpan" onClick={() => this.props.updateParentState()}>
+            //    <Glyphicon glyph='log-out' />
+            //    <span id="logout">Logout</span>
+            //</span>
+
             //<Navbar inverse fixedTop fluid collapseOnSelect>
             //    <Navbar.Header>
             //        <Navbar.Brand>
