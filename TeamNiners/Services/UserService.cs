@@ -23,62 +23,52 @@ namespace TeamNiners.Services
     public class UserService : IUserService
     {
         // users hardcoded for simplicity, store in a db with hashed passwords in production applications
-        private List<BusinessLogin> _users = new List<BusinessLogin>
-        {
-            new BusinessLogin { Id = 1, Email = "Test", Psswd = "User"}
-        };
+     
+
 
         string connectionString = "Server=(localdb)\\mssqllocaldb;Database=dbo_Niners;Trusted_Connection=True;";
-        List<BusinessLogin> generatedList = new List<BusinessLogin>();
 
-        public List<String> FillList(string password)
+        Dictionary<string, string> userList = new Dictionary<string, string>();
+        //List<BusinessLogin> generatedList = new List<BusinessLogin>();
+
+        public DataTable GetBusinessLoginData()
         {
-            List<String> generatedList = new List<String>();
+            DataTable tempTable = new DataTable();
 
-            using (SqlConnection connection =
-                       new SqlConnection(connectionString))
+            using (SqlConnection sqlConnection = new SqlConnection(connectionString))
             {
                 SqlDataAdapter adapter = new SqlDataAdapter();
 
-                // A table mapping names the DataTable.
                 adapter.TableMappings.Add("BusinessLogin", "Logins");
 
-                connection.Open();
+                sqlConnection.Open();
 
                 SqlCommand command = new SqlCommand(
                     "SELECT * FROM dbo.BusinessLogin;",
-                    connection);
+                    sqlConnection);
+
                 command.CommandType = CommandType.Text;
 
-                // Set the SqlDataAdapter's SelectCommand.
                 adapter.SelectCommand = command;
 
-                // Fill the DataSet.
-                DataSet dataSet = new DataSet("LoginValues");
-                adapter.Fill(dataSet);
+                adapter.Fill(tempTable);
 
-                connection.Close();
+                sqlConnection.Close();
 
-                //foreach (DataRow dr in dataSet)
-                {
-
-                }
-
-
+                return tempTable;
             }
-
-            string temp = _users.Select(x => {
-                x.Psswd = password;
-                return x;
-            }).ToString();
-
-
-            return generatedList;
-
         }
 
- 
+        public void FillUserList(DataTable userDataTable)
+        {
+            
+            //Adds each row from the BusinessLogin table into a Dictionary with KV = <Username, Password>
+            for (int i = 0; i < userDataTable.Rows.Count; i++)
+            {
+                userList.Add((string)userDataTable.Rows[i]["email"], (string)userDataTable.Rows[i]["psswd"]);
+            }
 
+        }
 
         private readonly AppSettings _appSettings;
 
@@ -89,43 +79,72 @@ namespace TeamNiners.Services
 
         public BusinessLogin Authenticate(string username, string password)
         {
-            /* not working as intended, will fix soon
-            List<String> tempList = FillList(password);
-            */
+            if (userList.Count == 0)
+            {
+                DataTable tempTable = GetBusinessLoginData();
+                FillUserList(tempTable);
+            }
+
+            List<BusinessLogin> _users = new List<BusinessLogin>();
+
+            //Checks Dictionary to see if it contains the Email
+            if (userList.ContainsKey(username))
+            {
+
+                //Checks the key value pair to see if the password value is the same as entered
+                if (userList[username] == password)
+                {
+                    //Adding the entry to a list for the var to pull from. Allows proper setup of token
+                    _users.Add(new BusinessLogin { Id = 1, Email = username, Psswd = password });
+
+                }
+
+            }
+
+
             var user = _users.SingleOrDefault(x => x.Email == username && x.Psswd == password);
 
-            // return null if user not found
+
+
             if (user == null)
-                return null;
-
-            // authentication successful so generate jwt token
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(_appSettings.Secret);
-            var tokenDescriptor = new SecurityTokenDescriptor
             {
-                Subject = new ClaimsIdentity(new Claim[]
+                return null;
+            }
+            else
+            {
+                // authentication successful so generate jwt token
+                var tokenHandler = new JwtSecurityTokenHandler();
+                var key = Encoding.ASCII.GetBytes(_appSettings.Secret);
+                var tokenDescriptor = new SecurityTokenDescriptor
                 {
-                    new Claim(ClaimTypes.Name, user.Id.ToString())
-                }),
-                Expires = DateTime.UtcNow.AddDays(7),
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
-            };
-            var token = tokenHandler.CreateToken(tokenDescriptor);
-            user.Token = tokenHandler.WriteToken(token);
+                    Subject = new ClaimsIdentity(new Claim[]
+                    {
+                    new Claim(ClaimTypes.Name, user.Email.ToString())
+                    }),
+                    Expires = DateTime.UtcNow.AddDays(7),
+                    SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+                };
+                var token = tokenHandler.CreateToken(tokenDescriptor);
+                user.Token = tokenHandler.WriteToken(token);
 
-            // remove password before returning
-            user.Psswd = null;
+                // remove password before returning
+                user.Psswd = null;
+
+                
+            }
 
             return user;
         }
 
         public IEnumerable<BusinessLogin> GetAll()
         {
-            // return users without passwords
-            return _users.Select(x => {
-                x.Psswd = null;
-                return x;
-            });
+            //// return users without passwords
+            //return _users.Select(x =>
+            //{
+            //    x.Psswd = null;
+            //    return x;
+            //});
+            return null;
         }
     }
 }
