@@ -18,16 +18,13 @@ using System.IO;
 
 namespace TeamNiners.Services
 {
-    
-    public static class User {
-        public static object UserInfo;
-    }
 
     public interface IUserService
     {
         BusinessLogin Authenticate(string username, string password);
         IEnumerable<BusinessLogin> GetAll();
-        BusinessLogin Logout(int id);
+        BusinessLogin Logout();
+        int GetUserID(string email);
     }
     public class UserService : IUserService
     {
@@ -43,13 +40,11 @@ namespace TeamNiners.Services
         }
 
         Dictionary<string, string> userList = new Dictionary<string, string>();
-        //List<BusinessLogin> generatedList = new List<BusinessLogin>();
+        int userID;
 
-        public BusinessLogin Logout(int id)
+        public BusinessLogin Logout()
         {
-
             SetupUserServiceConnection();
-
             DataTable tempTable = new DataTable();
 
             using (SqlConnection sqlConnection = new SqlConnection(connectionString.GetSection("ConnectionStrings").GetSection("NinersConnection").Value))
@@ -74,12 +69,44 @@ namespace TeamNiners.Services
 
                 sqlConnection.Close();
 
-                
+
 
             }
 
             return null;
 
+        }
+
+        public int GetUserID(string email)
+        {
+            int id = 0;
+            DataSet ds = new DataSet();
+
+            using (SqlConnection sqlConnection = new SqlConnection(connectionString.GetSection("ConnectionStrings").GetSection("NinersConnection").Value))
+            {
+                SqlDataAdapter adapter = new SqlDataAdapter();
+
+                sqlConnection.Open();
+
+                SqlCommand command = new SqlCommand(
+                   "SELECT id FROM dbo.BusinessLogin WHERE email = '" + email + "';",
+                    sqlConnection);
+
+                command.CommandType = CommandType.Text;
+
+                adapter.SelectCommand = command;
+
+                command.ExecuteNonQuery();
+
+                adapter.Fill(ds);
+
+                id = (int)ds.Tables[0].Rows[0]["ID"];
+
+                sqlConnection.Close();
+
+            }
+
+            return id;
         }
 
             public DataTable GetBusinessLoginData()
@@ -128,7 +155,7 @@ namespace TeamNiners.Services
 
                 SqlCommand command = new SqlCommand(
                     "UPDATE dbo.BusinessLogin SET token = '" + token + "', IsValid = 1 WHERE id = " + id + ";",
-                    sqlConnection);
+                    sqlConnection); 
                                                              
                 command.CommandType = CommandType.Text;
 
@@ -142,6 +169,7 @@ namespace TeamNiners.Services
 
             }
         }
+
         public void FillUserList(DataTable userDataTable)
         {
 
@@ -177,8 +205,9 @@ namespace TeamNiners.Services
                 //Checks the key value pair to see if the password value is the same as entered
                 if (userList[username] == password)
                 {
+                    int id = GetUserID(username);
                     //Adding the entry to a list for the var to pull from. Allows proper setup of token
-                    _users.Add(new BusinessLogin { Id = 1, Email = username, Psswd = password });
+                    _users.Add(new BusinessLogin { Id = id, Email = username, Psswd = password });
 
                 }
 
@@ -216,6 +245,7 @@ namespace TeamNiners.Services
             setBusinessLoginData(tempTable, user.Token, user.Id);
 
             return user;
+
         }
 
         public IEnumerable<BusinessLogin> GetAll()

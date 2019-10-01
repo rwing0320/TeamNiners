@@ -55,10 +55,9 @@ namespace TeamNiners.Controllers
         [Route("/api/users/logout")]
         public IActionResult Logout([FromBody] BusinessLogin userParam)
         {
-            int id = userParam.Id;
-            
+
             //set user token to nothing
-            bl = _userService.Logout(id);
+            bl = _userService.Logout();
             //var user = _userService.Logout();
 
             
