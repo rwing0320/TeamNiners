@@ -27,7 +27,7 @@ namespace TeamNiners.Services
     {
         BusinessLogin Authenticate(string username, string password);
         IEnumerable<BusinessLogin> GetAll();
-        BusinessLogin Logout(BusinessLogin bl);
+        BusinessLogin Logout(int id);
     }
     public class UserService : IUserService
     {
@@ -45,15 +45,46 @@ namespace TeamNiners.Services
         Dictionary<string, string> userList = new Dictionary<string, string>();
         //List<BusinessLogin> generatedList = new List<BusinessLogin>();
 
-        public BusinessLogin Logout(BusinessLogin bl)
+        public BusinessLogin Logout(int id)
         {
-            bl.Token = null;
 
-            return bl;
+            SetupUserServiceConnection();
+
+            DataTable tempTable = new DataTable();
+
+            using (SqlConnection sqlConnection = new SqlConnection(connectionString.GetSection("ConnectionStrings").GetSection("NinersConnection").Value))
+            {
+                SqlDataAdapter adapter = new SqlDataAdapter();
+
+                sqlConnection.Open();
+
+                tempTable = GetBusinessLoginData();
+
+                SqlCommand command2 = new SqlCommand(
+                    "UPDATE dbo.BusinessLogin SET token = '', IsValid = 0 WHERE id = " + 1 + ";",
+                    sqlConnection);
+
+                command2.CommandType = CommandType.Text;
+
+                adapter.UpdateCommand = command2;
+
+                adapter.Update(tempTable);
+
+                command2.ExecuteNonQuery();
+
+                sqlConnection.Close();
+
+                
+
+            }
+
+            return null;
+
         }
 
-        public DataTable GetBusinessLoginData()
-        {
+            public DataTable GetBusinessLoginData()
+            {
+
             SetupUserServiceConnection();
 
             DataTable tempTable = new DataTable();
@@ -83,7 +114,7 @@ namespace TeamNiners.Services
             }
         }
 
-        public void setBusinessLoginData(DataTable table,string token, int id)
+        public void setBusinessLoginData(DataTable table, string token, int id)
         {
             DataTable tempTable = new DataTable();
 
@@ -95,32 +126,19 @@ namespace TeamNiners.Services
 
                 sqlConnection.Open();
 
-                //SqlCommand command1 = new SqlCommand(
-                //   "SELECT * FROM dbo.BusinessLogin;",
-                //   sqlConnection);
-
-                //command1.CommandType = CommandType.Text;
-
-                //adapter.SelectCommand = command1;
-
-                //adapter.Fill(tempTable);
-
-
-                SqlCommand command2 = new SqlCommand(
-                    "UPDATE dbo.BusinessLogin SET token = '" + token + "' WHERE id = " + id + ";",
+                SqlCommand command = new SqlCommand(
+                    "UPDATE dbo.BusinessLogin SET token = '" + token + "', IsValid = 1 WHERE id = " + id + ";",
                     sqlConnection);
                                                              
-                command2.CommandType = CommandType.Text;
+                command.CommandType = CommandType.Text;
 
-                adapter.UpdateCommand = command2;
+                adapter.UpdateCommand = command;
 
                 adapter.Update(table);
 
-                //adapter.AcceptChangesDuringUpdate;
+                command.ExecuteNonQuery();
 
                 sqlConnection.Close();
-
-                Console.WriteLine("This is my table: " + table);
 
             }
         }
@@ -150,12 +168,6 @@ namespace TeamNiners.Services
             tempTable = GetBusinessLoginData();
             FillUserList(tempTable);
 
-            //if (userList.Count == 0)
-            //{
-            //    tempTable = GetBusinessLoginData();
-            //    FillUserList(tempTable);
-            //}
-
             List<BusinessLogin> _users = new List<BusinessLogin>();
 
             //Checks Dictionary to see if it contains the Email
@@ -172,10 +184,7 @@ namespace TeamNiners.Services
 
             }
 
-
             var user = _users.SingleOrDefault(x => x.Email == username && x.Psswd == password);
-
-
 
             if (user == null)
             {
