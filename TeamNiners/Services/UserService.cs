@@ -11,6 +11,8 @@ using System.Text;
 using System.Threading.Tasks;
 using TeamNiners.Helpers;
 using TeamNiners.Models;
+using Microsoft.Extensions.Configuration;
+using System.IO;
 
 namespace TeamNiners.Services
 {
@@ -22,20 +24,30 @@ namespace TeamNiners.Services
     }
     public class UserService : IUserService
     {
-        // users hardcoded for simplicity, store in a db with hashed passwords in production applications
-     
 
+        //Sets up dependency injection to grab connectionString later
+        public IConfiguration connectionString;
 
-        string connectionString = "Server=(localdb)\\mssqllocaldb;Database=dbo_Niners;Trusted_Connection=True;";
+        public void SetupUserServiceConnection()
+        {
+            var builder = new ConfigurationBuilder().AddJsonFile("appsettings.json").SetBasePath(System.Environment.CurrentDirectory);
+            var config = builder.Build();
+            connectionString = config;
+        }
+
+        //string connectionString = "Server=(localdb)\\mssqllocaldb;Database=dbo_Niners;Trusted_Connection=True;";
 
         Dictionary<string, string> userList = new Dictionary<string, string>();
         //List<BusinessLogin> generatedList = new List<BusinessLogin>();
 
         public DataTable GetBusinessLoginData()
         {
+            SetupUserServiceConnection();
+
             DataTable tempTable = new DataTable();
 
-            using (SqlConnection sqlConnection = new SqlConnection(connectionString))
+
+            using (SqlConnection sqlConnection = new SqlConnection(connectionString.GetSection("ConnectionStrings").GetSection("NinersConnection").Value))
             {
                 SqlDataAdapter adapter = new SqlDataAdapter();
 
@@ -61,7 +73,7 @@ namespace TeamNiners.Services
 
         public void FillUserList(DataTable userDataTable)
         {
-            
+
             //Adds each row from the BusinessLogin table into a Dictionary with KV = <Username, Password>
             for (int i = 0; i < userDataTable.Rows.Count; i++)
             {
@@ -130,7 +142,7 @@ namespace TeamNiners.Services
                 // remove password before returning
                 user.Psswd = null;
 
-                
+
             }
 
             return user;
