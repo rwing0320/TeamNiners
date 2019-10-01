@@ -42,8 +42,6 @@ namespace TeamNiners.Services
             connectionString = config;
         }
 
-        //string connectionString = "Server=(localdb)\\mssqllocaldb;Database=dbo_Niners;Trusted_Connection=True;";
-
         Dictionary<string, string> userList = new Dictionary<string, string>();
         //List<BusinessLogin> generatedList = new List<BusinessLogin>();
 
@@ -85,6 +83,47 @@ namespace TeamNiners.Services
             }
         }
 
+        public void setBusinessLoginData(DataTable table,string token, int id)
+        {
+            DataTable tempTable = new DataTable();
+
+            using (SqlConnection sqlConnection = new SqlConnection(connectionString.GetSection("ConnectionStrings").GetSection("NinersConnection").Value))
+            {
+                SqlDataAdapter adapter = new SqlDataAdapter();
+
+                adapter.TableMappings.Add("BusinessLogin", "Logins");
+
+                sqlConnection.Open();
+
+                //SqlCommand command1 = new SqlCommand(
+                //   "SELECT * FROM dbo.BusinessLogin;",
+                //   sqlConnection);
+
+                //command1.CommandType = CommandType.Text;
+
+                //adapter.SelectCommand = command1;
+
+                //adapter.Fill(tempTable);
+
+
+                SqlCommand command2 = new SqlCommand(
+                    "UPDATE dbo.BusinessLogin SET token = '" + token + "' WHERE id = " + id + ";",
+                    sqlConnection);
+                                                             
+                command2.CommandType = CommandType.Text;
+
+                adapter.UpdateCommand = command2;
+
+                adapter.Update(table);
+
+                //adapter.AcceptChangesDuringUpdate;
+
+                sqlConnection.Close();
+
+                Console.WriteLine("This is my table: " + table);
+
+            }
+        }
         public void FillUserList(DataTable userDataTable)
         {
 
@@ -106,11 +145,16 @@ namespace TeamNiners.Services
 
         public BusinessLogin Authenticate(string username, string password)
         {
-            if (userList.Count == 0)
-            {
-                DataTable tempTable = GetBusinessLoginData();
-                FillUserList(tempTable);
-            }
+            DataTable tempTable;
+
+            tempTable = GetBusinessLoginData();
+            FillUserList(tempTable);
+
+            //if (userList.Count == 0)
+            //{
+            //    tempTable = GetBusinessLoginData();
+            //    FillUserList(tempTable);
+            //}
 
             List<BusinessLogin> _users = new List<BusinessLogin>();
 
@@ -159,6 +203,8 @@ namespace TeamNiners.Services
 
 
             }
+
+            setBusinessLoginData(tempTable, user.Token, user.Id);
 
             return user;
         }
