@@ -19,15 +19,15 @@ using System.IO;
 namespace TeamNiners.Services
 {
     
-    public static class userInfo {
-        
+    public static class User {
+        public static object UserInfo;
     }
 
     public interface IUserService
     {
         BusinessLogin Authenticate(string username, string password);
         IEnumerable<BusinessLogin> GetAll();
-        string Logout();
+        BusinessLogin Logout(BusinessLogin bl);
     }
     public class UserService : IUserService
     {
@@ -47,10 +47,11 @@ namespace TeamNiners.Services
         Dictionary<string, string> userList = new Dictionary<string, string>();
         //List<BusinessLogin> generatedList = new List<BusinessLogin>();
 
-        public string Logout()
+        public BusinessLogin Logout(BusinessLogin bl)
         {
-            
-            return "";
+            bl.Token = null;
+
+            return bl;
         }
 
         public DataTable GetBusinessLoginData()
@@ -91,6 +92,7 @@ namespace TeamNiners.Services
             for (int i = 0; i < userDataTable.Rows.Count; i++)
             {
                 userList.Add((string)userDataTable.Rows[i]["email"], (string)userDataTable.Rows[i]["psswd"]);
+
             }
 
         }

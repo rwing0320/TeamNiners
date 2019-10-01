@@ -15,8 +15,10 @@ namespace TeamNiners.Controllers
     public class UsersController : ControllerBase
     {
         private IUserService _userService;
-        
 
+        BusinessLogin bl = new BusinessLogin();
+
+        
 
         public UsersController(IUserService userService)
         {
@@ -36,12 +38,19 @@ namespace TeamNiners.Controllers
         [Route("/api/users/authenticate")]
         public IActionResult Authenticate([FromBody] BusinessLogin userParam)
         {
-            var user = _userService.Authenticate(userParam.Email, userParam.Psswd);
+            //var user = _userService.Authenticate(userParam.Email, userParam.Psswd);
 
-            if (user == null)
+            bl = _userService.Authenticate(userParam.Email, userParam.Psswd);
+
+            if (bl == null)
+            {
                 return BadRequest(new { message = "Username or password is incorrect" });
 
-            return Ok(user);
+            }
+
+
+
+            return Ok(bl);
         }
 
         [HttpPost]
@@ -50,10 +59,12 @@ namespace TeamNiners.Controllers
         {
             
             //set user token to nothing
-            var user = _userService.Logout();
+            bl = _userService.Logout(bl);
             //var user = _userService.Logout();
 
-            return Ok(user);
+            
+
+            return Ok(bl);
 
             //if (user == null)
             //    return BadRequest(new { message = "Username or password is incorrect" });
