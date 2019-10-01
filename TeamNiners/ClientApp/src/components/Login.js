@@ -42,10 +42,21 @@ export class Login extends Component {
 
             } else {
 
+                let emailMatch = this.state.email.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i);
+
+                if (emailMatch == null) {
+                    this.setState({
+                        isLoggedIn: false,
+                        error: "Please enter a valid email!"
+                    });
+
+                    return false;
+                }
+
                 if (this.state.email == "" && this.state.password == "") {
                     this.setState({
                         isLoggedIn: false,
-                        error: "Please Fill out both the username and the password! "
+                        error: this.state.error + '/n' + "Please Fill out both the username and the password! "
                     });
 
                     return false;
@@ -96,8 +107,8 @@ export class Login extends Component {
                     successFlag = true;
                 })
                 .catch(function (error) {
-                    errorMessage = error
-                    console.log(error);
+                    errorMessage = "You have entered in incorrect credentails! Please try Again!"
+                    console.log("this is the error: " + error);
                 });
 
             if (successFlag) {
@@ -111,7 +122,7 @@ export class Login extends Component {
                 //this.makeChange();
             } else {
                 this.setState({
-                    error: errorMessage.message
+                    error: errorMessage
                 });
                 console.log("not hit " + successFlag);
             }
@@ -138,29 +149,30 @@ export class Login extends Component {
     }
 
 
-    setEmail(event) {
-        //this.state.email = value
-        this.setState({ error: "" });
-        this.state.email = event.target.value;
-        console.log(this.state.email);
-    }
+    //setEmail(event) {
+    //    //this.state.email = value
+    //    this.setState({ error: "" });
+    //    this.state.email = event.target.value;
+    //    console.log(this.state.email);
+    //}
 
-    setPassword(event) {
-        this.setState({ error: "" });
-        this.state.password = event.target.value;
-        console.log(this.state.password);
-    }
+    //setPassword(event) {
+    //    this.setState({ error: "" });
+    //    this.state.password = event.target.value;
+    //    console.log(this.state.password);
+    //}
 
     
 
     setEmail(event) {
         //this.state.email = value
-        
+        this.setState({ error: "" });
         this.state.email = event.target.value
         console.log(this.state.email);
     }
 
     setPassword(event) {
+        this.setState({ error: "" });
         this.state.password = event.target.value
         console.log(this.state.password);
     }
