@@ -35,41 +35,38 @@ namespace TeamNiners.Services
         {
             List<String> generatedList = new List<String>();
 
-            //Create a SqlConnection to the Northwind database.
-            //using (SqlConnection connection =
-            //           new SqlConnection(connectionString))
-            //{
-            //    //Create a SqlDataAdapter for the Suppliers table.
-            //    SqlDataAdapter adapter = new SqlDataAdapter();
+            using (SqlConnection connection =
+                       new SqlConnection(connectionString))
+            {
+                SqlDataAdapter adapter = new SqlDataAdapter();
 
-            //    // A table mapping names the DataTable.
-            //    adapter.TableMappings.Add("BusinessLogin", "Logins");
+                // A table mapping names the DataTable.
+                adapter.TableMappings.Add("BusinessLogin", "Logins");
 
-            //    connection.Open();
+                connection.Open();
 
-            //    SqlCommand command = new SqlCommand(
-            //        "SELECT * FROM dbo.BusinessLogin;",
-            //        connection);
-            //    command.CommandType = CommandType.Text;
+                SqlCommand command = new SqlCommand(
+                    "SELECT * FROM dbo.BusinessLogin;",
+                    connection);
+                command.CommandType = CommandType.Text;
 
-            //    // Set the SqlDataAdapter's SelectCommand.
-            //    adapter.SelectCommand = command;
+                // Set the SqlDataAdapter's SelectCommand.
+                adapter.SelectCommand = command;
 
-            //    // Fill the DataSet.
-            //    DataSet dataSet = new DataSet("LoginValues");
-            //    adapter.Fill(dataSet);
+                // Fill the DataSet.
+                DataSet dataSet = new DataSet("LoginValues");
+                adapter.Fill(dataSet);
 
-            //    connection.Close();
+                connection.Close();
 
-            //    foreach (DataRow dr in dataSet)
-            //    {
+                //foreach (DataRow dr in dataSet)
+                {
 
-            //    }
+                }
 
 
-            //}
+            }
 
-            // return users without passwords
             string temp = _users.Select(x => {
                 x.Psswd = password;
                 return x;
