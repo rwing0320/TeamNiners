@@ -10,15 +10,32 @@ import { Login } from './Login';
 
 export class EmployeeNav extends Component {
     displayName = EmployeeNav.name
+    constructor(props) {
+        super(props);
+        this.state = { email: "", password: "", isLoggedIn: false, error: "" };
+        this.setEmail = this.setEmail.bind(this);
+        this.setPassword = this.setPassword.bind(this);
+        this.makeChange = this.makeChange.bind(this);
+        //this.getData = this.getData.bind(this);
+        //this.getBusinessLoginData = this.getBusinessLoginData.bind(this);
+        this.getData = this.getData.bind(this);
 
+        this.emailInput = null;
+        this.passwordInput = null;
+    }
 
+    logout() {
+        //call api to delete key
+
+        //then redirect to login page
+    }
 
     render() {
         return (
             <Navbar  inverse id="employeeNavBar">
                 <img id="logo" src={logo}></img>
               
-                <Navbar.Brand href="#dashboard"> DashBoard  </Navbar.Brand>
+                <Navbar.Brand href="#dashboard"> TeamNiners  </Navbar.Brand>
 
                 <span id="logoutSpan" onClick={() => this.props.updateParentState()}>
                     <Glyphicon glyph='log-out'/>

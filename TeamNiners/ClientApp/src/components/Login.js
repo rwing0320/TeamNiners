@@ -27,6 +27,7 @@ export class Login extends Component {
 
     makeChange() {
         if (this.state.isLoggedIn === true) {
+           
             this.setState({
                 isLoggedIn: false
             });
@@ -98,7 +99,7 @@ export class Login extends Component {
                 psswd: this.state.password
             }
 
-            await axios.post('http://localhost:60319/api/users/authenticate', {
+            await axios.post('http://localhost:51797/api/users/authenticate', {
                 email: this.state.email,
                 psswd: this.state.password
             })
@@ -114,12 +115,12 @@ export class Login extends Component {
             if (successFlag) {
                 console.log("hit " + successFlag);
 
-                
-
                 this.setState({
                     isLoggedIn: true
                 });
                 //this.makeChange();
+
+
             } else {
                 this.setState({
                     error: errorMessage
@@ -128,40 +129,7 @@ export class Login extends Component {
             }
         }
 
-        //axios.get('http://localhost:63567/api/BusinessLogins')
-        //    .then(res => {
-        //        console.log(res.data);
-
-        //        if (this.state.email == res.data[0].email && this.state.password == res.data[0].psswd) {
-        //            this.setState({
-        //                isLoggedIn: true
-        //            });
-        //        }
-        //        else {
-        //            this.setState({
-        //                error: "The credentials used are incorrect"
-        //            });
-        //        }
-        //        //this.setState({
-        //        //    businessCity: res.data[0].businessCity
-        //        //});
-        //    })
     }
-
-
-    //setEmail(event) {
-    //    //this.state.email = value
-    //    this.setState({ error: "" });
-    //    this.state.email = event.target.value;
-    //    console.log(this.state.email);
-    //}
-
-    //setPassword(event) {
-    //    this.setState({ error: "" });
-    //    this.state.password = event.target.value;
-    //    console.log(this.state.password);
-    //}
-
     
 
     setEmail(event) {
@@ -176,30 +144,6 @@ export class Login extends Component {
         this.state.password = event.target.value
         console.log(this.state.password);
     }
-    //getData() {
-
-    //    console.log("test");
-    //    axios.get('http://localhost:54047/api/APIBusinesses')
-    //        .then(res => {
-    //            console.log(res.data);
-    //            this.setState({
-    //                businessCity: res.data[0].businessCity
-    //            });
-    //        })
-    //}
-
-    //getBusinessLoginData() {
-
-    //    console.log("test");
-    //    axios.get('http://localhost:54047/api/BusinessLogins')
-    //        .then(res => {
-    //            console.log(res.data);
-    //            this.setState({
-    //                email: res.data[0].email
-    //            });
-    //        })
-
-    //}
 
 
     render() {
@@ -238,34 +182,9 @@ export class Login extends Component {
 
 
             );
-            //return (
-            //    <div>
-            //        <h2> Login Page </h2>
-            //        <button onClick={this.getData}> Click Me</button>
-
-            //        <form>
-            //            <h1>Hello</h1>
-            //            <p>Enter your name:</p>
-            //            <input
-            //                type="text"
-            //                name="username"
-
-            //                onChange={this.setEmail}
-            //            />
-            //            <p>Password</p>
-            //            <input type="password" name="psw" onChange={this.setPassword} />
-            //            <p>{this.state.error}</p>
-
-            //        </form>
-            //    </div>
-
-            //);
         }
         else {
             return (
-
-              
-
                 <div>
                     
                     <EmployeeNav updateParentState={this.makeChange.bind(this)}>
@@ -273,18 +192,7 @@ export class Login extends Component {
                     <Dashboard>
                     </Dashboard>
                 </div>
-                //<Grid fluid>
-                //    <Row>
-                //        <Col sm={3}>
-                //            <NavMenu />
-                            
-                //        </Col>
-                //        <Col sm={9}>
-                //            {this.props.children}
-                //        </Col>
 
-                //    </Row>
-                //</Grid>
             );
         }
 
