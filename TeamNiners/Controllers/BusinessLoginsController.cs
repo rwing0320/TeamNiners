@@ -2,23 +2,49 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TeamNiners.Models;
+using TeamNiners.Services;
 
 namespace TeamNiners.Controllers
 {
+    //[Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class BusinessLoginsController : ControllerBase
     {
         private readonly dbo_NinersContext _context;
+        private IUserService _userService;
 
-        public BusinessLoginsController(dbo_NinersContext context)
+
+        public BusinessLoginsController(dbo_NinersContext context, IUserService userService)
         {
             _context = context;
+            _userService = userService;
         }
+
+        [AllowAnonymous]
+        [HttpGet]
+        public IActionResult Authenticate()
+        {
+            var user = _userService.Authenticate("", "");
+
+            if (user == null)
+                return BadRequest(new { message = "Username or password is incorrect" });
+
+            return Ok(user);
+        }
+
+        [HttpGet]
+        public IActionResult GetAll()
+        {
+            var users = _userService.GetAll();
+            return Ok(users);
+        }
+
 
         // GET: api/BusinessLogins
         [HttpGet]

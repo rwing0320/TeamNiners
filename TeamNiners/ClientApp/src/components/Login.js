@@ -8,6 +8,7 @@ import { EmployeeNav } from './EmployeeNav';
 
 export class Login extends Component {
     displayName = Login.name
+   
 
     constructor(props) {
         super(props);
@@ -21,44 +22,6 @@ export class Login extends Component {
 
         this.emailInput = null;
         this.passwordInput = null;
-    }
-
-    getData() {
-
-
-        console.log("test");
-        axios.get('http://localhost:58397/api/BusinessLogins')
-            .then(res => {
-                console.log(res.data);
-
-                if (this.state.email == res.data[0].email && this.state.password == res.data[0].psswd) {
-                    this.setState({
-                        isLoggedIn: true
-                    });
-                }
-                else {
-                    this.setState({
-                        error: "The credentials used are incorrect"
-                    });
-                }
-                //this.setState({
-                //    businessCity: res.data[0].businessCity
-                //});
-            })
-    }
-
-
-    setEmail(event) {
-        //this.state.email = value
-        this.setState({ error: "" });
-        this.state.email = event.target.value;
-        console.log(this.state.email);
-    }
-
-    setPassword(event) {
-        this.setState({ error: "" });
-        this.state.password = event.target.value;
-        console.log(this.state.password);
     }
 
     makeChange() {
@@ -104,6 +67,72 @@ export class Login extends Component {
             }
         }
     }
+
+    async getData() {
+
+        let successFlag = false;
+
+        let employee = {
+            email: this.state.email,
+            psswd: this.state.password
+        }
+
+        await axios.post('http://localhost:64874/api/users/authenticate', {
+            email: this.state.email,
+            psswd: this.state.password
+        })
+            .then(function (response) {
+                console.log(response);
+                successFlag = true;
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+
+        if (successFlag) {
+            console.log("hit " + successFlag);
+           
+            this.makeChange();
+        } else {
+            console.log("not hit " + successFlag);
+        }
+        
+
+        //axios.get('http://localhost:63567/api/BusinessLogins')
+        //    .then(res => {
+        //        console.log(res.data);
+
+        //        if (this.state.email == res.data[0].email && this.state.password == res.data[0].psswd) {
+        //            this.setState({
+        //                isLoggedIn: true
+        //            });
+        //        }
+        //        else {
+        //            this.setState({
+        //                error: "The credentials used are incorrect"
+        //            });
+        //        }
+        //        //this.setState({
+        //        //    businessCity: res.data[0].businessCity
+        //        //});
+        //    })
+    }
+
+
+    setEmail(event) {
+        //this.state.email = value
+        this.setState({ error: "" });
+        this.state.email = event.target.value;
+        console.log(this.state.email);
+    }
+
+    setPassword(event) {
+        this.setState({ error: "" });
+        this.state.password = event.target.value;
+        console.log(this.state.password);
+    }
+
+    
 
     setEmail(event) {
         //this.state.email = value
@@ -157,7 +186,8 @@ export class Login extends Component {
                         <label htmlFor="employeepassword" className="sr-only">Password</label>
                         <input type="password" ref={elem => (this.passwordInput = elem)} onChange={this.setPassword} id="employeepassword" className="form-control" placeholder="Password" required />
                         <br />
-                        <Button onClick={this.makeChange} className="btn btn-lg btn-primary btn-block"> Login </Button>
+                       
+                        <Button onClick={this.getData} className="btn btn-lg btn-primary btn-block"> Login </Button>
                         <br />
 
                         <Accordion>
