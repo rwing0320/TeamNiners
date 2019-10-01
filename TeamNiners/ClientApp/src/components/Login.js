@@ -2,6 +2,7 @@
 import axios from 'axios';
 import { NavMenu } from './NavMenu';
 import { Dashboard } from './Dashboard';
+import { Route, Switch, BrowserRouter, Link, generatePath, Redirect } from 'react-router-dom';
 import { Col, Grid, Row, Button, Accordion, Panel } from 'react-bootstrap';
 import './LoginPage.css';
 import { EmployeeNav } from './EmployeeNav';
@@ -34,9 +35,10 @@ export class Login extends Component {
 
             if (this.state.isLoggedIn === false && this.state.email != "" && this.state.password != "") {
                 console.log("hit me")
-                this.setState({
-                    isLoggedIn: true
-                });
+                //this.setState({
+                //    isLoggedIn: true
+                //});
+                return true
 
             } else {
 
@@ -46,6 +48,8 @@ export class Login extends Component {
                         error: "Please Fill out both the username and the password! "
                     });
 
+                    return false;
+
                     this.emailInput.focus();
                 }
                 else if (this.state.email == "") {
@@ -54,6 +58,8 @@ export class Login extends Component {
                         error: "Please Fill out the username! "
                     });
                     this.emailInput.focus();
+
+                    return false;
                 }
                 else {
                     this.setState({
@@ -61,6 +67,8 @@ export class Login extends Component {
                         error: "Please Fill out the password! "
                     });
                     this.passwordInput.focus();
+
+                    return false;
                 }
 
 
@@ -69,34 +77,45 @@ export class Login extends Component {
     }
 
     async getData() {
+        if (this.makeChange() != false) {
+            let successFlag = false;
 
-        let successFlag = false;
+            var errorMessage;
 
-        let employee = {
-            email: this.state.email,
-            psswd: this.state.password
-        }
+            let employee = {
+                email: this.state.email,
+                psswd: this.state.password
+            }
 
-        await axios.post('http://localhost:64874/api/users/authenticate', {
-            email: this.state.email,
-            psswd: this.state.password
-        })
-            .then(function (response) {
-                console.log(response);
-                successFlag = true;
+            await axios.post('http://localhost:60319/api/users/authenticate', {
+                email: this.state.email,
+                psswd: this.state.password
             })
-            .catch(function (error) {
-                console.log(error);
-            });
+                .then(function (response) {
+                    console.log(response);
+                    successFlag = true;
+                })
+                .catch(function (error) {
+                    errorMessage = error
+                    console.log(error);
+                });
 
-        if (successFlag) {
-            console.log("hit " + successFlag);
-           
-            this.makeChange();
-        } else {
-            console.log("not hit " + successFlag);
+            if (successFlag) {
+                console.log("hit " + successFlag);
+
+                
+
+                this.setState({
+                    isLoggedIn: true
+                });
+                //this.makeChange();
+            } else {
+                this.setState({
+                    error: errorMessage.message
+                });
+                console.log("not hit " + successFlag);
+            }
         }
-        
 
         //axios.get('http://localhost:63567/api/BusinessLogins')
         //    .then(res => {
@@ -232,7 +251,11 @@ export class Login extends Component {
         }
         else {
             return (
+
+              
+
                 <div>
+                    
                     <EmployeeNav updateParentState={this.makeChange.bind(this)}>
                     </EmployeeNav>
                     <Dashboard>
