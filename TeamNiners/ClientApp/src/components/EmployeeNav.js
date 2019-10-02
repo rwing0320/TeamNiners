@@ -13,26 +13,31 @@ export class EmployeeNav extends Component {
     displayName = EmployeeNav.name
     constructor(props) {
         super(props);
-        //this.state = { email: "", password: "", isLoggedIn: false, error: "" };
-        //this.getData = this.getData.bind(this);
-        //this.getBusinessLoginData = this.getBusinessLoginData.bind(this);
+        this.state = {businessName: ""}
+ 
         this.logout = this.logout.bind(this);
 
      
     }
 
     async logout() {
+
+        var isLoggedOut = false;
         //call api to delete key
-        await axios.post('http://localhost:64874/api/users/Logout', {
+        await axios.post('http://localhost:50392/api/users/Logout', {
            
         })
             .then(function (response) {
                 console.log(response);
-                
+                isLoggedOut = true;
             })
             .catch(function (error) {
                 console.log("this is the error: " + error);
+
             });
+
+        this.props.updateParentState();
+        console.log("user logged Out? : " + isLoggedOut);
 
     }
         //then redirect to login page
@@ -47,7 +52,7 @@ export class EmployeeNav extends Component {
             <Navbar  inverse id="employeeNavBar">
                 <img id="logo" src={logo}></img>
               
-                <Navbar.Brand href="#dashboard"> TeamNiners  </Navbar.Brand>
+                <Navbar.Brand href="#dashboard"> {this.props.data1} </Navbar.Brand>
 
                 <span id="logoutSpan" onClick={this.logout}>
                     <Glyphicon glyph='log-out' />

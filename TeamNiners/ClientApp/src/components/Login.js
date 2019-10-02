@@ -13,12 +13,11 @@ export class Login extends Component {
 
     constructor(props) {
         super(props);
-        this.state = { email: "", password: "", isLoggedIn: false, error: "" };
+        this.state = { email: "", password: "", isLoggedIn: false, error: "", data1: "" };
         this.setEmail = this.setEmail.bind(this);
         this.setPassword = this.setPassword.bind(this);
         this.makeChange = this.makeChange.bind(this);
-        //this.getData = this.getData.bind(this);
-        //this.getBusinessLoginData = this.getBusinessLoginData.bind(this);
+        this.setBusinessName = this.setBusinessName.bind(this);
         this.getData = this.getData.bind(this);
 
         this.emailInput = null;
@@ -36,9 +35,6 @@ export class Login extends Component {
 
             if (this.state.isLoggedIn === false && this.state.email != "" && this.state.password != "") {
                 console.log("hit me")
-                //this.setState({
-                //    isLoggedIn: true
-                //});
                 return true
 
             } else {
@@ -88,7 +84,13 @@ export class Login extends Component {
         }
     }
 
+    setBusinessName(bn) {
+        console.log("changing business name")
+        this.setState({ data1: bn });
+    }
+
     async getData() {
+        var businessName;
         if (this.makeChange() != false) {
             let successFlag = false;
 
@@ -99,14 +101,18 @@ export class Login extends Component {
                 psswd: this.state.password
             }
 
-            await axios.post('http://localhost:64874/api/users/authenticate', {
+            await axios.post('http://localhost:50392/api/users/authenticate', {
                 email: this.state.email,
                 psswd: this.state.password
             })
                 .then(function (response) {
                     console.log(response);
                     successFlag = true;
-                    let businessName = response.data.businessName;
+                    businessName = response.data.businessName;
+
+                  
+                   
+                  
                 })
                 .catch(function (error) {
                     errorMessage = "You have entered in incorrect credentails! Please try Again!"
@@ -114,9 +120,12 @@ export class Login extends Component {
                 });
 
             if (successFlag) {
+                this.setBusinessName(businessName);
                 console.log("hit " + successFlag);
 
                 this.setState({
+                    email: "",
+                    password: "",
                     isLoggedIn: true
                 });
                 //this.makeChange();
@@ -133,8 +142,9 @@ export class Login extends Component {
     }
     
 
+    
+
     setEmail(event) {
-        //this.state.email = value
         this.setState({ error: "" });
         this.state.email = event.target.value
         console.log(this.state.email);
@@ -180,15 +190,13 @@ export class Login extends Component {
                     </form>
                 </div>
 
-
-
             );
         }
         else {
             return (
                 <div>
                     
-                    <EmployeeNav updateParentState={this.makeChange.bind(this)}>
+                    <EmployeeNav data1={this.state.data1} updateParentState={this.makeChange.bind(this)}>
                     </EmployeeNav>
                     <Dashboard>
                     </Dashboard>
