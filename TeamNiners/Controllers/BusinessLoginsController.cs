@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TeamNiners.Models;
 using TeamNiners.Services;
+using TeamNiners.Interfaces;
 
 namespace TeamNiners.Controllers
 {

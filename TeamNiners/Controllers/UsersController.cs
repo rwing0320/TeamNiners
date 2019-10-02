@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TeamNiners.Models;
-using TeamNiners.Services;
+using TeamNiners.Interfaces;
+using TeamNiners.Helpers;
 
 namespace TeamNiners.Controllers
 {
@@ -18,7 +14,6 @@ namespace TeamNiners.Controllers
 
         BusinessLogin bl = new BusinessLogin();
 
-        
 
         public UsersController(IUserService userService)
         {
@@ -48,6 +43,8 @@ namespace TeamNiners.Controllers
 
             }
 
+            UserTempStorage.email = bl.Email;
+
             return Ok(bl);
         }
 
@@ -56,11 +53,13 @@ namespace TeamNiners.Controllers
         public IActionResult Logout([FromBody] BusinessLogin userParam)
         {
 
+            string email = UserTempStorage.email;
+
             //set user token to nothing
-            bl = _userService.Logout();
+            bl = _userService.Logout(email);
             //var user = _userService.Logout();
 
-            
+            UserTempStorage.email = "";
 
             return Ok(bl);
 

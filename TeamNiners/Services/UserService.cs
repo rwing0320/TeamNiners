@@ -13,19 +13,12 @@ using TeamNiners.Helpers;
 using TeamNiners.Models;
 using Microsoft.Extensions.Configuration;
 using System.IO;
-
+using TeamNiners.Interfaces;
 
 
 namespace TeamNiners.Services
 {
 
-    public interface IUserService
-    {
-        BusinessLogin Authenticate(string username, string password);
-        IEnumerable<BusinessLogin> GetAll();
-        BusinessLogin Logout();
-        int GetUserID(string email);
-    }
     public class UserService : IUserService
     {
 
@@ -40,9 +33,9 @@ namespace TeamNiners.Services
         }
 
         Dictionary<string, string> userList = new Dictionary<string, string>();
-        int userID;
 
-        public BusinessLogin Logout()
+
+        public BusinessLogin Logout(string email)
         {
             SetupUserServiceConnection();
             DataTable tempTable = new DataTable();
@@ -55,8 +48,9 @@ namespace TeamNiners.Services
 
                 tempTable = GetBusinessLoginData();
 
+
                 SqlCommand command2 = new SqlCommand(
-                    "UPDATE dbo.BusinessLogin SET token = '', IsValid = 0 WHERE id = " + 1 + ";",
+                    "UPDATE dbo.BusinessLogin SET token = '', IsValid = 0 WHERE email = '" + email + "';",
                     sqlConnection);
 
                 command2.CommandType = CommandType.Text;
@@ -196,6 +190,8 @@ namespace TeamNiners.Services
             tempTable = GetBusinessLoginData();
             FillUserList(tempTable);
 
+
+
             List<BusinessLogin> _users = new List<BusinessLogin>();
 
             //Checks Dictionary to see if it contains the Email
@@ -206,8 +202,9 @@ namespace TeamNiners.Services
                 if (userList[username] == password)
                 {
                     int id = GetUserID(username);
+                    string name = (string)tempTable.Rows[id - 1]["BusinessName"];
                     //Adding the entry to a list for the var to pull from. Allows proper setup of token
-                    _users.Add(new BusinessLogin { Id = id, Email = username, Psswd = password });
+                    _users.Add(new BusinessLogin { Id = id, Email = username, Psswd = password, BusinessName = name});
 
                 }
 
