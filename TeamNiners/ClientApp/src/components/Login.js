@@ -2,6 +2,7 @@
 import axios from 'axios';
 import { NavMenu } from './NavMenu';
 import { Dashboard } from './Dashboard';
+import { Route, Switch, BrowserRouter, Link, generatePath, Redirect } from 'react-router-dom';
 import { Col, Grid, Row, Button, Accordion, Panel } from 'react-bootstrap';
 import './LoginPage.css';
 import { EmployeeNav } from './EmployeeNav';
@@ -26,6 +27,7 @@ export class Login extends Component {
 
     makeChange() {
         if (this.state.isLoggedIn === true) {
+           
             this.setState({
                 isLoggedIn: false
             });
@@ -34,17 +36,31 @@ export class Login extends Component {
 
             if (this.state.isLoggedIn === false && this.state.email != "" && this.state.password != "") {
                 console.log("hit me")
-                this.setState({
-                    isLoggedIn: true
-                });
+                //this.setState({
+                //    isLoggedIn: true
+                //});
+                return true
 
             } else {
+
+                let emailMatch = this.state.email.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i);
+
+                if (emailMatch == null) {
+                    this.setState({
+                        isLoggedIn: false,
+                        error: "Please enter a valid email!"
+                    });
+
+                    return false;
+                }
 
                 if (this.state.email == "" && this.state.password == "") {
                     this.setState({
                         isLoggedIn: false,
-                        error: "Please Fill out both the username and the password! "
+                        error: this.state.error + '/n' + "Please Fill out both the username and the password! "
                     });
+
+                    return false;
 
                     this.emailInput.focus();
                 }
@@ -54,6 +70,8 @@ export class Login extends Component {
                         error: "Please Fill out the username! "
                     });
                     this.emailInput.focus();
+
+                    return false;
                 }
                 else {
                     this.setState({
@@ -61,6 +79,8 @@ export class Login extends Component {
                         error: "Please Fill out the password! "
                     });
                     this.passwordInput.focus();
+
+                    return false;
                 }
 
 
@@ -69,106 +89,62 @@ export class Login extends Component {
     }
 
     async getData() {
+        if (this.makeChange() != false) {
+            let successFlag = false;
 
-        let successFlag = false;
+            var errorMessage;
 
-        let employee = {
-            email: this.state.email,
-            psswd: this.state.password
-        }
+            let employee = {
+                email: this.state.email,
+                psswd: this.state.password
+            }
 
-        await axios.post('http://localhost:64874/api/users/authenticate', {
-            email: this.state.email,
-            psswd: this.state.password
-        })
-            .then(function (response) {
-                console.log(response);
-                successFlag = true;
+            await axios.post('http://localhost:64874/api/users/authenticate', {
+                email: this.state.email,
+                psswd: this.state.password
             })
-            .catch(function (error) {
-                console.log(error);
-            });
+                .then(function (response) {
+                    console.log(response);
+                    successFlag = true;
+                    let businessName = response.data.businessName;
+                })
+                .catch(function (error) {
+                    errorMessage = "You have entered in incorrect credentails! Please try Again!"
+                    console.log("this is the error: " + error);
+                });
 
-        if (successFlag) {
-            console.log("hit " + successFlag);
-           
-            this.makeChange();
-        } else {
-            console.log("not hit " + successFlag);
+            if (successFlag) {
+                console.log("hit " + successFlag);
+
+                this.setState({
+                    isLoggedIn: true
+                });
+                //this.makeChange();
+
+
+            } else {
+                this.setState({
+                    error: errorMessage
+                });
+                console.log("not hit " + successFlag);
+            }
         }
-        
 
-        //axios.get('http://localhost:63567/api/BusinessLogins')
-        //    .then(res => {
-        //        console.log(res.data);
-
-        //        if (this.state.email == res.data[0].email && this.state.password == res.data[0].psswd) {
-        //            this.setState({
-        //                isLoggedIn: true
-        //            });
-        //        }
-        //        else {
-        //            this.setState({
-        //                error: "The credentials used are incorrect"
-        //            });
-        //        }
-        //        //this.setState({
-        //        //    businessCity: res.data[0].businessCity
-        //        //});
-        //    })
     }
-
-
-    setEmail(event) {
-        //this.state.email = value
-        this.setState({ error: "" });
-        this.state.email = event.target.value;
-        console.log(this.state.email);
-    }
-
-    setPassword(event) {
-        this.setState({ error: "" });
-        this.state.password = event.target.value;
-        console.log(this.state.password);
-    }
-
     
 
     setEmail(event) {
         //this.state.email = value
-        
+        this.setState({ error: "" });
         this.state.email = event.target.value
         console.log(this.state.email);
     }
 
     setPassword(event) {
+        this.setState({ error: "" });
         this.state.password = event.target.value
         console.log(this.state.password);
     }
-    //getData() {
-
-    //    console.log("test");
-    //    axios.get('http://localhost:54047/api/APIBusinesses')
-    //        .then(res => {
-    //            console.log(res.data);
-    //            this.setState({
-    //                businessCity: res.data[0].businessCity
-    //            });
-    //        })
-    //}
-
-    //getBusinessLoginData() {
-
-    //    console.log("test");
-    //    axios.get('http://localhost:54047/api/BusinessLogins')
-    //        .then(res => {
-    //            console.log(res.data);
-    //            this.setState({
-    //                email: res.data[0].email
-    //            });
-    //        })
-
-    //}
 
 
     render() {
@@ -207,49 +183,17 @@ export class Login extends Component {
 
 
             );
-            //return (
-            //    <div>
-            //        <h2> Login Page </h2>
-            //        <button onClick={this.getData}> Click Me</button>
-
-            //        <form>
-            //            <h1>Hello</h1>
-            //            <p>Enter your name:</p>
-            //            <input
-            //                type="text"
-            //                name="username"
-
-            //                onChange={this.setEmail}
-            //            />
-            //            <p>Password</p>
-            //            <input type="password" name="psw" onChange={this.setPassword} />
-            //            <p>{this.state.error}</p>
-
-            //        </form>
-            //    </div>
-
-            //);
         }
         else {
             return (
                 <div>
+                    
                     <EmployeeNav updateParentState={this.makeChange.bind(this)}>
                     </EmployeeNav>
                     <Dashboard>
                     </Dashboard>
                 </div>
-                //<Grid fluid>
-                //    <Row>
-                //        <Col sm={3}>
-                //            <NavMenu />
-                            
-                //        </Col>
-                //        <Col sm={9}>
-                //            {this.props.children}
-                //        </Col>
 
-                //    </Row>
-                //</Grid>
             );
         }
 

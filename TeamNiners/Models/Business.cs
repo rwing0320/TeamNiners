@@ -13,7 +13,6 @@ namespace TeamNiners.Models
         public string BusinessPostalCode { get; set; }
         public string BusinessPhoneNumber { get; set; }
 
-        public AccountStatus AccountStatus { get; set; }
         public BusinessLogin BusinessLogin { get; set; }
     }
 }

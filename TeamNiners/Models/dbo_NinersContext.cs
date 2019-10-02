@@ -15,7 +15,6 @@ namespace TeamNiners.Models
         {
         }
 
-        public virtual DbSet<AccountStatus> AccountStatus { get; set; }
         public virtual DbSet<Business> Business { get; set; }
         public virtual DbSet<BusinessLogin> BusinessLogin { get; set; }
 
@@ -30,21 +29,6 @@ namespace TeamNiners.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<AccountStatus>(entity =>
-            {
-                entity.HasKey(e => e.AccountId);
-
-                entity.Property(e => e.AccountId)
-                    .HasColumnName("AccountID")
-                    .ValueGeneratedNever();
-
-                entity.HasOne(d => d.Account)
-                    .WithOne(p => p.AccountStatus)
-                    .HasForeignKey<AccountStatus>(d => d.AccountId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__AccountSt__Accou__276EDEB3");
-            });
-
             modelBuilder.Entity<Business>(entity =>
             {
                 entity.Property(e => e.BusinessId).HasColumnName("businessID");
@@ -104,11 +88,15 @@ namespace TeamNiners.Models
                     .HasMaxLength(255)
                     .IsUnicode(false);
 
+                entity.Property(e => e.Token)
+                    .HasMaxLength(255)
+                    .IsUnicode(false);
+
                 entity.HasOne(d => d.IdNavigation)
                     .WithOne(p => p.BusinessLogin)
                     .HasForeignKey<BusinessLogin>(d => d.Id)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__BusinessLogi__ID__286302EC");
+                    .HasConstraintName("FK__BusinessLogi__ID__25869641");
             });
         }
     }
