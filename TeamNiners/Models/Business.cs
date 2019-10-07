@@ -5,8 +5,12 @@ namespace TeamNiners.Models
 {
     public partial class Business
     {
+        public Business()
+        {
+            BusinessGames = new HashSet<BusinessGames>();
+        }
+
         public int BusinessId { get; set; }
-        public string BusinessName { get; set; }
         public string BusinessAddress { get; set; }
         public string BusinessCity { get; set; }
         public string BusinessCountry { get; set; }
@@ -14,5 +18,6 @@ namespace TeamNiners.Models
         public string BusinessPhoneNumber { get; set; }
 
         public BusinessLogin BusinessLogin { get; set; }
+        public ICollection<BusinessGames> BusinessGames { get; set; }
     }
 }
