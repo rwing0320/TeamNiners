@@ -5,7 +5,7 @@ import { Home } from './components/Home';
 import { FetchData } from './components/FetchData';
 import { Counter } from './components/Counter';
 import { EmployeeLayout } from './components/EmployeeLayout';
-import { Dashboard } from './components/Dashboard';
+import { Dashboard } from './components/EmployeeDashboard';
 
 export default class App extends Component {
   displayName = App.name

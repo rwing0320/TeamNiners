@@ -2,10 +2,8 @@
 import { Link } from 'react-router-dom';
 import { Glyphicon, Nav, Navbar, NavItem } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
-//import './NavMenu.css';
 import logo from './img/9ners_Logo.svg';
-import './employeeNavBar.css';
-import { Login } from './EmployeeLayout';
+import './css/employeeNavBar.css';
 import axios from 'axios';
 
 

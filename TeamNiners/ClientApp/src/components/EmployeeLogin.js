@@ -1,10 +1,10 @@
 ﻿import React, { Component } from 'react';
 import axios from 'axios';
 import { NavMenu } from './NavMenu';
-import { Dashboard } from './Dashboard';
+import { Dashboard } from './EmployeeDashboard';
 import { Redirect } from 'react-router-dom';
 import { Col, Grid, Row, Button, Accordion, Panel } from 'react-bootstrap';
-import './LoginPage.css';
+import './css/LoginPage.css';
 import { EmployeeNav } from './EmployeeNav';
 import { Layout } from './Layout';
 
@@ -104,7 +104,7 @@ export class EmployeeLogin extends Component {
                 psswd: this.state.password
             }
 
-            await axios.post('http://localhost:50392/api/users/authenticate', {
+            await axios.post('http://localhost:60696/api/users/authenticate', {
                 email: this.state.email,
                 psswd: this.state.password
             })
