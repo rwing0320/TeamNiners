@@ -1,8 +1,9 @@
 ﻿import React, { Component } from 'react';
 import { Col, Grid, Row, Glyphicon, Carousel, Button } from 'react-bootstrap';
 import axios from 'axios';
-import './Dashboard.css';
-import ryansRacerImage from './Images/ryansRacerCarouselImage.jpg';
+import './css/Dashboard.css';
+import ryansRacerImage from './img/ryansRacerCarouselImage.jpg';
+import { Redirect, Route } from 'react-router-dom';
 
 export class Dashboard extends Component {
     displayName = "Employee Dashboard"
@@ -10,13 +11,29 @@ export class Dashboard extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {};
+        this.state = {changePage: 0};
+    }
+
+    changePage(pageNum) {
+        this.setState({changePage: pageNum})
+    }
+
+    goToGameMod() {
+
+        if (this.state.changePage == 1) {
+            return <Redirect to='/ModifyGame' />
+        } else if (this.state.changePage == 2) {
+            return <Redirect to='/ShowGames' />
+        }
+        else if (this.state.changePage == 3) {
+            return <Redirect to='/Report' />
+        }
     }
 
 
     myFunction = () => {
         console.log("test");
-        axios.get('http://localhost:54047/api/APIBusinesses')
+        axios.get('http://localhost:50272/api/APIBusinesses')
             .then(res => {
                 console.log(res.data);
             })
@@ -27,20 +44,20 @@ export class Dashboard extends Component {
     render() {
         return (
             <div>
-
+                {this.goToGameMod()}
                 <div id="dashboardContainer">
                     <Grid fluid>
                         <Row>
                             <Col xl={12} id="gameButtonsColumn">
-                                <button href="#" id="gameButton">
+                                <button href="#" id="gameButton" onClick={() => this.changePage(1)}>
                                     Add Game
                                 </button>
 
-                                <button href="" id="gameButton">
+                                <button href="" id="gameButton" onClick={() => this.changePage(2)}>
                                     Show Games
                                 </button>
 
-                                <button href="" id="gameButton">
+                                <button href="" id="gameButton" onClick={() => this.changePage(3)}>
                                     Reports
                                 </button>
                             </Col>
