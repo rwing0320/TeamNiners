@@ -4,7 +4,7 @@ import { Layout } from './components/Layout';
 import { Home } from './components/Home';
 import { FetchData } from './components/FetchData';
 import { Counter } from './components/Counter';
-import { Login } from './components/Login';
+import { EmployeeLayout } from './components/EmployeeLayout';
 import { Dashboard } from './components/Dashboard';
 
 export default class App extends Component {
@@ -12,20 +12,13 @@ export default class App extends Component {
 
   render() {
       return (
-          <Login>
+          <EmployeeLayout>
             <Route exact path='/' component={Home} />
             <Route path='/counter' component={Counter} />
             <Route path='/fetchdata' component={FetchData} />
-            <Route path='/login' component={Login} />
+            <Route path='/login' component={EmployeeLayout} />
             <Route path='/dashboard' component={Dashboard} />
-         </Login>
-
-      //<Layout>
-      //  <Route exact path='/' component={Home} />
-      //  <Route path='/counter' component={Counter} />
-      //  <Route path='/fetchdata' component={FetchData} />
-      //  <Route path='/login' component={Login} />
-      //</Layout>
+          </EmployeeLayout>
     );
   }
 }

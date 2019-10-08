@@ -2,14 +2,15 @@
 import axios from 'axios';
 import { NavMenu } from './NavMenu';
 import { Dashboard } from './Dashboard';
-import { Route, Switch, BrowserRouter, Link, generatePath, Redirect } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 import { Col, Grid, Row, Button, Accordion, Panel } from 'react-bootstrap';
 import './LoginPage.css';
 import { EmployeeNav } from './EmployeeNav';
+import { Layout } from './Layout';
 
-export class Login extends Component {
-    displayName = Login.name
-   
+export class EmployeeLogin extends Component {
+    displayName = EmployeeLogin.name
+
 
     constructor(props) {
         super(props);
@@ -20,13 +21,15 @@ export class Login extends Component {
         this.setBusinessName = this.setBusinessName.bind(this);
         this.getData = this.getData.bind(this);
 
+        //this.changePage = this.changePage.bind(this);
+
         this.emailInput = null;
         this.passwordInput = null;
     }
 
     makeChange() {
         if (this.state.isLoggedIn === true) {
-           
+
             this.setState({
                 isLoggedIn: false
             });
@@ -110,9 +113,6 @@ export class Login extends Component {
                     successFlag = true;
                     businessName = response.data.businessName;
 
-                  
-                   
-                  
                 })
                 .catch(function (error) {
                     errorMessage = "You have entered in incorrect credentails! Please try Again!"
@@ -126,8 +126,11 @@ export class Login extends Component {
                 this.setState({
                     email: "",
                     password: "",
-                    isLoggedIn: true
+                    
                 });
+
+                this.props.updatePageState(this.state.data1);
+               
                 //this.makeChange();
 
 
@@ -140,9 +143,6 @@ export class Login extends Component {
         }
 
     }
-    
-
-    
 
     setEmail(event) {
         this.setState({ error: "" });
@@ -158,10 +158,10 @@ export class Login extends Component {
 
 
     render() {
-        
-        if (this.state.isLoggedIn === false) {
 
-            return (
+     
+        return (             
+
                 <div className="rowLogin">
                     <form className="form-signin">
                         <img className="login_icon" src={require('./img/9ners_Logo.svg')} alt="company_logo" width="90" height="90" />
@@ -172,7 +172,7 @@ export class Login extends Component {
                         <label htmlFor="employeepassword" className="sr-only">Password</label>
                         <input type="password" ref={elem => (this.passwordInput = elem)} onChange={this.setPassword} id="employeepassword" className="form-control" placeholder="Password" required />
                         <br />
-                       
+
                         <Button onClick={this.getData} className="btn btn-lg btn-primary btn-block"> Login </Button>
                         <br />
 
@@ -190,20 +190,7 @@ export class Login extends Component {
                     </form>
                 </div>
 
-            );
-        }
-        else {
-            return (
-                <div>
-                    
-                    <EmployeeNav data1={this.state.data1} updateParentState={this.makeChange.bind(this)}>
-                    </EmployeeNav>
-                    <Dashboard>
-                    </Dashboard>
-                </div>
-
-            );
-        }
-
+        );
+    
     }
 }
