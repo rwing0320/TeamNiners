@@ -33,7 +33,7 @@ export class Dashboard extends Component {
 
     myFunction = () => {
         console.log("test");
-        axios.get('http://localhost:60696/api/APIBusinesses')
+        axios.get('http://localhost:50272/api/APIBusinesses')
             .then(res => {
                 console.log(res.data);
             })
