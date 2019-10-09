@@ -17,13 +17,13 @@ export class EmployeeDashBoardLayout extends Component {
         super(props);
         this.state = { isLoggedIn: false, error: "", businessName: "", dashboardLoaded: false};
            
-
+        console.log("the businessId: " + this.props.data2);
            
     }
 
     loadDash() {
         if (this.state.dashboardLoaded == false) {
-            <Redirect to='/dashboard' />
+           
             this.setState({ dashboardLoaded: true });
         }
     }
@@ -33,7 +33,14 @@ export class EmployeeDashBoardLayout extends Component {
         return (
             <div>
                 <EmployeeNav data1={this.props.data1} updateParentState={this.props.updateParentState}></EmployeeNav>
-                <Redirect to='/dashboard' />
+                
+
+                <Redirect to={{
+                    pathname: '/dashboard',
+                    state: { id: this.props.data2 }
+                }}
+                />
+
                 {this.props.children}
             </div>
             

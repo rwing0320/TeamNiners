@@ -11,7 +11,9 @@ export class Dashboard extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {changePage: 0};
+        this.state = { changePage: 0 };
+
+        
     }
 
     changePage(pageNum) {
@@ -21,7 +23,14 @@ export class Dashboard extends Component {
     goToGameMod() {
 
         if (this.state.changePage == 1) {
-            return <Redirect to='/ModifyGame' />
+            //return <Redirect to='/ModifyGame' />
+
+              return  <Redirect to={{
+                pathname: '/ModifyGame',
+                state: { id: this.props.location.state.id, location: 1 }
+                }}
+                />
+
         } else if (this.state.changePage == 2) {
             return <Redirect to='/ShowGames' />
         }

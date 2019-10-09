@@ -14,7 +14,7 @@ export class EmployeeLogin extends Component {
 
     constructor(props) {
         super(props);
-        this.state = { email: "", password: "", isLoggedIn: false, error: "", data1: "" };
+        this.state = { email: "", password: "", isLoggedIn: false, error: "", data1: "", data2: "" };
         this.setEmail = this.setEmail.bind(this);
         this.setPassword = this.setPassword.bind(this);
         this.makeChange = this.makeChange.bind(this);
@@ -22,6 +22,7 @@ export class EmployeeLogin extends Component {
         this.getData = this.getData.bind(this);
 
         //this.changePage = this.changePage.bind(this);
+
 
         this.emailInput = null;
         this.passwordInput = null;
@@ -87,13 +88,14 @@ export class EmployeeLogin extends Component {
         }
     }
 
-    setBusinessName(bn) {
+    setBusinessName(bn,bId) {
         console.log("changing business name")
-        this.setState({ data1: bn });
+        this.setState({ data1: bn, data2: bId });
     }
 
     async getData() {
         var businessName;
+        var businessId;
         if (this.makeChange() != false) {
             let successFlag = false;
 
@@ -104,7 +106,7 @@ export class EmployeeLogin extends Component {
                 psswd: this.state.password
             }
 
-            await axios.post('http://localhost:50272/api/users/authenticate', {
+            await axios.post('http://localhost:50392/api/users/authenticate', {
                 email: this.state.email,
                 psswd: this.state.password
             })
@@ -112,6 +114,9 @@ export class EmployeeLogin extends Component {
                     console.log(response);
                     successFlag = true;
                     businessName = response.data.businessName;
+                    businessId = response.data.id;
+
+                    console.log("The businessId: " + businessId);
 
                 })
                 .catch(function (error) {
@@ -120,7 +125,7 @@ export class EmployeeLogin extends Component {
                 });
 
             if (successFlag) {
-                this.setBusinessName(businessName);
+                this.setBusinessName(businessName, businessId);
                 console.log("hit " + successFlag);
 
                 this.setState({
@@ -129,7 +134,7 @@ export class EmployeeLogin extends Component {
                     
                 });
 
-                this.props.updatePageState(this.state.data1);
+                this.props.updatePageState(this.state.data1, this.state.data2);
                
                 //this.makeChange();
 
