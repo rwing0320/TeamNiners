@@ -125,16 +125,36 @@ export class EmployeeLogin extends Component {
                 });
 
             if (successFlag) {
+
                 this.setBusinessName(businessName, businessId);
-                console.log("hit " + successFlag);
 
-                this.setState({
-                    email: "",
-                    password: "",
+                await axios.post('http://localhost:50392/api/users/employeeId', {
+                    businessId: businessId
+                })
+                    .then(res => {
+                        console.log("The business ID for Login is: " + res.data);
+
+                        console.log("hit " + successFlag);
+
+                        this.setState({
+                            email: "",
+                            password: "",
+
+                        });
+
+                        this.props.updatePageState(this.state.data1, this.state.data2);
+                        //this.setState({
+                        //    businessCity: res.data[0].businessCity
+                        //});
                     
-                });
+                    })
+                    .catch(function (error) {
+                        errorMessage = ""
+                        console.log("this is the error on the login page for saving the id: " + error);
+                    });
 
-                this.props.updatePageState(this.state.data1, this.state.data2);
+               
+              
                
                 //this.makeChange();
 
