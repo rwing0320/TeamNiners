@@ -13,6 +13,7 @@ namespace TeamNiners.Controllers
         private IUserService _userService;
 
         BusinessLogin bl = new BusinessLogin();
+        public IlocalService _localService;
 
 
         public UsersController(IUserService userService)
@@ -47,6 +48,35 @@ namespace TeamNiners.Controllers
 
             return Ok(bl);
         }
+
+        [HttpPost]
+        [Route("/api/users/employeeId")]
+        public IActionResult EmployeeId([FromBody]LocalEmployee id)
+        {
+
+            UserTempStorage.id = id.businessId;
+
+
+            return Ok(UserTempStorage.id);
+        }
+
+        [HttpGet]
+        [Route("/api/users/getEmployeeId")]
+        public IActionResult GetEmployeeId()
+        {
+
+           
+
+            //LocalEmployee lemp = new LocalEmployee();
+
+            //lemp.businessId = id.businessId;
+            //id.businessId = id;
+
+
+            return Ok(UserTempStorage.id);
+        }
+
+
 
         [HttpPost]
         [Route("/api/users/logout")]

@@ -19,6 +19,9 @@ namespace TeamNiners.Controllers
     {
         private readonly dbo_NinersContext _context;
         private IUserService _userService;
+        public IlocalService _localService;
+
+        public LocalEmployee lem;
 
 
         public BusinessLoginsController(dbo_NinersContext context, IUserService userService)
@@ -45,6 +48,15 @@ namespace TeamNiners.Controllers
             var users = _userService.GetAll();
             return Ok(users);
         }
+
+
+        //[HttpGet]
+        //[Route("/api/BusinessLogins/EmployeeId")]
+        //public IActionResult EmployeeId([FromBody]int id)
+        //{
+        //    var businessId = _localService.SetBusinessId(id);
+        //    return Ok(businessId);
+        //}
 
 
         // GET: api/BusinessLogins

@@ -1,0 +1,102 @@
+﻿.navbar li .glyphicon {
+    margin-right: 10px;
+}
+
+/* Highlighting rules for nav menu items */
+.navbar .navbar-nav .active a,
+.navbar .navbar-nav .active a:hover,
+.navbar .navbar-nav .active a:focus {
+    background-image: none;
+    background-color: #4189C7;
+    color: white;
+}
+
+@media(max-width: 767px){
+    #BusinessLogin {
+        position:relative;
+    }
+}
+
+@media (min-width: 768px) {
+
+    .navbar {
+        height: 100%;
+        width: calc(7% - 20px);
+    }
+
+    .navbar {
+        border-radius: 0;
+        border-width: 0;
+        height: 100%;
+    }
+
+    .navbar-header {
+        float: none;
+    }
+
+    .navbar .navbar-collapse {
+        border-top: 1px solid #444;
+        padding: 0;
+    }
+
+    .navbar .container-fluid {
+        padding: 0;
+        margin: 0;
+    }
+
+        .navbar .container-fluid .navbar-brand {
+            margin: 0;
+        }
+
+    .navbar ul {
+        float: none;
+    }
+
+    .navbar li {
+        float: none;
+        font-size: 15px;
+        margin: 6px;
+    }
+
+        .navbar li a {
+            padding: 10px 16px;
+            border-radius: 4px;
+        }
+
+    .navbar a {
+        width: 100%;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    #BusinessLogin {
+        position: fixed;
+        bottom: 0;
+        right: 0;
+    }
+
+    .col-sm-9{
+        margin-left: 7%;
+    }
+}
+
+
+.memberchildren {
+    margin-left: 25%;
+    padding: 1px 16px;
+    height: 100%;
+}
+
+
+.Nav_Icon {
+    margin-top: 15px;
+    margin-left: 15px;
+    margin-bottom: 15px;
+    margin-right: 5px;
+    float: left;
+}
+
+
+
+
