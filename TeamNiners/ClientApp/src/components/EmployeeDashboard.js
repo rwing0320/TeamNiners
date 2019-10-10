@@ -11,7 +11,21 @@ export class Dashboard extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {changePage: 0};
+        this.state = { changePage: 0, businessId: 0 };
+
+        axios.get('http://localhost:50392/api/users/getEmployeeId',)
+            .then(res => {
+                console.log("The business ID for dashboard is: " + res.data);
+                this.setState({businessId: res.data})
+                //this.setState({
+                //    businessCity: res.data[0].businessCity
+                //});
+
+            })
+            .catch(function (error) {
+               // errorMessage = ""
+                console.log("this is the error on the login page for saving the id: " + error);
+            });
     }
 
     changePage(pageNum) {
@@ -21,7 +35,14 @@ export class Dashboard extends Component {
     goToGameMod() {
 
         if (this.state.changePage == 1) {
-            return <Redirect to='/ModifyGame' />
+            //return <Redirect to='/ModifyGame' />
+
+              return  <Redirect to={{
+                pathname: '/ModifyGame',
+                state: { id: this.state.businessId, location: 1 }
+                }}
+                />
+
         } else if (this.state.changePage == 2) {
             return <Redirect to='/ShowGames' />
         }

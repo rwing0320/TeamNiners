@@ -19,7 +19,7 @@ export class EmployeeLayout extends Component {
 
     constructor(props) {
         super(props);
-        this.state = { isLoggedIn: false, error: "",  businessName: "" };
+        this.state = { isLoggedIn: false, error: "",  businessName: "", businessId: 0 };
               
         this.setBusinessName = this.setBusinessName.bind(this);
            
@@ -32,8 +32,8 @@ export class EmployeeLayout extends Component {
     }
 
 
-    setIsLoggedIn(businessName) {
-        this.setState({ isLoggedIn: true, businessName: businessName });
+    setIsLoggedIn(businessName, businessId) {
+        this.setState({ isLoggedIn: true, businessName: businessName, businessId: businessId });
     }
 
     setIsLoggedOut() {
@@ -44,7 +44,7 @@ export class EmployeeLayout extends Component {
         if (this.state.isLoggedIn) {
             //return <div><EmployeeNav data1={this.state.businessName} updateParentState={this.setIsLoggedOut.bind(this)}></EmployeeNav><Dashboard></Dashboard> <Redirect to='/dashboard' /></div>;
 
-            return <EmployeeDashBoardLayout data1={this.state.businessName} updateParentState={this.setIsLoggedOut.bind(this)}>
+            return <EmployeeDashBoardLayout data1={this.state.businessName} data2={this.state.businessId} updateParentState={this.setIsLoggedOut.bind(this)}>
 
                     <Route exact path='/dashboard' component={Dashboard} />
                     <Route exact path='/ModifyGame' component={EmployeeGameMod} />
