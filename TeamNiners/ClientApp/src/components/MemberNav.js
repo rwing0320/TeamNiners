@@ -37,22 +37,29 @@ export class MemberNav extends Component {
                 </Navbar.Header>
                 <Navbar.Collapse>
                     <Nav>
-                        <LinkContainer to={'/home'} exact>
+                        <LinkContainer to={'/memberlogin'} exact>
                             <NavItem>
-                                <Glyphicon glyph='home' /> Login
+                                <Glyphicon glyph='user' /> Login
                              </NavItem>
                         </LinkContainer>
-                        <LinkContainer to={'/counter'}>
-                            <NavItem>
-                                <Glyphicon glyph='education' /> Counter
+                        <LinkContainer to={'/member/register'} exact>
+                            <NavItem >
+                                <Glyphicon glyph='user' /> Create Account
                              </NavItem>
                         </LinkContainer>
-                        <LinkContainer to={'/fetchdata'}>
+                        <LinkContainer to={'/cart'}>
                             <NavItem>
-                                <Glyphicon glyph='th-list' /> Fetch data
+                                <Glyphicon glyph='shopping-cart' /> Cart
+                             </NavItem>
+                        </LinkContainer>
+                        <LinkContainer to={'/settings'}>
+                            <NavItem>
+                                <Glyphicon glyph='cog' /> Settings
                             </NavItem>
                         </LinkContainer>
-                       
+
+
+                      
                         <NavItem id="BusinessLogin" onClick={this.goToBusinessLogin}>
                                 <Glyphicon glyph='share' /> Business Login
                         </NavItem>

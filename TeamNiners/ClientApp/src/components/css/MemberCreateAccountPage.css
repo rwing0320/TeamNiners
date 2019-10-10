@@ -1,0 +1,33 @@
+﻿.rowNewAccount {
+    display: grid;
+    place-items: center;
+    height: 100vh;
+    width: 100%;
+}
+
+    .rowNewAccount form {
+        width: 500px;
+        border-radius: 5px;
+        background-color: #eeeeee;
+        padding: 20px;
+        text-align: center;
+    }
+
+    .rowNewAccount .login_icon {
+        display: block;
+        justify-content: center;
+        align-items: center;
+        margin: auto;
+    }
+
+    .rowNewAccount #memberemail {
+        margin-bottom: 15px;
+    }
+
+    .rowNewAccount #forgotPassword {
+        text-align: left;
+    }
+
+    .rowNewAccount #errorMessage {
+        color: red;
+    }
