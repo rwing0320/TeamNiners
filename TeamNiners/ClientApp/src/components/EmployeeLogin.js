@@ -21,11 +21,18 @@ export class EmployeeLogin extends Component {
         this.setBusinessName = this.setBusinessName.bind(this);
         this.getData = this.getData.bind(this);
 
+
+        this.goToMemberHome = this.goToMemberHome.bind(this);
         //this.changePage = this.changePage.bind(this);
 
 
         this.emailInput = null;
         this.passwordInput = null;
+    }
+
+
+    goToMemberHome() {
+        this.props.updateMemberPage(1);
     }
 
     makeChange() {
@@ -210,6 +217,8 @@ export class EmployeeLogin extends Component {
 
                         <p id="errorMessage">{this.state.error} </p>
 
+
+                    <p id="goHome" onClick={this.goToMemberHome}><a>Go To Member Dashboard</a></p>
                         <br />
                         <p className="mt-5 mb-3 text-muted">© 2019</p>
                     </form>

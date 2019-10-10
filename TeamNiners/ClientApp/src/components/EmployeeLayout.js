@@ -55,7 +55,7 @@ export class EmployeeLayout extends Component {
            
         }
         else {
-            return <div><EmployeeLogin updatePageState={this.setIsLoggedIn.bind(this)}></EmployeeLogin> <Redirect to='/login' /></div>;
+            return <div><EmployeeLogin updateMemberPage={this.props.updatePageState} updatePageState={this.setIsLoggedIn.bind(this)}></EmployeeLogin> <Redirect to='/login' /></div>;
         }
     }
 

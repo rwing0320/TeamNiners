@@ -32,3 +32,13 @@
 .rowLogin #errorMessage {
     color: red;
 }
+
+
+#goHome {
+    color: #3366BB;
+    float: left;
+}
+
+.text-muted{
+    float: left;
+}
