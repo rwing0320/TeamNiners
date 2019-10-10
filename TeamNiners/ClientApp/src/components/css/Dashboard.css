@@ -86,6 +86,7 @@ table {
     border: #000;
     color: #000;
     background-color: rgb(0, 197, 255);
+    -webkit-transition: border-radius 0.5s;
 }
 
     #gameButton:hover {

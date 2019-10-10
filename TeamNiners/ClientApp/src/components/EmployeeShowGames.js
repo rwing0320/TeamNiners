@@ -2,6 +2,8 @@
 import { Col, Grid, Row, Button, Accordion, Panel } from 'react-bootstrap';
 import axios from 'axios';
 import { Redirect, Route } from 'react-router-dom';
+import './css/ShowGamesPage.css';
+
 
 export class EmployeeShowGames extends Component {
     constructor(props) {
@@ -36,9 +38,6 @@ export class EmployeeShowGames extends Component {
                                         <option value="name_desc">Name: Descending</option>
                                         <option value="name_asc">Name: Ascending</option>
                                     </select>
-
-
-
                                 </div>
                             </Col>
                         </Row>
