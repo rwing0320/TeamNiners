@@ -51,6 +51,17 @@ export class Dashboard extends Component {
         }
     }
 
+    changePassword = () => {
+
+        if ()
+
+        axios.put('http://localhost:64874/api/users/passwordsettings')
+            .then(res => {
+                console.log(res.data);
+
+            })
+    }
+
 
     myFunction = () => {
         console.log("test");
@@ -174,7 +185,7 @@ export class Dashboard extends Component {
                                     </div>
 
                                     <div className="form-group" id="submissionDiv">
-                                        <button className="btn btn-light">Submit</button>
+                                        <button onClick={this.changePassword} className="btn btn-light">Submit</button>
 
                                         <span> <br /> <br /> </span>
                                     </div>

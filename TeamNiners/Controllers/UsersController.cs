@@ -49,6 +49,14 @@ namespace TeamNiners.Controllers
             return Ok(bl);
         }
 
+        [HttpPut]
+        [Route("/api/users/passwordsettings")]
+        public IActionResult ChangePassword([FromBody] BusinessLogin userParam)
+        {
+            bl = _userService.ChangePassword(userParam.Email, userParam.Email, userParam.Salt);
+            return BadRequest(new { message = "Password could not be changed." });
+        }
+
         [HttpPost]
         [Route("/api/users/employeeId")]
         public IActionResult EmployeeId([FromBody]LocalEmployee id)

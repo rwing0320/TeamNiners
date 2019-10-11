@@ -257,7 +257,22 @@ namespace TeamNiners.Services
 
             return user;
 
-        } 
+        }
+
+        public BusinessLogin ChangePassword(string username, string password, string storedSalt)
+        {
+            var securityInstance = new SecurityService();
+
+            string hashedPassword = securityInstance.HashingCheckLogin(password, storedSalt);
+
+            if (userList[username] == hashedPassword)
+            {
+
+            }
+
+
+            return null;
+        }
 
         public IEnumerable<BusinessLogin> GetAll()
         {
