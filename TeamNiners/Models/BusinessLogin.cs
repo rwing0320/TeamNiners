@@ -11,6 +11,7 @@ namespace TeamNiners.Models
         public string Token { get; set; }
         public bool? IsValid { get; set; }
         public string BusinessName { get; set; }
+        public string Salt { get; set; }
 
         public Business IdNavigation { get; set; }
     }
