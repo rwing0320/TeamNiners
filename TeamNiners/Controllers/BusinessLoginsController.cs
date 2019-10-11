@@ -34,7 +34,7 @@ namespace TeamNiners.Controllers
         [HttpGet]
         public IActionResult Authenticate()
         {
-            var user = _userService.Authenticate("", "");
+            var user = _userService.Authenticate("", "", "");
 
             if (user == null)
                 return BadRequest(new { message = "Username or password is incorrect" });

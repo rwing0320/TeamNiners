@@ -36,7 +36,7 @@ namespace TeamNiners.Controllers
         {
             //var user = _userService.Authenticate(userParam.Email, userParam.Psswd);
 
-            bl = _userService.Authenticate(userParam.Email, userParam.Psswd);
+            bl = _userService.Authenticate(userParam.Email, userParam.Psswd, userParam.Salt);
 
             if (bl == null)
             {
