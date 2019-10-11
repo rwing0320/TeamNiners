@@ -4,10 +4,11 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using TeamNiners.Interfaces;
 
 namespace TeamNiners.Services
 {
-    public class SecurityService
+    public class SecurityService : ISecurityService
     {
 
         /// <summary>
@@ -15,7 +16,7 @@ namespace TeamNiners.Services
         /// pick a random value from the string and add it to the salt
         /// </summary>
         /// <returns>The randomized salt to be used for password security</returns>
-        private string GenerateSalt(string password)
+        public string GenerateSalt(string password)
         {
             Random alphaNumeric = new Random();
             int randomCharacter = 0;

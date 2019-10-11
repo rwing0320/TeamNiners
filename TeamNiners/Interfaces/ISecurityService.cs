@@ -1,7 +1,9 @@
-﻿namespace TeamNiners.Services
+﻿namespace TeamNiners.Interfaces
 {
-    internal interface ISecurityService
+    public interface ISecurityService
     {
+        string GenerateSalt(string password);
         string HashingCheckLogin(string password, string salt);
+
     }
 }
