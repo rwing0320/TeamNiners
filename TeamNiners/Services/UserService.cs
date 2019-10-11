@@ -14,7 +14,8 @@ using TeamNiners.Models;
 using Microsoft.Extensions.Configuration;
 using System.IO;
 using TeamNiners.Interfaces;
-
+using System.Security.Cryptography;
+using TeamNiners.Services;
 
 namespace TeamNiners.Services
 {
@@ -24,6 +25,7 @@ namespace TeamNiners.Services
 
         //Sets up dependency injection to grab connectionString later
         public IConfiguration connectionString;
+
 
         public void SetupUserServiceConnection()
         {
@@ -103,8 +105,8 @@ namespace TeamNiners.Services
             return id;
         }
 
-            public DataTable GetBusinessLoginData()
-            {
+        public DataTable GetBusinessLoginData()
+        {
 
             SetupUserServiceConnection();
 
@@ -149,8 +151,8 @@ namespace TeamNiners.Services
 
                 SqlCommand command = new SqlCommand(
                     "UPDATE dbo.BusinessLogin SET token = '" + token + "', IsValid = 1 WHERE id = " + id + ";",
-                    sqlConnection); 
-                                                             
+                    sqlConnection);
+
                 command.CommandType = CommandType.Text;
 
                 adapter.UpdateCommand = command;
@@ -170,6 +172,7 @@ namespace TeamNiners.Services
             //Adds each row from the BusinessLogin table into a Dictionary with KV = <Username, Password>
             for (int i = 0; i < userDataTable.Rows.Count; i++)
             {
+
                 userList.Add((string)userDataTable.Rows[i]["email"], (string)userDataTable.Rows[i]["psswd"]);
 
             }
@@ -183,34 +186,47 @@ namespace TeamNiners.Services
             _appSettings = appSettings.Value;
         }
 
-        public BusinessLogin Authenticate(string username, string password)
+        public BusinessLogin Authenticate(string username, string password, string storedSalt)
         {
+            //Setting up necessary variables and a SecurityService instance to use hashing method
+            var securityInstance = new SecurityService();
             DataTable tempTable;
+            string HashedPassword = string.Empty;
+
 
             tempTable = GetBusinessLoginData();
             FillUserList(tempTable);
 
-
+            //Gets the Salt & ID for the specific user
+            int id = GetUserID(username);
+            string salt = (string)tempTable.Rows[id - 1]["Salt"];
 
             List<BusinessLogin> _users = new List<BusinessLogin>();
 
             //Checks Dictionary to see if it contains the Email
             if (userList.ContainsKey(username))
             {
+                //Use this for generating salts on account creation,
+                //for now uncomment when you want to generate a salt for a new BusinessLogin
+                string tempGeneratedSalt = securityInstance.GenerateSalt(password);
+                
 
-                //Checks the key value pair to see if the password value is the same as entered
-                if (userList[username] == password)
+                //Generates the hashed password value using the entered password and the stored salt
+                HashedPassword = securityInstance.HashingCheckLogin(password, salt);
+
+                //Checks the key value pair to see if the stored password value is the same as entered
+                if (userList[username] == HashedPassword)
                 {
-                    int id = GetUserID(username);
                     string name = (string)tempTable.Rows[id - 1]["BusinessName"];
                     //Adding the entry to a list for the var to pull from. Allows proper setup of token
-                    _users.Add(new BusinessLogin { Id = id, Email = username, Psswd = password, BusinessName = name});
+                    _users.Add(new BusinessLogin { Id = id, Email = username, Psswd = HashedPassword, BusinessName = name });
 
                 }
 
+
             }
 
-            var user = _users.SingleOrDefault(x => x.Email == username && x.Psswd == password);
+            var user = _users.SingleOrDefault(x => x.Email == username && x.Psswd == HashedPassword);
 
             if (user == null)
             {
@@ -218,7 +234,7 @@ namespace TeamNiners.Services
             }
             else
             {
-                // authentication successful so generate jwt token
+                // Authentication successful so generate JWT Token
                 var tokenHandler = new JwtSecurityTokenHandler();
                 var key = Encoding.ASCII.GetBytes(_appSettings.Secret);
                 var tokenDescriptor = new SecurityTokenDescriptor
@@ -233,17 +249,15 @@ namespace TeamNiners.Services
                 var token = tokenHandler.CreateToken(tokenDescriptor);
                 user.Token = tokenHandler.WriteToken(token);
 
-                // remove password before returning
+                // Remove password before returning
                 user.Psswd = null;
-
-
             }
 
             setBusinessLoginData(tempTable, user.Token, user.Id);
 
             return user;
 
-        }
+        } 
 
         public IEnumerable<BusinessLogin> GetAll()
         {

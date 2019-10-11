@@ -8,7 +8,7 @@ namespace TeamNiners.Interfaces
 {
     public interface IUserService
     {
-        BusinessLogin Authenticate(string username, string password);
+        BusinessLogin Authenticate(string username, string password, string storedSalt);
         IEnumerable<BusinessLogin> GetAll();
         BusinessLogin Logout(string email);
         int GetUserID(string email);
