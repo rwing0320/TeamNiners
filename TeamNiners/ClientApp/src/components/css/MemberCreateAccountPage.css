@@ -31,3 +31,8 @@
     .rowNewAccount #errorMessage {
         color: red;
     }
+
+
+.passwordError {
+    color: red;
+}

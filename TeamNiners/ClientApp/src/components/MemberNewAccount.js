@@ -16,7 +16,7 @@ export class MemberNewAccount extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {  firsname: "", lastName: "", phoneNumber: "",email: "", address: "", country: "", city: "", postalcode: "", password: "", retypedpassword: "hello",  error: "", retypeerror: "", data1: "", data2: "" };
+        this.state = { firsname: "", lastName: "", phoneNumber: "", email: "", address: "", country: "", city: "", postalcode: "", password: "", retypedpassword: "hello", error: "", retypeerror: "", postalCodeError: "", phoneNumberError: "", emailError: "", data1: "", data2: "", newAccountSuccessful: false };
 
 
 
@@ -33,14 +33,6 @@ export class MemberNewAccount extends Component {
         this.setPhoneNumber = this.setPhoneNumber.bind(this);
         this.setInputed = this.setInputed.bind(this);
         this.validateForm = this.validateForm.bind(this);
-        //this.makeChange = this.makeChange.bind(this);
-       // this.setBusinessName = this.setBusinessName.bind(this);
-        //this.getData = this.getData.bind(this);
-
-
-        //this.goToMemberHome = this.goToMemberHome.bind(this);
-        //this.changePage = this.changePage.bind(this);
-
 
         this.emailInput = null;
         this.passwordInput = null;
@@ -202,7 +194,23 @@ export class MemberNewAccount extends Component {
         this.setState({ error: "" });
         this.state.email = event.target.value
 
-        this.setInputed(this.state.email, 3);
+        let emailMatch = this.state.email.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i);
+
+        if (this.state.email == "") {
+            this.setState({ emailError: "" });
+            this.setInputed("", 3);
+        }
+
+        else if (emailMatch == null) {
+            this.setInputed("", 3);
+            this.setState({ emailError: "Please enter a valid email" });
+        }
+        else {
+            this.setState({ emailError: "" });
+            this.setInputed(this.state.email, 3);
+        }
+
+        
     }
 
     setPassword(event) {
@@ -213,18 +221,17 @@ export class MemberNewAccount extends Component {
     }
 
     setRetypePassword(event) {
-
-        
-
         this.setState({ error: "" });
         this.state.retypedpassword = event.target.value
 
-        this.setInputed(this.state.retypedpassword, 9);
+       
 
         if (this.state.retypedpassword != this.state.password && (this.state.password != "" && this.state.retypedpassword!= "")) {
             this.setState({ retypeerror: "The passwords do not match!" })
+             this.setInputed("", 9);
         }
         else {
+            this.setInputed(this.state.retypedpassword, 9);
             this.setState({ retypeerror: "" })
         }
     }
@@ -264,20 +271,56 @@ export class MemberNewAccount extends Component {
         this.setState({ error: "" });
         this.state.postalcode = event.target.value
 
-        this.setInputed(this.state.postalcode, 7);
+        var postalRegex = /^[A-Za-z]\d[A-Za-z][ -]?\d[A-Za-z]\d$/;
+        var match = postalRegex.test(this.state.postalcode);
+
+        if (match && this.state.postalcode != "") {
+            this.setState({ postalCodeError: "" })
+            this.setInputed(this.state.postalcode, 7);
+        }
+        else if (this.state.postalcode != "") {
+            this.setState({ postalCodeError: "This is not a valid Postal Code!" })
+            this.setInputed("", 7);
+        }
+        else {
+            this.setState({ postalCodeError: "" })
+            this.setInputed("", 7);
+        }
+
+
+       
     }
     setPhoneNumber(event) {
         this.setState({ error: "" });
         this.state.phoneNumber = event.target.value
 
-        this.setInputed(this.state.phoneNumber, 2);
+        var phoneNumberRegex = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/;
+        var match = phoneNumberRegex.test(this.state.phoneNumber);
+
+        if (match && this.state.phoneNumber != "") {
+            this.setState({ phoneNumberError: "" });
+            this.setInputed(this.state.phoneNumber, 2);
+
+        }
+        else if (this.state.phoneNumber != "") {
+            this.setState({ phoneNumberError: "Please Fill In a Valid Phone Number" });
+            this.setInputed("", 2);
+        }
+        else {
+            this.setState({ phoneNumberError: "" });
+            this.setInputed("", 2);
+        }
+
+       
     }
-    
+
+ 
+
     setInputed(value, pos) {
-        if ((value != "" || value != 0 || value != null) && this.myArray[pos] != 1) {
+        if ((value != "") && this.myArray[pos] != 1) {
             this.myArray[pos] = 1
         }
-        else if (value == "" || value == 0 || value == null) {
+        else if (value == "") {
             this.myArray[pos] = 0
         }
 
@@ -296,7 +339,56 @@ export class MemberNewAccount extends Component {
         }
 
         if (isEmpty == true) {
-            this.setState({error: "YOu have to fill in the complete form correctly!"})
+            this.setState({ error: "You have to fill in the complete form correctly!" })
+        }
+        else {
+            this.saveNewAccount();
+        }
+    }
+
+    async saveNewAccount() {
+        var success = true;
+        var memberPassword = this.state.password;
+
+        axios.post('http://localhost:50392/api/MemberAccount', {
+            FirstName: this.state.firsname,
+            LastName: this.state.lastName,
+            MemberAddress: this.state.address,
+            MemberCity: this.state.city,
+            MemberCountry: this.state.country,
+            MemberPostalCode: this.state.postalcode,
+            MemberPhoneNumber: this.state.phoneNumber,
+            MemberEmail: this.state.email
+        }).then(function (response) {
+            var memberId = response.data.memberId;
+            var memberEmail = response.data.memberEmail;
+            axios.post('http://localhost:50392/api/MemberAccount/AddMemberLogin', {
+                MemberId: memberId,
+                MemberUsername: memberEmail,
+                MemberPassword: memberPassword
+
+            })
+                .then(function (response) {
+                    console.log(response);
+                    //successFlag = true;
+                    console.log(response.data);
+                    //businessName = response.data.businessName;
+
+                })
+                .catch(function (error) {
+                    success = false;
+                    console.log("this is the error: " + error);
+                });
+        });
+
+        if (success == true) {
+            this.setState({ newAccountSuccessful: true });
+        }
+    }
+
+    changeLogin() {
+        if (this.state.newAccountSuccessful) {
+            return <Redirect to='/member' />
         }
     }
 
@@ -306,6 +398,7 @@ export class MemberNewAccount extends Component {
         return (
 
             <div className="rowNewAccount">
+                {this.changeLogin()}
                 <form className="form-signin">
                     <img className="login_icon" src={require('./img/9ners_Logo.svg')} alt="company_logo" width="90" height="90" />
                                        
@@ -317,6 +410,7 @@ export class MemberNewAccount extends Component {
 
                         Last Name
                         <input type="email" ref={elem => (this.lastNameInput = elem)} onChange={this.setLastName} id="memberfirstname" className="form-control" placeholder="" required  />
+                        <p className="passwordError">{this.state.emailError}</p>
                     </div>
 
                     Email
@@ -324,7 +418,7 @@ export class MemberNewAccount extends Component {
 
                    Phone Number
                     <input type="tel" pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}"  ref={elem => (this.phoneNumberInput = elem)} onChange={this.setPhoneNumber} id="memberphone" className="form-control" placeholder="" required />
-
+                    <p className="passwordError">{this.state.phoneNumberError}</p>
 
                     <h2 className="h3 mb-3 font-weight-normal"> Address Information </h2>
 
@@ -341,13 +435,13 @@ export class MemberNewAccount extends Component {
                     <br />
 
                     City
-                    <input type="email" ref={elem => (this.cityInput = elem)} onChange={this.setCountry} id="memberCity" className="form-control" placeholder="" required />
+                    <input type="email" ref={elem => (this.cityInput = elem)} onChange={this.setCity} id="memberCity" className="form-control" placeholder="" required />
 
                     <br />
 
                     Postal Code
                     <input type="email" ref={elem => (this.postcodeInput = elem)} onChange={this.setPostalCode} id="memberpostal" className="form-control" placeholder="" required />
-
+                    <p className="passwordError">{this.state.postalCodeError}</p>
 
                     <br />
                     <br />
@@ -360,7 +454,7 @@ export class MemberNewAccount extends Component {
                     <input type="password" ref={elem => (this.retypepasswordInput = elem)} onChange={this.setRetypePassword} id="employeeretypepassword" className="form-control" placeholder="Password" required />
                     <br />
 
-                    <p>{this.state.retypeerror}</p>
+                    <p className="passwordError">{this.state.retypeerror}</p>
 
                     <Button onClick={this.validateForm} className="btn btn-lg btn-primary btn-block"> Create Account </Button>
                     <br />
