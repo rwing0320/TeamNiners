@@ -36,7 +36,9 @@ namespace TeamNiners.Services
 
         Dictionary<string, string> userList = new Dictionary<string, string>();
 
-
+        /// <summary>
+        /// Destroys the token and resets IsValid flag on clicking Logout button
+        /// </summary>
         public BusinessLogin Logout(string email)
         {
             SetupUserServiceConnection();
@@ -65,14 +67,15 @@ namespace TeamNiners.Services
 
                 sqlConnection.Close();
 
-
-
             }
 
             return null;
 
         }
 
+        /// <summary>
+        /// Gets the UserID from the Database based on the email which will always be unique
+        /// </summary>
         public int GetUserID(string email)
         {
             int id = 0;
@@ -105,6 +108,11 @@ namespace TeamNiners.Services
             return id;
         }
 
+
+        /// <summary>
+        /// Selects all of the data from the BusinessLogin table 
+        /// and fills a DataTable with all of the row
+        /// </summary>
         public DataTable GetBusinessLoginData()
         {
 
@@ -137,6 +145,9 @@ namespace TeamNiners.Services
             }
         }
 
+        /// <summary>
+        /// Sets the token and IsValid flag in the database for a specific user
+        /// </summary>
         public void setBusinessLoginData(DataTable table, string token, int id)
         {
             DataTable tempTable = new DataTable();
@@ -208,7 +219,7 @@ namespace TeamNiners.Services
             {
                 //Use this for generating salts on account creation,
                 //for now uncomment when you want to generate a salt for a new BusinessLogin
-                string tempGeneratedSalt = securityInstance.GenerateSalt(password);
+                //string tempGeneratedSalt = securityInstance.GenerateSalt(password);
                 
 
                 //Generates the hashed password value using the entered password and the stored salt
@@ -251,6 +262,7 @@ namespace TeamNiners.Services
 
                 // Remove password before returning
                 user.Psswd = null;
+                user.Salt = salt;
             }
 
             setBusinessLoginData(tempTable, user.Token, user.Id);
@@ -259,17 +271,63 @@ namespace TeamNiners.Services
 
         }
 
-        public BusinessLogin ChangePassword(string username, string password, string storedSalt)
+
+        /// <summary>
+        /// Allows the user or employee of a company reset their password on the dashboard.
+        /// Will hash their old password input with the salt thats matching their email in database.
+        /// Then generates a new salt and hash for the new password and inserts into database.
+        /// </summary>
+        public BusinessLogin ChangePassword(string oldPassword, string newPassword, string username, string salt)
         {
+
+            DataTable tempTable = new DataTable();
             var securityInstance = new SecurityService();
 
-            string hashedPassword = securityInstance.HashingCheckLogin(password, storedSalt);
+            tempTable = GetBusinessLoginData();
+            FillUserList(tempTable);
 
-            if (userList[username] == hashedPassword)
+            string hashedInputPassword = securityInstance.HashingCheckLogin(oldPassword, salt);
+
+            try
             {
+                if (userList[username] == hashedInputPassword)
+                {
 
+                    string NewSalt = securityInstance.GenerateSalt(newPassword);
+                    string setNewPassword = securityInstance.HashingCheckLogin(newPassword, NewSalt);
+
+
+                    using (SqlConnection sqlConnection = new SqlConnection(connectionString.GetSection("ConnectionStrings").GetSection("NinersConnection").Value))
+                    {
+                        SqlDataAdapter adapter = new SqlDataAdapter();
+
+                        adapter.TableMappings.Add("BusinessLogin", "Logins");
+
+                        sqlConnection.Open();
+
+                        SqlCommand command = new SqlCommand(
+                            "UPDATE dbo.BusinessLogin SET psswd = '" + setNewPassword + "', Salt = '" + NewSalt + "' WHERE email = '" + username + "';",
+                            sqlConnection);
+
+                        command.CommandType = CommandType.Text;
+
+                        adapter.UpdateCommand = command;
+
+                        adapter.Update(tempTable);
+
+                        command.ExecuteNonQuery();
+
+                        sqlConnection.Close();
+
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                return null;
             }
 
+            Logout(username);
 
             return null;
         }

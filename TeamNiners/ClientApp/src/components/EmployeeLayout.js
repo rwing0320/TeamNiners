@@ -50,7 +50,7 @@ export class EmployeeLayout extends Component {
                     <Route exact path='/ModifyGame' component={EmployeeGameMod} />
                     <Route exact path='/ShowGames' component={EmployeeShowGames} />
                     <Route exact path='/Report' component={EmployeeGameReport} />
- 
+
             </EmployeeDashBoardLayout>;
            
         }

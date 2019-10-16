@@ -12,6 +12,6 @@ namespace TeamNiners.Interfaces
         IEnumerable<BusinessLogin> GetAll();
         BusinessLogin Logout(string email);
         int GetUserID(string email);
-        BusinessLogin ChangePassword(string username, string password, string storedSalt);
+        BusinessLogin ChangePassword(string oldPassword, string newPassword, string username, string salt);
     }
 }
