@@ -1,0 +1,37 @@
+﻿.rowMemberLogin {
+    display: grid;
+    place-items: center;
+    height: 100vh;
+    width: 100%;
+}
+
+.rowMemberLogin form {
+    width: 400px;
+    border-radius: 5px;
+    background-color: #eeeeee;
+    padding: 20px;
+    text-align: center;
+}
+
+.rowMemberLogin .login_icon {
+    display: block;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+}
+
+.rowMemberLogin #memberemail {
+    margin-bottom: 15px;
+}
+
+.rowMemberLogin #forgotPassword {
+    text-align: left;
+}
+
+.rowMemberLogin #errorMessage {
+    color: red;
+}
+
+
+
+

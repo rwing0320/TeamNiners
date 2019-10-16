@@ -7,6 +7,8 @@ import { Counter } from './components/Counter';
 import { EmployeeLayout } from './components/EmployeeLayout';
 import { Dashboard } from './components/EmployeeDashboard';
 import { MemberLayout } from './components/MemberLayout';
+import { MemberLogin } from './components/MemberLogin';
+import { MemberNewAccount } from './components/MemberNewAccount';
 import { Redirect} from 'react-router-dom';
 
 export default class App extends Component {
@@ -43,6 +45,7 @@ export default class App extends Component {
                 <Route exact path='/' component={Home} />
                 <Route path='/counter' component={Counter} />
                 <Route path='/fetchdata' component={FetchData} />
+               
                 <Route path='/login' component={EmployeeLayout} />
                 <Route path='/dashboard' component={Dashboard} />
             </EmployeeLayout> <Redirect to='/login' /></div>
@@ -54,20 +57,15 @@ export default class App extends Component {
                 <Route exact path='/member' component={Home} />
                 <Route path='/counter' component={Counter} />
                 <Route path='/fetchdata' component={FetchData} />
-                
+                <Route path='/memberlogin' component={MemberLogin} />
+                <Route path='/member/register' component={MemberNewAccount} />
             </MemberLayout> <Redirect to='/member' /></div>;
         }
     }
 
   render() {
       return (
-          //<EmployeeLayout>
-          //  <Route exact path='/' component={Home} />
-          //  <Route path='/counter' component={Counter} />
-          //  <Route path='/fetchdata' component={FetchData} />
-          //  <Route path='/login' component={EmployeeLayout} />
-          //  <Route path='/dashboard' component={Dashboard} />
-          //</EmployeeLayout>
+
         <div>
            {this.changePage()}
         </div>

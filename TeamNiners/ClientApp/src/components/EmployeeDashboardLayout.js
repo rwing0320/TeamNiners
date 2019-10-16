@@ -15,10 +15,14 @@ export class EmployeeDashBoardLayout extends Component {
 
     constructor(props) {
         super(props);
-        this.state = { isLoggedIn: false, error: "", businessName: "", dashboardLoaded: false};
+        this.state = { isLoggedIn: false, error: "", businessName: "", dashboardLoaded: false };
            
         console.log("the businessId: " + this.props.data2);
            
+    }
+
+    callLogout() {
+        this.props.updateParentState();
     }
 
     loadDash() {
@@ -37,8 +41,11 @@ export class EmployeeDashBoardLayout extends Component {
 
                 <Redirect to={{
                     pathname: '/dashboard',
-                    state: { id: this.props.data2 }
+                    state: { id: this.props.data2 }                   
+
                 }}
+
+                    
                 />
 
                 {this.props.children}
