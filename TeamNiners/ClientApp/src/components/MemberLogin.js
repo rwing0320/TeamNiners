@@ -4,12 +4,12 @@ import { NavMenu } from './NavMenu';
 import { Dashboard } from './EmployeeDashboard';
 import { Redirect } from 'react-router-dom';
 import { Col, Grid, Row, Button, Accordion, Panel } from 'react-bootstrap';
-import './css/LoginPage.css';
+import './css/MemberLoginPage.css';
 import { EmployeeNav } from './EmployeeNav';
 import { Layout } from './Layout';
 
-export class EmployeeLogin extends Component {
-    displayName = EmployeeLogin.name
+export class MemberLogin extends Component {
+    displayName = MemberLogin.name;
 
 
     constructor(props) {
@@ -95,7 +95,7 @@ export class EmployeeLogin extends Component {
         }
     }
 
-    setBusinessName(bn,bId) {
+    setBusinessName(bn, bId) {
         console.log("changing business name")
         this.setState({ data1: bn, data2: bId });
     }
@@ -153,16 +153,16 @@ export class EmployeeLogin extends Component {
                         //this.setState({
                         //    businessCity: res.data[0].businessCity
                         //});
-                    
+
                     })
                     .catch(function (error) {
                         errorMessage = ""
                         console.log("this is the error on the login page for saving the id: " + error);
                     });
 
-               
-              
-               
+
+
+
                 //this.makeChange();
 
 
@@ -191,40 +191,41 @@ export class EmployeeLogin extends Component {
 
     render() {
 
-     
-        return (             
 
-                <div className="rowLogin">
-                    <form className="form-signin">
-                        <img className="login_icon" src={require('./img/9ners_Logo.svg')} alt="company_logo" width="90" height="90" />
-                        <h1 className="h3 mb-3 font-weight-normal"> Employee Sign In </h1>
-                        <label htmlFor="employeeEmail" className="sr-only">Email</label>
-                        <input type="email" ref={elem => (this.emailInput = elem)} onChange={this.setEmail} id="employeeEmail" className="form-control" placeholder="Email Address" required autoFocus />
+        return (
+   
 
-                        <label htmlFor="employeepassword" className="sr-only">Password</label>
-                        <input type="password" ref={elem => (this.passwordInput = elem)} onChange={this.setPassword} id="employeepassword" className="form-control" placeholder="Password" required />
-                        <br />
+            <div className="rowMemberLogin">
+                <form className="form-signin">
+                    <img className="login_icon" src={require('./img/9ners_Logo.svg')} alt="company_logo" width="90" height="90" />
+                    <h1 className="h3 mb-3 font-weight-normal">Member Sign In </h1>
+                    <label htmlFor="memberemail" className="sr-only">Email</label>
+                    <input type="email" ref={elem => (this.emailInput = elem)} onChange={this.setEmail} id="memberemail" className="form-control" placeholder="Email Address" required autoFocus />
 
-                        <Button onClick={this.getData} className="btn btn-lg btn-primary btn-block"> Login </Button>
-                        <br />
+                    <label htmlFor="memberpassword" className="sr-only">Password</label>
+                    <input type="password" ref={elem => (this.passwordInput = elem)} onChange={this.setPassword} id="memberpassword" className="form-control" placeholder="Password" required />
+                    <br />
 
-                        <Accordion>
-                            <Panel header="Forgot Password" eventKey='1'>
-                                Please reach out to your business IT department to retreive your credentails!
+                    <Button onClick={this.getData} className="btn btn-lg btn-primary btn-block"> Login </Button>
+                    <br />
+
+                    <Accordion>
+                        <Panel header="Forgot Password" eventKey='1'>
+                            Please reach out to your business IT department to retreive your credentails!
                             </Panel>
-                        </Accordion>
+                    </Accordion>
 
 
-                        <p id="errorMessage">{this.state.error} </p>
+                    <p id="errorMessage">{this.state.error} </p>
 
 
-                    <p id="goHome" onClick={this.goToMemberHome}><a>Go To Member Dashboard</a></p>
-                        <br />
-                        <p className="mt-5 mb-3 text-muted">© 2019</p>
-                    </form>
-                </div>
+                   
+                    <br />
+                    <p className="mt-5 mb-3 ">© 2019</p>
+                </form>
+            </div>
 
         );
-    
+
     }
 }

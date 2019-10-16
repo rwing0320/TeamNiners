@@ -15,13 +15,18 @@
     #BusinessLogin {
         position:relative;
     }
+
+    #CreateAccount {
+        position: relative;
+       
+    }
 }
 
 @media (min-width: 768px) {
 
     .navbar {
         height: 100%;
-        width: calc(7% - 20px);
+        width: 200px;
     }
 
     .navbar {
@@ -76,8 +81,14 @@
         right: 0;
     }
 
-    .col-sm-9{
-        margin-left: 7%;
+    #CreateAccount {
+        position: fixed;
+        bottom: 32px;
+        right: 0;
+    }
+
+    .col-sm-9 {
+        margin-left: 200px;
     }
 }
 

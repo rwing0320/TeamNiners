@@ -190,7 +190,7 @@ export class EmployeeGameMod extends Component {
 
                     <br />
 
-                    <select name="platform" onChange={this.onChangePlat} >
+                    <select name="platform" className="employee_custom_select" onChange={this.onChangePlat} >
                         {this.state.gamePlatforms.map(gamePlat =>
                             <option key={gamePlat.platformId} value={gamePlat.platformId}>{gamePlat.platformName}</option>
                         )}
@@ -203,7 +203,7 @@ export class EmployeeGameMod extends Component {
 
                     <br />
 
-                    <select name="category" onChange={this.onChangeCat}>
+                    <select name="category" className="employee_custom_select" onChange={this.onChangeCat}>
                         {this.state.gameCategories.map(gameCat =>
                             <option key={gameCat.categoryId} value={gameCat.categoryId}>{gameCat.categoryName}</option>
                         )}
@@ -224,6 +224,9 @@ export class EmployeeGameMod extends Component {
                     <label className="">Release Date</label>
                     <br />
                     <input type="date" ref={elem => (this.releaseDateInput = elem)} onChange={this.onChangeReleaseDate}/>
+
+                    <br />
+                    <br />
 
                     <label className="">Game Description: </label>
                     <br />
