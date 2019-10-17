@@ -20,7 +20,7 @@ export class Dashboard extends Component {
         this.setNewPasswordConfirmation = this.setNewPasswordConfirmation.bind(this);
         this.changePassword = this.changePassword.bind(this);
 
-        axios.get('http://localhost:50392/api/users/getEmployeeId')
+        axios.get('http://localhost:49874/api/users/getEmployeeId')
             .then(res => {
                 console.log("The business ID for dashboard is: " + res.data);
                 this.setState({ businessId: res.data })
@@ -36,7 +36,7 @@ export class Dashboard extends Component {
     }
 
     changePage(pageNum) {
-        this.setState({ changePage: pageNum })
+        this.props.changePage(pageNum);
     }
 
     goToGameMod() {
@@ -73,30 +73,38 @@ export class Dashboard extends Component {
 
     
 
-    changePassword() {
+    async changePassword() {
 
-        
+        var isLoggedOut = false;
 
-        axios.put('http://localhost:64874/api/users/changepassword',
+        axios.put('http://localhost:49874/api/users/changepassword',
             {
                 oldPassword: this.state.oldPassword,
                 newPassword: this.state.newPassword,
                 newPasswordConfirmation: this.state.newPasswordConfirmation
+
+                
             })
-                .then(res => {
-                    console.log("Test");
-                })
-    }
-
-
-    myFunction = () => {
-        console.log("test");
-        axios.get('http://localhost:64874/api/APIBusinesses')
             .then(res => {
-                console.log(res.data);
-            })
+                axios.post('http://localhost:49874/api/users/Logout', {
 
+                })
+                    .then(function (response) {
+                        console.log(response);
+                        isLoggedOut = true;
+                       
+                    })
+                    .catch(function (error) {
+                        console.log("this is the error: " + error);
+
+                    });
+                    console.log("Test");
+                   
+            })
+         this.props.updateParentState();
     }
+
+
 
 
     render() {
@@ -107,15 +115,15 @@ export class Dashboard extends Component {
                     <Grid fluid>
                         <Row>
                             <Col xl={12} id="gameButtonsColumn">
-                                <button href="#" id="gameButton" onClick={() => this.changePage(1)}>
+                                <button href="#" id="gameButton" onClick={() => this.changePage(2)}>
                                     Add Game
                                 </button>
 
-                                <button href="" id="gameButton" onClick={() => this.changePage(2)}>
+                                <button href="" id="gameButton" onClick={() => this.changePage(3)}>
                                     Show Games
                                 </button>
 
-                                <button href="" id="gameButton" onClick={() => this.changePage(3)}>
+                                <button href="" id="gameButton" onClick={() => this.changePage(4)}>
                                     Reports
                                 </button>
                             </Col>

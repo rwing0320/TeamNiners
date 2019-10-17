@@ -8,7 +8,7 @@ export class EmployeeGameReport extends Component {
     constructor(props) {
         super(props);
         this.state = { changePage: false };
-
+        this.goToDashboard = this.goToDashboard.bind(this);
     }
 
 
@@ -17,18 +17,16 @@ export class EmployeeGameReport extends Component {
     }
 
     goToDashboard() {
-        if (this.state.changePage) {
-            return <Redirect to='/dashboard' />
-        }
+        this.props.changePage(1)
     }
 
 
     render() {
         return (
             <div>
-                {this.goToDashboard()}
+           
                 <h1>Game Report Page</h1>
-                <button onClick={() => this.changePage()}>Back</button>
+                <button onClick={() => this.goToDashboard()}>Back</button>
 
             </div>
         );

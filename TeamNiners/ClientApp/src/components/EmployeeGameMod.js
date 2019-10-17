@@ -9,7 +9,7 @@ export class EmployeeGameMod extends Component {
 
     constructor(props) {
         super(props);
-        this.state = { comeFrom: this.props.location.state.location ,gamePlatforms: [],gameCategories: [] ,gameName: "", gamePlatform: 1, gameCat: 1, gameReleaseDate: "", gameDesc: "", value: "", gameCost: 0, changePage: false };
+        this.state = { comeFrom: this.props.data2 ,gamePlatforms: [],gameCategories: [] ,gameName: "", gamePlatform: 1, gameCat: 1, gameReleaseDate: "", gameDesc: "", value: "", gameCost: 0, changePage: false };
 
         this.onChangePlat = this.onChangePlat.bind(this);
         this.onChangeCat = this.onChangeCat.bind(this);
@@ -18,17 +18,14 @@ export class EmployeeGameMod extends Component {
         this.onChangeGameName = this.onChangeGameName.bind(this);
         this.onChangeGameDesc = this.onChangeGameDesc.bind(this);
         this.onChangeReleaseDate = this.onChangeReleaseDate.bind(this);
-
-
-        console.log("the businessId on GameMod: " + this.props.location.state.id);
-
+        this.goToDashboard = this.goToDashboard.bind(this);
 
         this.gameNameInput = null;
         this.releaseDateInput = null;
         this.gameDescInput = null;
         this.gameCostInput = null;
 
-        axios.get('http://localhost:50392/api/GameCategory')
+        axios.get('http://localhost:49874/api/GameCategory')
             .then(res => {
                 console.log(res.data);
                 this.setState({gameCategories: res.data})
@@ -37,7 +34,7 @@ export class EmployeeGameMod extends Component {
                 //});
             })
  
-        axios.get('http://localhost:50392/api/GamePlatform')
+        axios.get('http://localhost:49874/api/GamePlatform')
             .then(res => {
                 console.log(res.data);
                 this.setState({ gamePlatforms: res.data })
@@ -81,26 +78,21 @@ export class EmployeeGameMod extends Component {
     }
 
     changePage() {
-        this.setState({changePage: true})
+        this.setState({ changePage: true })
+      
     }
 
 
 
     goToDashboard() {
-        if (this.state.changePage) {
-          
-
-            return <Redirect to={{
-                pathname: '/dashboard',
-                state: { id: this.props.location.state.id }
-            }}
-            />
-        }
+        
+            this.props.changePage(1)
+        
     }
 
 
     checkLocation() {
-        if (this.state.comeFrom == 1) {
+        if (this.state.comeFrom == 2) {
             return <h3 className="addgameText"> Add Game</h3>
         }
         else {
@@ -111,9 +103,9 @@ export class EmployeeGameMod extends Component {
 
     async addGame() {
         var gameId = 0;
-        var businessId = this.props.location.state.id;
+        var businessId = this.props.data2;
         var success = true;
-        axios.post('http://localhost:50392/api/Game', {
+        axios.post('http://localhost:49874/api/Game', {
             GameTitle: this.state.gameName,
             GameDescription: this.state.gameDesc,
             ReleaseDate: this.state.gameReleaseDate,
@@ -128,7 +120,7 @@ export class EmployeeGameMod extends Component {
                 gameId = response.data.gameId;
                 console.log("the game id is: " + gameId);
 
-                axios.post('http://localhost:50392/api/Game/AddBusinessGame', {
+                axios.post('http://localhost:49874/api/Game/AddBusinessGame', {
                     businessId: businessId,
                     gameId: gameId,
 
@@ -164,6 +156,8 @@ export class EmployeeGameMod extends Component {
                 gameCost: 0,
                 changePage: true
             });
+
+            this.goToDashboard();
           
 
         }
@@ -172,7 +166,7 @@ export class EmployeeGameMod extends Component {
     render() {
         return (
             <div className="rowGame">
-                {this.goToDashboard()}
+                
                 <form className="form-signin">
 
                     <div id="gameDiv">
@@ -239,7 +233,7 @@ export class EmployeeGameMod extends Component {
 
                         <br />
 
-                        <Button type="button" className="btn btn-lg btn-danger btn-block"id="cancelButton" onClick={() => this.changePage()}>Cancel</Button>
+                    <Button type="button" className="btn btn-lg btn-danger btn-block" id="cancelButton" onClick={() => this.goToDashboard()}>Cancel</Button>
                    
 
                     <p id="errorMessage">{this.state.error} </p>

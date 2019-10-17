@@ -76,6 +76,7 @@ export class MemberLayout extends Component {
                         {this.changeNavLayout()}
                     </Col>
                     <Col sm={9}>
+
                         {this.changePage()}
                     </Col>
                 </Row>
