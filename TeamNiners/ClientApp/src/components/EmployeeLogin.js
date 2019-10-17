@@ -113,7 +113,7 @@ export class EmployeeLogin extends Component {
                 psswd: this.state.password
             }
 
-            await axios.post('http://localhost:64874/api/users/authenticate', {
+            await axios.post('http://localhost:49874/api/users/authenticate', {
                 email: this.state.email,
                 psswd: this.state.password
             })
@@ -135,7 +135,7 @@ export class EmployeeLogin extends Component {
 
                 this.setBusinessName(businessName, businessId);
 
-                await axios.post('http://localhost:64874/api/users/employeeId', {
+                await axios.post('http://localhost:49874/api/users/employeeId', {
                     businessId: businessId
                 })
                     .then(res => {
