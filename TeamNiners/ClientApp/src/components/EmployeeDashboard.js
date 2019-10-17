@@ -20,7 +20,7 @@ export class Dashboard extends Component {
         this.setNewPasswordConfirmation = this.setNewPasswordConfirmation.bind(this);
         this.changePassword = this.changePassword.bind(this);
 
-        axios.get('http://localhost:49874/api/users/getEmployeeId')
+        axios.get('http://localhost:50392/api/users/getEmployeeId')
             .then(res => {
                 console.log("The business ID for dashboard is: " + res.data);
                 this.setState({ businessId: res.data })
@@ -77,7 +77,7 @@ export class Dashboard extends Component {
 
         var isLoggedOut = false;
 
-        axios.put('http://localhost:49874/api/users/changepassword',
+        axios.put('http://localhost:50392/api/users/changepassword',
             {
                 oldPassword: this.state.oldPassword,
                 newPassword: this.state.newPassword,
@@ -86,7 +86,7 @@ export class Dashboard extends Component {
                 
             })
             .then(res => {
-                axios.post('http://localhost:49874/api/users/Logout', {
+                axios.post('http://localhost:50392/api/users/Logout', {
 
                 })
                     .then(function (response) {

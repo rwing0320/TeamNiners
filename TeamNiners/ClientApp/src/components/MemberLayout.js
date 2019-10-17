@@ -14,7 +14,7 @@ export class MemberLayout extends Component {
 
     constructor(props) {
         super(props);
-        this.state = { isLoggedIn: false, error: "", businessName: "", businessId: 0, userId: 0, userName: "", pageNumber: 0};
+        this.state = { isLoggedIn: false, error: "", businessName: "", businessId: 0, userId: 0, userName: "", pageNumber: 3};
 
         this.changePage = this.changePage.bind(this);
         this.changePageNumber = this.changePageNumber.bind(this);
