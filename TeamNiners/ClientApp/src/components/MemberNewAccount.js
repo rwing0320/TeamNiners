@@ -220,7 +220,7 @@ export class MemberNewAccount extends Component {
         var success = true;
         var memberPassword = this.state.password;
 
-        axios.post('http://localhost:49874/api/MemberAccount', {
+        axios.post('http://localhost:52899/api/MemberAccount', {
             FirstName: this.state.firsname,
             LastName: this.state.lastName,
             MemberAddress: this.state.address,
@@ -232,7 +232,7 @@ export class MemberNewAccount extends Component {
         }).then(function (response) {
             var memberId = response.data.memberId;
             var memberEmail = response.data.memberEmail;
-            axios.post('http://localhost:49874/api/MemberAccount/AddMemberLogin', {
+            axios.post('http://localhost:52899/api/MemberAccount/AddMemberLogin', {
                 MemberId: memberId,
                 MemberUsername: memberEmail,
                 MemberPassword: memberPassword

@@ -18,7 +18,7 @@ export class MemberLogin extends Component {
         this.setEmail = this.setEmail.bind(this);
         this.setPassword = this.setPassword.bind(this);
         this.makeChange = this.makeChange.bind(this);
-        this.setBusinessName = this.setBusinessName.bind(this);
+        this.setBusinessName = this.setMemberName.bind(this);
         this.getData = this.getData.bind(this);
 
 
@@ -95,14 +95,14 @@ export class MemberLogin extends Component {
         }
     }
 
-    setBusinessName(bn, bId) {
-        console.log("changing business name")
+    setMemberName(bn, bId) {
+        console.log("changing member name")
         this.setState({ data1: bn, data2: bId });
     }
 
     async getData() {
-        var businessName;
-        var businessId;
+        var memberName;
+        var memberId;
         if (this.makeChange() != false) {
             let successFlag = false;
 
@@ -113,17 +113,17 @@ export class MemberLogin extends Component {
                 psswd: this.state.password
             }
 
-            await axios.post('http://localhost:50392/api/users/authenticate', {
+            await axios.post('http://localhost:52899/api/members/authenticate', {
                 email: this.state.email,
                 psswd: this.state.password
             })
                 .then(function (response) {
                     console.log(response);
                     successFlag = true;
-                    businessName = response.data.businessName;
-                    businessId = response.data.id;
+                    memberName = response.data.memberName;
+                    memberId = response.data.id;
 
-                    console.log("The businessId: " + businessId);
+                    console.log("The memberId: " + memberId);
 
                 })
                 .catch(function (error) {
@@ -133,13 +133,13 @@ export class MemberLogin extends Component {
 
             if (successFlag) {
 
-                this.setBusinessName(businessName, businessId);
+                this.setMemberName(memberName, memberId);
 
-                await axios.post('http://localhost:50392/api/users/employeeId', {
-                    businessId: businessId
+                await axios.post('http://localhost:52899/api/members/memberId', {
+                    memberId: memberId
                 })
                     .then(res => {
-                        console.log("The business ID for Login is: " + res.data);
+                        console.log("The member ID for Login is: " + res.data);
 
                         console.log("hit " + successFlag);
 
