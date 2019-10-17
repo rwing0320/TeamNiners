@@ -8,11 +8,11 @@ import './css/LoginPage.css';
 import './css/MemberCreateAccountPage.css';
 import { EmployeeNav } from './EmployeeNav';
 import { Layout } from './Layout';
+import { MemberNav } from './MemberNav'
+
 
 export class MemberNewAccount extends Component {
     displayName = MemberNewAccount.name;
-
-    
 
     constructor(props) {
         super(props);
@@ -45,150 +45,17 @@ export class MemberNewAccount extends Component {
         this.postcodeInput = null;
         this.phoneNumberInput = null;
 
+        this.checkValid = this.checkValid.bind(this);
+
         this.myArray = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 
     }
 
     checkValid() {
-
+        this.props.loginUser();
+        this.props.changePage(3, "Peter P");
     }
 
-    //makeChange() {
-    //    if (this.state.isLoggedIn === true) {
-
-    //        this.setState({
-    //            isLoggedIn: false
-    //        });
-    //    }
-    //    else {
-
-    //        if (this.state.isLoggedIn === false && this.state.email != "" && this.state.password != "") {
-    //            console.log("hit me")
-    //            return true
-
-    //        } else {
-
-    //            let emailMatch = this.state.email.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i);
-
-    //            if (emailMatch == null) {
-    //                this.setState({
-    //                    isLoggedIn: false,
-    //                    error: "Please enter a valid email!"
-    //                });
-
-    //                return false;
-    //            }
-
-    //            if (this.state.email == "" && this.state.password == "") {
-    //                this.setState({
-    //                    isLoggedIn: false,
-    //                    error: this.state.error + '/n' + "Please Fill out both the username and the password! "
-    //                });
-
-    //                return false;
-
-    //                this.emailInput.focus();
-    //            }
-    //            else if (this.state.email == "") {
-    //                this.setState({
-    //                    isLoggedIn: false,
-    //                    error: "Please Fill out the username! "
-    //                });
-    //                this.emailInput.focus();
-
-    //                return false;
-    //            }
-    //            else {
-    //                this.setState({
-    //                    isLoggedIn: false,
-    //                    error: "Please Fill out the password! "
-    //                });
-    //                this.passwordInput.focus();
-
-    //                return false;
-    //            }
-
-
-    //        }
-    //    }
-    //}
-
-  
-    //async getData() {
-    //    var businessName;
-    //    var businessId;
-    //    if (this.makeChange() != false) {
-    //        let successFlag = false;
-
-    //        var errorMessage;
-
-    //        let employee = {
-    //            email: this.state.email,
-    //            psswd: this.state.password
-    //        }
-
-    //        await axios.post('http://localhost:50392/api/users/authenticate', {
-    //            email: this.state.email,
-    //            psswd: this.state.password
-    //        })
-    //            .then(function (response) {
-    //                console.log(response);
-    //                successFlag = true;
-    //                businessName = response.data.businessName;
-    //                businessId = response.data.id;
-
-    //                console.log("The businessId: " + businessId);
-
-    //            })
-    //            .catch(function (error) {
-    //                errorMessage = "You have entered in incorrect credentails! Please try Again!"
-    //                console.log("this is the error: " + error);
-    //            });
-
-    //        if (successFlag) {
-
-    //            this.setBusinessName(businessName, businessId);
-
-    //            await axios.post('http://localhost:50392/api/users/employeeId', {
-    //                businessId: businessId
-    //            })
-    //                .then(res => {
-    //                    console.log("The business ID for Login is: " + res.data);
-
-    //                    console.log("hit " + successFlag);
-
-    //                    this.setState({
-    //                        email: "",
-    //                        password: "",
-
-    //                    });
-
-    //                    this.props.updatePageState(this.state.data1, this.state.data2);
-    //                    //this.setState({
-    //                    //    businessCity: res.data[0].businessCity
-    //                    //});
-
-    //                })
-    //                .catch(function (error) {
-    //                    errorMessage = ""
-    //                    console.log("this is the error on the login page for saving the id: " + error);
-    //                });
-
-
-
-
-    //            //this.makeChange();
-
-
-    //        } else {
-    //            this.setState({
-    //                error: errorMessage
-    //            });
-    //            console.log("not hit " + successFlag);
-    //        }
-    //    }
-
-    //}
 
     setEmail(event) {
         this.setState({ error: "" });
@@ -388,9 +255,15 @@ export class MemberNewAccount extends Component {
 
     changeLogin() {
         if (this.state.newAccountSuccessful) {
-            return <Redirect to='/member' />
+            //return <Redirect to='/member' />
+            this.props.loginUser();
+            this.props.changePage(3, this.state.firstname + " " + this.state.lastName.charAt(0));
+
+          
         }
     }
+
+  
 
     render() {
 
@@ -398,6 +271,8 @@ export class MemberNewAccount extends Component {
         return (
 
             <div className="rowNewAccount">
+
+             
                 {this.changeLogin()}
                 <form className="form-signin">
                     <img className="login_icon" src={require('./img/9ners_Logo.svg')} alt="company_logo" width="90" height="90" />
@@ -459,6 +334,7 @@ export class MemberNewAccount extends Component {
                     <Button onClick={this.validateForm} className="btn btn-lg btn-primary btn-block"> Create Account </Button>
                     <br />
 
+                    <Button onClick={this.checkValid} className="btn btn-lg btn-primary btn-block"> CALL FUNCTION </Button>
              
 
 

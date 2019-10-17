@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import { MemberNav } from './MemberNav'
 
 export class Home extends Component {
   displayName = Home.name
@@ -9,6 +10,16 @@ export class Home extends Component {
     this.state = { businessCity: "", email: "" };
         this.getData = this.getData.bind(this);
         this.getBusinessLoginData = this.getBusinessLoginData.bind(this);
+
+        try {
+            console.log(this.props.location.state.isLoggedIn);
+
+        } catch (e) {
+            console.log("error");
+        }
+
+        //new MemberNav().trialFunction();
+
   }
 
     getData() {
