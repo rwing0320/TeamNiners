@@ -45,6 +45,8 @@ export class MemberNewAccount extends Component {
         this.postcodeInput = null;
         this.phoneNumberInput = null;
 
+        this.firstNameString = "";
+
         this.checkValid = this.checkValid.bind(this);
 
         this.myArray = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
@@ -105,9 +107,10 @@ export class MemberNewAccount extends Component {
 
     setFirstName(event) {
         this.setState({ error: "" });
-        this.state.firsname = event.target.value
+        this.state.firstname = event.target.value
 
-        this.setInputed(this.state.firsname, 0);
+        this.setInputed(this.state.firstname, 0);
+       
 
     }
     setLastName(event) {
@@ -217,7 +220,7 @@ export class MemberNewAccount extends Component {
         var success = true;
         var memberPassword = this.state.password;
 
-        axios.post('http://localhost:50392/api/MemberAccount', {
+        axios.post('http://localhost:49874/api/MemberAccount', {
             FirstName: this.state.firsname,
             LastName: this.state.lastName,
             MemberAddress: this.state.address,
@@ -229,7 +232,7 @@ export class MemberNewAccount extends Component {
         }).then(function (response) {
             var memberId = response.data.memberId;
             var memberEmail = response.data.memberEmail;
-            axios.post('http://localhost:50392/api/MemberAccount/AddMemberLogin', {
+            axios.post('http://localhost:49874/api/MemberAccount/AddMemberLogin', {
                 MemberId: memberId,
                 MemberUsername: memberEmail,
                 MemberPassword: memberPassword
@@ -253,11 +256,21 @@ export class MemberNewAccount extends Component {
         }
     }
 
+
+
     changeLogin() {
+
+        
         if (this.state.newAccountSuccessful) {
+            console.log(this.state.firstname);
             //return <Redirect to='/member' />
-            this.props.loginUser();
-            this.props.changePage(3, this.state.firstname + " " + this.state.lastName.charAt(0));
+            try {
+                this.props.changePage(3, this.state.firstname + " " + this.state.lastName.charAt(0));
+                this.props.loginUser();
+               
+            } catch (e) {
+                console.log("problem with creating account")
+            }
 
           
         }
@@ -334,7 +347,7 @@ export class MemberNewAccount extends Component {
                     <Button onClick={this.validateForm} className="btn btn-lg btn-primary btn-block"> Create Account </Button>
                     <br />
 
-                    <Button onClick={this.checkValid} className="btn btn-lg btn-primary btn-block"> CALL FUNCTION </Button>
+                    <Button onClick={() => this.changeLogin} className="btn btn-lg btn-primary btn-block"> CALL FUNCTION </Button>
              
 
 
