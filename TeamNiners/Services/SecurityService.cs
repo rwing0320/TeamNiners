@@ -24,7 +24,7 @@ namespace TeamNiners.Services
             char[] charList = password.ToCharArray();
             string randomizedSalt = string.Empty;
 
-            foreach (char s in charList)
+            for (int i = 0; i < 16; i++)
             {
                 randomCharacter = alphaNumeric.Next(0, possibleValues.Length - 1);
                 randomizedSalt += possibleValues[randomCharacter];
