@@ -20,11 +20,12 @@ namespace TeamNiners.Services
         {
             Random alphaNumeric = new Random();
             int randomCharacter = 0;
-            string possibleValues = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%;&?_-><+";
+            string possibleValues = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%;&?";
             char[] charList = password.ToCharArray();
             string randomizedSalt = string.Empty;
 
-           for (int i = 0; i < charList.Length + 8; i++) { 
+            for (int i = 0; i < 16; i++)
+            {
                 randomCharacter = alphaNumeric.Next(0, possibleValues.Length - 1);
                 randomizedSalt += possibleValues[randomCharacter];
             }
