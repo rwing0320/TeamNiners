@@ -208,8 +208,7 @@ namespace TeamNiners.Services
             {
                 //Use this for generating salts on account creation,
                 //for now uncomment when you want to generate a salt for a new BusinessLogin
-                string tempGeneratedSalt = securityInstance.GenerateSalt(password);
-                
+                //string tempGeneratedSalt = securityInstance.GenerateSalt(password);
 
                 //Generates the hashed password value using the entered password and the stored salt
                 HashedPassword = securityInstance.HashingCheckLogin(password, salt);
