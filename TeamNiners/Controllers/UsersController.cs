@@ -13,6 +13,7 @@ namespace TeamNiners.Controllers
         private IUserService _userService;
 
         BusinessLogin bl = new BusinessLogin();
+        ChangePassword changePass = new ChangePassword();
         public IlocalService _localService;
 
 
@@ -28,13 +29,17 @@ namespace TeamNiners.Controllers
             var model = new BusinessLogin();
             return Ok(model);
         }
-
+        
+        /// <summary>
+        /// Authenticates user login information and creates token
+        /// </summary>
         [AllowAnonymous]
         [HttpPost]
         [Route("/api/users/authenticate")]
         public IActionResult Authenticate([FromBody] BusinessLogin userParam)
         {
             //var user = _userService.Authenticate(userParam.Email, userParam.Psswd);
+            UserTempStorage.salt = userParam.Salt;
 
             bl = _userService.Authenticate(userParam.Email, userParam.Psswd, userParam.Salt);
 
@@ -43,12 +48,26 @@ namespace TeamNiners.Controllers
                 return BadRequest(new { message = "Username or password is incorrect" });
 
             }
-
+            UserTempStorage.salt = bl.Salt;
             UserTempStorage.email = bl.Email;
 
             return Ok(bl);
         }
 
+        /// <summary>
+        /// Allows a user to change their password
+        /// </summary>
+        [AllowAnonymous]
+        [HttpPut]
+        [Route("/api/users/changepassword")]
+        public IActionResult ChangePassword([FromBody] ChangePassword inputValues)
+        {
+            bl = _userService.ChangePassword(inputValues.OldPassword, inputValues.NewPassword,
+                UserTempStorage.email, UserTempStorage.salt);
+            return Ok(inputValues);
+        }
+
+        
         [HttpPost]
         [Route("/api/users/employeeId")]
         public IActionResult EmployeeId([FromBody]LocalEmployee id)
@@ -65,7 +84,7 @@ namespace TeamNiners.Controllers
         public IActionResult GetEmployeeId()
         {
 
-           
+
 
             //LocalEmployee lemp = new LocalEmployee();
 

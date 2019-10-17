@@ -103,75 +103,80 @@ export class EmployeeLogin extends Component {
     async getData() {
         var businessName;
         var businessId;
-        if (this.makeChange() != false) {
-            let successFlag = false;
 
-            var errorMessage;
+        try {
+            if (this.makeChange() != false) {
+                let successFlag = false;
 
-            let employee = {
-                email: this.state.email,
-                psswd: this.state.password
-            }
+                var errorMessage;
 
-            await axios.post('http://localhost:59802/api/users/authenticate', {
-                email: this.state.email,
-                psswd: this.state.password
-            })
-                .then(function (response) {
-                    console.log(response);
-                    successFlag = true;
-                    businessName = response.data.businessName;
-                    businessId = response.data.id;
+                let employee = {
+                    email: this.state.email,
+                    psswd: this.state.password
+                }
 
-                    console.log("The businessId: " + businessId);
-
+                await axios.post('http://localhost:50392/api/users/authenticate', {
+                    email: this.state.email,
+                    psswd: this.state.password
                 })
-                .catch(function (error) {
-                    errorMessage = "You have entered in incorrect credentails! Please try Again!"
-                    console.log("this is the error: " + error);
-                });
+                    .then(function (response) {
+                        console.log(response);
+                        successFlag = true;
+                        businessName = response.data.businessName;
+                        businessId = response.data.id;
 
-            if (successFlag) {
+                        console.log("The businessId: " + businessId);
 
-                this.setBusinessName(businessName, businessId);
-
-                await axios.post('http://localhost:59802/api/users/employeeId', {
-                    businessId: businessId
-                })
-                    .then(res => {
-                        console.log("The business ID for Login is: " + res.data);
-
-                        console.log("hit " + successFlag);
-
-                        this.setState({
-                            email: "",
-                            password: "",
-
-                        });
-
-                        this.props.updatePageState(this.state.data1, this.state.data2);
-                        //this.setState({
-                        //    businessCity: res.data[0].businessCity
-                        //});
-                    
                     })
                     .catch(function (error) {
-                        errorMessage = ""
-                        console.log("this is the error on the login page for saving the id: " + error);
+                        errorMessage = "You have entered in incorrect credentails! Please try Again!"
+                        console.log("this is the error: " + error);
                     });
 
-               
-              
-               
-                //this.makeChange();
+                if (successFlag) {
+
+                    this.setBusinessName(businessName, businessId);
+
+                    await axios.post('http://localhost:50392/api/users/employeeId', {
+                        businessId: businessId
+                    })
+                        .then(res => {
+                            console.log("The business ID for Login is: " + res.data);
+
+                            console.log("hit " + successFlag);
+
+                            this.setState({
+                                email: "",
+                                password: "",
+
+                            });
+
+                            this.props.updatePageState(this.state.data1, this.state.data2);
+                            //this.setState({
+                            //    businessCity: res.data[0].businessCity
+                            //});
+
+                        })
+                        .catch(function (error) {
+                            errorMessage = ""
+                            console.log("this is the error on the login page for saving the id: " + error);
+                        });
 
 
-            } else {
-                this.setState({
-                    error: errorMessage
-                });
-                console.log("not hit " + successFlag);
+
+
+                    //this.makeChange();
+
+
+                } else {
+                    this.setState({
+                        error: errorMessage
+                    });
+                    console.log("not hit " + successFlag);
+                }
             }
+        } catch (e) {
+
         }
 
     }
