@@ -110,5 +110,14 @@ namespace TeamNiners.Controllers
         //public void Delete(int id)
         //{
         //}
+
+        public List<BusinessGames> getBusinessGames()
+        {
+            List<BusinessGames> gameList = new List<BusinessGames>();
+
+            return gameList;
+
+        }
+
     }
 }

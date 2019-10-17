@@ -30,6 +30,14 @@
     padding-bottom: 5em;
 }
 
+#widgetOne table {
+    text-align: center;
+}
+
+#widgetOne table th {
+    padding-left: 13%;
+}
+
 
 #widgetTwo {
     border: 1px solid #808080;
