@@ -1,7 +1,7 @@
 ﻿import React, { Component } from 'react';
 import { Col, Grid, Row, Button, Accordion, Panel } from 'react-bootstrap';
 import axios from 'axios';
-import { Redirect, Route } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import './css/ShowGamesPage.css';
 
 
@@ -46,8 +46,9 @@ export class EmployeeShowGames extends Component {
                             <div>
                                 
                                 <h1>Show Games Page</h1>
-                                <button onClick={() => this.goToDashboard()}>Back</button>
-
+                                <Link to={"/Dashboard"}>
+                                    <button onClick={() => this.goToDashboard()}>Back</button>
+                                </Link>
                             </div>
                         </Row>
                     </Grid>

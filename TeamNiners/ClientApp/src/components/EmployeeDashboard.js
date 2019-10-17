@@ -3,7 +3,7 @@ import { Col, Grid, Row, Glyphicon, Carousel, Button } from 'react-bootstrap';
 import axios from 'axios';
 import './css/Dashboard.css';
 import ryansRacerImage from './img/ryansRacerCarouselImage.jpg';
-import { Redirect, Route } from 'react-router-dom';
+import { Redirect, Link} from 'react-router-dom';
 
 export class Dashboard extends Component {
     displayName = "Employee Dashboard"
@@ -115,17 +115,23 @@ export class Dashboard extends Component {
                     <Grid fluid>
                         <Row>
                             <Col xl={12} id="gameButtonsColumn">
-                                <button href="#" id="gameButton" onClick={() => this.changePage(2)}>
-                                    Add Game
-                                </button>
+                                <Link to={'/GameMod'}>
+                                    <button href="#" id="gameButton" onClick={() => this.changePage(2)}>
+                                        Add Game
+                                    </button>
+                                </Link>
 
-                                <button href="" id="gameButton" onClick={() => this.changePage(3)}>
-                                    Show Games
-                                </button>
+                                <Link to={'/ShowGames'}>
+                                    <button href="" id="gameButton" onClick={() => this.changePage(3)}>
+                                        Show Games
+                                    </button>
+                                </Link>
 
-                                <button href="" id="gameButton" onClick={() => this.changePage(4)}>
-                                    Reports
-                                </button>
+                                <Link to={'/Report'}>
+                                    <button href="" id="gameButton" onClick={() => this.changePage(4)}>
+                                        Reports
+                                    </button>
+                                </Link>
                             </Col>
                         </Row>
 

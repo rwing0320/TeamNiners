@@ -1,8 +1,9 @@
 ﻿import React, { Component } from 'react';
 import { Col, Grid, Row, Button, Accordion, Panel } from 'react-bootstrap';
 import axios from 'axios';
-import { Redirect, Route } from 'react-router-dom';
+import { Redirect, Link } from 'react-router-dom';
 import './css/EmployeeGameModPage.css';
+
 
 export class EmployeeGameMod extends Component {
     displayName = EmployeeGameMod.name
@@ -157,6 +158,7 @@ export class EmployeeGameMod extends Component {
                 changePage: true
             });
 
+          
             this.goToDashboard();
           
 
@@ -233,7 +235,8 @@ export class EmployeeGameMod extends Component {
 
                         <br />
 
-                    <Button type="button" className="btn btn-lg btn-danger btn-block" id="cancelButton" onClick={() => this.goToDashboard()}>Cancel</Button>
+                   
+                        <Button type="button" className="btn btn-lg btn-danger btn-block" id="cancelButton" onClick={() => this.goToDashboard()}>Cancel</Button>
                    
 
                     <p id="errorMessage">{this.state.error} </p>
