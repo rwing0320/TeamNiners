@@ -52,7 +52,7 @@ namespace TeamNiners.Services
 
 
                 SqlCommand command2 = new SqlCommand(
-                    "UPDATE dbo.MemberLogin SET token = '', IsValid = 0 WHERE username = '" + email + "';",
+                    "UPDATE dbo.MemberLogin SET Token = '', IsValid = 0 WHERE memberUsername = '" + email + "';",
                     sqlConnection);
 
                 command2.CommandType = CommandType.Text;
@@ -85,7 +85,7 @@ namespace TeamNiners.Services
                 sqlConnection.Open();
 
                 SqlCommand command = new SqlCommand(
-                   "SELECT id FROM dbo.MemberLogin WHERE username = '" + email + "';",
+                   "SELECT memberID FROM dbo.MemberLogin WHERE memberUsername = '" + email + "';",
                     sqlConnection);
 
                 command.CommandType = CommandType.Text;
@@ -96,7 +96,7 @@ namespace TeamNiners.Services
 
                 adapter.Fill(ds);
 
-                id = (int)ds.Tables[0].Rows[0]["ID"];
+                id = (int)ds.Tables[0].Rows[0]["memberID"];
 
                 sqlConnection.Close();
 
@@ -150,7 +150,7 @@ namespace TeamNiners.Services
                 sqlConnection.Open();
 
                 SqlCommand command = new SqlCommand(
-                    "UPDATE dbo.MemberLogin SET token = '" + token + "', IsValid = 1 WHERE id = " + id + ";",
+                    "UPDATE dbo.MemberLogin SET Token = '" + token + "', IsValid = 1 WHERE memberID = " + id + ";",
                     sqlConnection);
 
                 command.CommandType = CommandType.Text;
@@ -173,7 +173,7 @@ namespace TeamNiners.Services
             for (int i = 0; i < userDataTable.Rows.Count; i++)
             {
 
-                userList.Add((string)userDataTable.Rows[i]["email"], (string)userDataTable.Rows[i]["psswd"]);
+                userList.Add((string)userDataTable.Rows[i]["memberUsername"], (string)userDataTable.Rows[i]["memberPassword"]);
 
             }
 
@@ -208,7 +208,7 @@ namespace TeamNiners.Services
             {
                 //Use this for generating salts on account creation,
                 //for now uncomment when you want to generate a salt for a new BusinessLogin
-                string tempGeneratedSalt = securityInstance.GenerateSalt(password);
+                //string tempGeneratedSalt = securityInstance.GenerateSalt(password);
                 
 
                 //Generates the hashed password value using the entered password and the stored salt
@@ -217,7 +217,7 @@ namespace TeamNiners.Services
                 //Checks the key value pair to see if the stored password value is the same as entered
                 if (userList[username] == HashedPassword)
                 {
-                    string name = (string)tempTable.Rows[id - 1]["MemberName"];
+                    string name = (string)tempTable.Rows[id - 1]["memberName"];
                     //Adding the entry to a list for the var to pull from. Allows proper setup of token
                     _users.Add(new MemberLogin { MemberId = id, MemberUsername = username, MemberPassword = HashedPassword, MemberName = name });
 

@@ -10,7 +10,7 @@ namespace TeamNiners.Controllers
     [ApiController]
     public class MembersController : ControllerBase
     {
-        private IMemberService _userService;
+        private IMemberService _memberService;
 
         MemberLogin ml = new MemberLogin();
        // public IlocalService _localService;
@@ -18,7 +18,7 @@ namespace TeamNiners.Controllers
 
         public MembersController(IMemberService memberService)
         {
-            _userService = memberService;
+            _memberService = memberService;
         }
 
         [HttpGet]
@@ -29,14 +29,14 @@ namespace TeamNiners.Controllers
             return Ok(model);
         }
 
-        [AllowAnonymous]
+       // [AllowAnonymous]
         [HttpPost]
         [Route("/api/members/authenticate")]
         public IActionResult Authenticate([FromBody] MemberLogin userParam)
         {
             //var user = _userService.Authenticate(userParam.Email, userParam.Psswd);
 
-            ml = _userService.Authenticate(userParam.MemberUsername, userParam.MemberPassword, userParam.Salt);
+             ml = _memberService.Authenticate(userParam.MemberUsername, userParam.MemberPassword, userParam.Salt);
 
             if (ml == null)
             {
@@ -86,7 +86,7 @@ namespace TeamNiners.Controllers
             string email = MemberTempStorage.memberEmail;
 
             //set user token to nothing
-            ml = _userService.Logout(email);
+            ml = _memberService.Logout(email);
             //var user = _userService.Logout();
 
             MemberTempStorage.memberEmail = "";

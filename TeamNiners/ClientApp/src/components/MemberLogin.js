@@ -114,14 +114,14 @@ export class MemberLogin extends Component {
             }
 
             await axios.post('http://localhost:52899/api/members/authenticate', {
-                email: this.state.email,
-                psswd: this.state.password
+                memberUsername: this.state.email,
+                memberPassword: this.state.password
             })
                 .then(function (response) {
                     console.log(response);
                     successFlag = true;
                     memberName = response.data.memberName;
-                    memberId = response.data.id;
+                    memberId = response.data.memberId;
 
                     console.log("The memberId: " + memberId);
 
@@ -136,7 +136,7 @@ export class MemberLogin extends Component {
                 this.setMemberName(memberName, memberId);
 
                 await axios.post('http://localhost:52899/api/members/memberId', {
-                    memberId: memberId
+                    memberID: memberId
                 })
                     .then(res => {
                         console.log("The member ID for Login is: " + res.data);
@@ -149,10 +149,8 @@ export class MemberLogin extends Component {
 
                         });
 
-                        this.props.updatePageState(this.state.data1, this.state.data2);
-                        //this.setState({
-                        //    businessCity: res.data[0].businessCity
-                        //});
+                        this.props.changePage(3, this.state.data1);
+                        this.props.loginUser();
 
                     })
                     .catch(function (error) {
