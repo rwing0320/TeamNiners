@@ -33,6 +33,7 @@ export class MemberNewAccount extends Component {
         this.setPhoneNumber = this.setPhoneNumber.bind(this);
         this.setInputed = this.setInputed.bind(this);
         this.validateForm = this.validateForm.bind(this);
+        this.changeLogin = this.changeLogin.bind(this);
 
         this.emailInput = null;
         this.passwordInput = null;
@@ -220,7 +221,7 @@ export class MemberNewAccount extends Component {
         var success = true;
         var memberPassword = this.state.password;
 
-        axios.post('http://localhost:49874/api/MemberAccount', {
+        axios.post('http://localhost:50392/api/MemberAccount', {
             FirstName: this.state.firsname,
             LastName: this.state.lastName,
             MemberAddress: this.state.address,
@@ -232,7 +233,7 @@ export class MemberNewAccount extends Component {
         }).then(function (response) {
             var memberId = response.data.memberId;
             var memberEmail = response.data.memberEmail;
-            axios.post('http://localhost:49874/api/MemberAccount/AddMemberLogin', {
+            axios.post('http://localhost:50392/api/MemberAccount/AddMemberLogin', {
                 MemberId: memberId,
                 MemberUsername: memberEmail,
                 MemberPassword: memberPassword
@@ -259,14 +260,15 @@ export class MemberNewAccount extends Component {
 
 
     changeLogin() {
-
+       
         
         if (this.state.newAccountSuccessful) {
             console.log(this.state.firstname);
             //return <Redirect to='/member' />
             try {
-                this.props.changePage(3, this.state.firstname + " " + this.state.lastName.charAt(0));
                 this.props.loginUser();
+                this.props.changePage(3, this.state.firstname + " " + this.state.lastName.charAt(0), true);
+               
                
             } catch (e) {
                 console.log("problem with creating account")

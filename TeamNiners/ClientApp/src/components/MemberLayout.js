@@ -4,6 +4,7 @@ import { MemberNav } from './MemberNav';
 import { Col, Grid, Row} from 'react-bootstrap';
 import './css/LoginPage.css';
 import { MemberNewAccount } from './MemberNewAccount';
+import { MemberAccountInfo } from './MemberAccountInfo';
 import { MemberLogin } from './MemberLogin';
 import { Redirect } from 'react-router-dom';
 import { Home } from './Home';
@@ -14,7 +15,7 @@ export class MemberLayout extends Component {
 
     constructor(props) {
         super(props);
-        this.state = { isLoggedIn: false, error: "", businessName: "", businessId: 0, userId: 0, userName: "", pageNumber: 3};
+        this.state = { isLoggedIn: false, error: "", businessName: "", businessId: 0, userId: 0, userName: "", pageNumber: 3, savedUsername: false};
 
         this.changePage = this.changePage.bind(this);
         this.changePageNumber = this.changePageNumber.bind(this);
@@ -37,8 +38,20 @@ export class MemberLayout extends Component {
         }
     }
 
-    changePageNumber(newPageNumber, userName) {
-        this.setState({ pageNumber: newPageNumber, userName: userName });
+    changePageNumber(newPageNumber, userName, isLoggedIn) {
+        if (isLoggedIn == true) {
+            if (this.state.savedUsername == false) {
+                this.setState({ pageNumber: newPageNumber, userName: userName, savedUsername: true });
+            }
+            else {
+                this.setState({ pageNumber: newPageNumber });
+            }
+        }
+        else {
+            this.setState({ pageNumber: newPageNumber });
+        }
+     
+        
     }
 
     changeIsLoggedIn() {
@@ -47,12 +60,15 @@ export class MemberLayout extends Component {
 
     changePage() {
         if (this.state.pageNumber == 1) {
-            return <MemberLogin changePage={this.changePageNumber.bind(this)} loginUser={this.changeIsLoggedIn.bind(this)}></MemberLogin>;  
+            return <MemberLogin changePage={this.changePageNumber.bind(this)} loginUser={this.changeIsLoggedIn.bind(this)}></MemberLogin>;
         }
         else if (this.state.pageNumber == 2) {
-            return <MemberNewAccount changePage={this.changePageNumber.bind(this)} loginUser={this.changeIsLoggedIn.bind(this)}></MemberNewAccount>;   
+            return <MemberNewAccount changePage={this.changePageNumber.bind(this)} loginUser={this.changeIsLoggedIn.bind(this)}></MemberNewAccount>;
         } else if (this.state.pageNumber == 3) {
-            return <Home changePage={this.changePage.bind(this)}></Home> 
+            return <Home changePage={this.changePage.bind(this)}></Home>
+        } else if (this.state.pageNumber == 4) {
+            <Redirect to="/AccountInfo" push />
+            return <MemberAccountInfo changePage={this.changePage.bind(this)}></MemberAccountInfo>
         }
     }
 
