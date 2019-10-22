@@ -9,6 +9,7 @@ import { Dashboard } from './components/EmployeeDashboard';
 import { MemberLayout } from './components/MemberLayout';
 import { MemberLogin } from './components/MemberLogin';
 import { MemberNewAccount } from './components/MemberNewAccount';
+import { MemberAccountInfo } from './components/MemberAccountInfo';
 import { Redirect} from 'react-router-dom';
 
 export default class App extends Component {
@@ -58,6 +59,7 @@ export default class App extends Component {
                 <Route path='/counter' component={Counter} />
                 <Route path='/fetchdata' component={FetchData} />
                 <Route path='/memberlogin' component={MemberLogin} />
+                <Route path='/accountInfo' component={MemberAccountInfo} />
                 <Route path='/member/register' component={MemberNewAccount} />
             </MemberLayout> <Redirect to='/member' /></div>;
         }
