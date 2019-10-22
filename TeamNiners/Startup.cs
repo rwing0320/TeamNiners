@@ -58,6 +58,7 @@ namespace TeamNiners
 
             // configure DI for application services
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IMemberService, MemberService>();
 
 
             // In production, the React files will be served from this directory
