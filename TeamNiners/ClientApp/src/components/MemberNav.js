@@ -46,25 +46,31 @@ export class MemberNav extends Component {
 
 
     passNewPage(pageNumber) {
-        this.props.changePage(pageNumber, "");
+        this.props.changePage(pageNumber, "", "");
     }
   
     loginUser() {
         if (this.props.memberLoggedIn == true) {
-            return<Nav>
-            <LinkContainer to={'/member'} exact>
-                <NavItem>
+            return <Nav>
+                <LinkContainer to={'/member'} exact>
+                    <NavItem onClick={() => this.passNewPage(3)}>
+                        <Glyphicon glyph='user' /> Home
+                    </NavItem>
+                </LinkContainer>
+
+                <LinkContainer to={'/accountInfo'} exact>
+                    <NavItem onClick={() => this.passNewPage(4)}>
                         <Glyphicon glyph='user' /> {this.props.userName}
                              </NavItem>
-            </LinkContainer>
+                </LinkContainer>
                
                 <LinkContainer to={'/cart'}>
-                    <NavItem>
+                    <NavItem disabled>
                         <Glyphicon glyph='shopping-cart' /> Cart
                              </NavItem>
                 </LinkContainer>
                 <LinkContainer to={'/settings'}>
-                    <NavItem>
+                    <NavItem disabled>
                         <Glyphicon glyph='cog' /> Wish List
                             </NavItem>
                 </LinkContainer>
@@ -123,23 +129,3 @@ export class MemberNav extends Component {
     }
 }
 
- //<LinkContainer to={'/memberlogin'} exact>
-                        //    <NavItem>
-                        //        <Glyphicon glyph='user' /> Login
-                        //     </NavItem>
-                        //</LinkContainer>
-                        //<LinkContainer to={'/member/register'} exact>
-                        //    <NavItem >
-                        //        <Glyphicon glyph='user' /> Create Account
-                        //     </NavItem>
-                        //</LinkContainer>
-                        //<LinkContainer to={'/cart'}>
-                        //    <NavItem>
-                        //        <Glyphicon glyph='shopping-cart' /> Cart
-                        //     </NavItem>
-                        //</LinkContainer>
-                        //<LinkContainer to={'/settings'}>
-                        //    <NavItem>
-                        //        <Glyphicon glyph='cog' /> Settings
-                        //    </NavItem>
-                        //</LinkContainer>
