@@ -1,15 +1,16 @@
 ﻿import React, { Component } from 'react';
 import { Col, Grid, Row, Button, Accordion, Panel } from 'react-bootstrap';
 import axios from 'axios';
-import { Redirect, Route } from 'react-router-dom';
+import { Redirect, Link } from 'react-router-dom';
 import './css/EmployeeGameModPage.css';
+
 
 export class EmployeeGameMod extends Component {
     displayName = EmployeeGameMod.name
 
     constructor(props) {
         super(props);
-        this.state = { comeFrom: this.props.location.state.location ,gamePlatforms: [],gameCategories: [] ,gameName: "", gamePlatform: 1, gameCat: 1, gameReleaseDate: "", gameDesc: "", value: "", gameCost: 0, changePage: false };
+        this.state = { comeFrom: this.props.data2, gamePlatforms: [], gameCategories: [], gameName: "", gamePlatform: 1, gameCat: 1, gameReleaseDate: "", gameDesc: "", value: "", gameCost: 0, changePage: false };
 
         this.onChangePlat = this.onChangePlat.bind(this);
         this.onChangeCat = this.onChangeCat.bind(this);
@@ -18,10 +19,7 @@ export class EmployeeGameMod extends Component {
         this.onChangeGameName = this.onChangeGameName.bind(this);
         this.onChangeGameDesc = this.onChangeGameDesc.bind(this);
         this.onChangeReleaseDate = this.onChangeReleaseDate.bind(this);
-
-
-        console.log("the businessId on GameMod: " + this.props.location.state.id);
-
+        this.goToDashboard = this.goToDashboard.bind(this);
 
         this.gameNameInput = null;
         this.releaseDateInput = null;
@@ -81,26 +79,21 @@ export class EmployeeGameMod extends Component {
     }
 
     changePage() {
-        this.setState({changePage: true})
+        this.setState({ changePage: true })
+      
     }
 
 
 
     goToDashboard() {
-        if (this.state.changePage) {
-          
-
-            return <Redirect to={{
-                pathname: '/dashboard',
-                state: { id: this.props.location.state.id }
-            }}
-            />
-        }
+        <Redirect to="/DashBoard" push />
+            this.props.changePage(1)
+        
     }
 
 
     checkLocation() {
-        if (this.state.comeFrom == 1) {
+        if (this.state.comeFrom == 2) {
             return <h3 className="addgameText"> Add Game</h3>
         }
         else {
@@ -111,7 +104,7 @@ export class EmployeeGameMod extends Component {
 
     async addGame() {
         var gameId = 0;
-        var businessId = this.props.location.state.id;
+        var businessId = this.props.data2;
         var success = true;
         axios.post('http://localhost:50392/api/Game', {
             GameTitle: this.state.gameName,
@@ -164,15 +157,21 @@ export class EmployeeGameMod extends Component {
                 gameCost: 0,
                 changePage: true
             });
+
+            
+            this.goToDashboard();
           
 
         }
     }
 
+
+  
+
     render() {
         return (
             <div className="rowGame">
-                {this.goToDashboard()}
+                
                 <form className="form-signin">
 
                     <div id="gameDiv">
@@ -234,13 +233,14 @@ export class EmployeeGameMod extends Component {
                         
                     </textarea>
 
-                   
-                        <Button type="button" className="btn btn-lg btn-success btn-block" id="addButton" onClick={() => this.addGame()}>Add</Button>
-
+                        <Link to={"/Dashboard"}>
+                            <Button type="button" className="btn btn-lg btn-success btn-block" id="addButton" onClick={() => this.addGame()}>Add</Button>
+                        </Link>
                         <br />
 
-                        <Button type="button" className="btn btn-lg btn-danger btn-block"id="cancelButton" onClick={() => this.changePage()}>Cancel</Button>
-                   
+                        <Link to={"/Dashboard"}>
+                            <Button type="button" className="btn btn-lg btn-danger btn-block" id="cancelButton" onClick={() => this.goToDashboard()}>Cancel</Button>
+                        </Link>
 
                     <p id="errorMessage">{this.state.error} </p>
 

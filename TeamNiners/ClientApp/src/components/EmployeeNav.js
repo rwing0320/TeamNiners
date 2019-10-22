@@ -22,7 +22,7 @@ export class EmployeeNav extends Component {
 
         var isLoggedOut = false;
         //call api to delete key
-        await axios.post('http://localhost:49874/api/users/Logout', {
+        await axios.post('http://localhost:50392/api/users/Logout', {
            
         })
             .then(function (response) {

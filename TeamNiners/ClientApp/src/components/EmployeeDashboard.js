@@ -3,7 +3,7 @@ import { Col, Grid, Row, Glyphicon, Carousel, Button } from 'react-bootstrap';
 import axios from 'axios';
 import './css/Dashboard.css';
 import ryansRacerImage from './img/ryansRacerCarouselImage.jpg';
-import { Redirect, Route } from 'react-router-dom';
+import { Redirect, Link} from 'react-router-dom';
 
 export class Dashboard extends Component {
     displayName = "Employee Dashboard"
@@ -11,25 +11,32 @@ export class Dashboard extends Component {
 
     constructor(props) {
         super(props);
-        this.state = { changePage: 0, businessId: 0 };
+        this.state = { changePage: 0, businessId: 0, oldPassword: "", newPassword: "", newPasswordConfirmation: "" };
+        this.oldPasswordInput = null;
+        this.newPasswordInput = null;
+        this.newPasswordConfirmationInput = null;
+        this.setOldPassword = this.setOldPassword.bind(this);
+        this.setNewPassword = this.setNewPassword.bind(this);
+        this.setNewPasswordConfirmation = this.setNewPasswordConfirmation.bind(this);
+        this.changePassword = this.changePassword.bind(this);
 
-        axios.get('http://localhost:50392/api/users/getEmployeeId',)
+        axios.get('http://localhost:50392/api/users/getEmployeeId')
             .then(res => {
                 console.log("The business ID for dashboard is: " + res.data);
-                this.setState({businessId: res.data})
+                this.setState({ businessId: res.data })
                 //this.setState({
                 //    businessCity: res.data[0].businessCity
                 //});
 
             })
             .catch(function (error) {
-               // errorMessage = ""
+                // errorMessage = ""
                 console.log("this is the error on the login page for saving the id: " + error);
             });
     }
 
     changePage(pageNum) {
-        this.setState({changePage: pageNum})
+        this.props.changePage(pageNum);
     }
 
     goToGameMod() {
@@ -37,11 +44,11 @@ export class Dashboard extends Component {
         if (this.state.changePage == 1) {
             //return <Redirect to='/ModifyGame' />
 
-              return  <Redirect to={{
+            return <Redirect to={{
                 pathname: '/ModifyGame',
                 state: { id: this.state.businessId, location: 1 }
-                }}
-                />
+            }}
+            />
 
         } else if (this.state.changePage == 2) {
             return <Redirect to='/ShowGames' />
@@ -50,16 +57,54 @@ export class Dashboard extends Component {
             return <Redirect to='/Report' />
         }
     }
-
-
-    myFunction = () => {
-        console.log("test");
-        axios.get('http://localhost:50272/api/APIBusinesses')
-            .then(res => {
-                console.log(res.data);
-            })
-
+        
+    setOldPassword(event) {
+        this.state.oldPassword = event.target.value;
+        console.log(this.state.oldPassword);
     }
+
+    setNewPassword(event) {
+        this.state.newPassword = event.target.value
+    }
+
+    setNewPasswordConfirmation(event) {
+        this.state.newPasswordConfirmation = event.target.value
+    }
+
+    
+
+    async changePassword() {
+
+        var isLoggedOut = false;
+
+        axios.put('http://localhost:50392/api/users/changepassword',
+            {
+                oldPassword: this.state.oldPassword,
+                newPassword: this.state.newPassword,
+                newPasswordConfirmation: this.state.newPasswordConfirmation
+
+                
+            })
+            .then(res => {
+                axios.post('http://localhost:50392/api/users/Logout', {
+
+                })
+                    .then(function (response) {
+                        console.log(response);
+                        isLoggedOut = true;
+                       
+                    })
+                    .catch(function (error) {
+                        console.log("this is the error: " + error);
+
+                    });
+                    console.log("Test");
+                   
+            })
+         this.props.updateParentState();
+    }
+
+
 
 
     render() {
@@ -70,25 +115,31 @@ export class Dashboard extends Component {
                     <Grid fluid>
                         <Row>
                             <Col xl={12} id="gameButtonsColumn">
-                                <button href="#" id="gameButton" onClick={() => this.changePage(1)}>
-                                    Add Game
-                                </button>
+                                <Link to={'/GameMod'}>
+                                    <button href="#" id="gameButton" onClick={() => this.changePage(2)}>
+                                        Add Game
+                                    </button>
+                                </Link>
 
-                                <button href="" id="gameButton" onClick={() => this.changePage(2)}>
-                                    Show Games
-                                </button>
+                                <Link to={'/ShowGames'}>
+                                    <button href="" id="gameButton" onClick={() => this.changePage(3)}>
+                                        Show Games
+                                    </button>
+                                </Link>
 
-                                <button href="" id="gameButton" onClick={() => this.changePage(3)}>
-                                    Reports
-                                </button>
+                                <Link to={'/Report'}>
+                                    <button href="" id="gameButton" onClick={() => this.changePage(4)}>
+                                        Reports
+                                    </button>
+                                </Link>
                             </Col>
                         </Row>
 
 
                         <Row>
                             <Col xl={12} id="widgetOne">
-                                <h3 id="widgetTitle">Game Insights</h3>
-                                <table className="table">
+                                <h3 id="gameInsightsTitle">Game Insights</h3>
+                                <table className="table" id="#gamesTable">
                                     <thead>
                                         <tr>
                                             <th>Game Name</th>
@@ -124,9 +175,9 @@ export class Dashboard extends Component {
                         </Row>
                         <Row>
                             <Col md={6} id="widgetTwo">
-                                <h3 id="widgetTitle">Recent Games</h3>
+                                <h3 id="recentGamesTitle">Recent Games</h3>
 
-                                <Carousel>
+                                <Carousel id="gameCarousel">
                                     <Carousel.Item>
                                         <img src={ryansRacerImage} className="d-block w 100" id="ryansRacerImage" />
                                         <Carousel.Caption id="ryansRacerCaption">
@@ -144,37 +195,36 @@ export class Dashboard extends Component {
                                         </Carousel.Caption>
                                     </Carousel.Item>
                                 </Carousel>
-
                             </Col>
 
                             <Col md={6} id="widgetThree">
-                                <h3 id="widgetTitle">Account Settings</h3>
+                                <h3 id="accountSettingsTitle">Account Settings</h3>
                                 <form>
                                     <div className="form-group" id="oldPassword">
-                                        <label>Old Password</label>
+                                        <label id="passwordLabel">Old Password</label>
                                         <span> <br /> <br /> </span>
-                                        <input type="password" className="form-control" />
+                                        <input type="password" minLength="8" ref={elem => (this.oldPasswordInput = elem)} onChange={this.setOldPassword} className="form-control" required autoFocus />
                                         <span> <br /> <br /> </span>
 
                                     </div>
 
 
                                     <div className="form-group" id="newPassword">
-                                        <label>New Password</label>
+                                        <label id="passwordLabel">New Password</label>
                                         <span> <br /> <br /> </span>
-                                        <input type="password" className="form-control" />
+                                        <input type="password" ref={elem => (this.newPasswordInput = elem)} onChange={this.setNewPassword} className="form-control" required />
                                         <span> <br /> <br /> </span>
                                     </div>
 
                                     <div className="form-group" id="confirmPassword">
-                                        <label>Confirm Password</label>
+                                        <label id="passwordLabel">Confirm Password</label>
                                         <span> <br /> <br /> </span>
-                                        <input type="password" className="form-control" />
+                                        <input type="password" ref={elem => (this.newPasswordConfirmationInput = elem)} onChange={this.setNewPasswordConfirmation} className="form-control" required />
                                         <span> <br /> <br /> </span>
                                     </div>
 
                                     <div className="form-group" id="submissionDiv">
-                                        <button className="btn btn-light">Submit</button>
+                                        <Button onClick={this.changePassword} className="btn btn-light">Submit</Button>
 
                                         <span> <br /> <br /> </span>
                                     </div>

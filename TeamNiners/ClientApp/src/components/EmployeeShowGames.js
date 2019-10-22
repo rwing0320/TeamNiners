@@ -1,7 +1,7 @@
 ﻿import React, { Component } from 'react';
 import { Col, Grid, Row, Button, Accordion, Panel } from 'react-bootstrap';
 import axios from 'axios';
-import { Redirect, Route } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import './css/ShowGamesPage.css';
 
 
@@ -9,7 +9,7 @@ export class EmployeeShowGames extends Component {
     constructor(props) {
         super(props);
         this.state = { changePage: false };
-
+        this.goToDashboard = this.goToDashboard.bind(this);
     }
 
 
@@ -18,9 +18,10 @@ export class EmployeeShowGames extends Component {
     }
 
     goToDashboard() {
-        if (this.state.changePage) {
-            return <Redirect to='/dashboard' />
-        }
+        //if (this.state.changePage) {
+        //    return <Redirect to='/dashboard' />
+        //}
+        this.props.changePage(1)
     }
 
 
@@ -43,10 +44,11 @@ export class EmployeeShowGames extends Component {
                         </Row>
                         <Row>
                             <div>
-                                {this.goToDashboard()}
+                                
                                 <h1>Show Games Page</h1>
-                                <button onClick={() => this.changePage()}>Back</button>
-
+                                <Link to={"/Dashboard"}>
+                                    <button onClick={() => this.goToDashboard()}>Back</button>
+                                </Link>
                             </div>
                         </Row>
                     </Grid>

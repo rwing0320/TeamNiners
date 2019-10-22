@@ -1,13 +1,11 @@
 ﻿import React, { Component } from 'react';
-import axios from 'axios';
-import { NavMenu } from './NavMenu';
 import { Dashboard } from './EmployeeDashboard';
-import { Redirect } from 'react-router-dom';
-import { Col, Grid, Row, Button, Accordion, Panel } from 'react-bootstrap';
 import './css/LoginPage.css';
 import { EmployeeNav } from './EmployeeNav';
-import { Layout } from './Layout';
-import { EmployeeLogin } from './EmployeeLogin';
+import { EmployeeGameMod } from './EmployeeGameMod';
+import { EmployeeShowGames } from './EmployeeShowGames';
+import { EmployeeGameReport } from './EmployeeGameReport';
+import { Link, Redirect } from 'react-router-dom';
 
 export class EmployeeDashBoardLayout extends Component {
     displayName = EmployeeDashBoardLayout.name
@@ -15,10 +13,10 @@ export class EmployeeDashBoardLayout extends Component {
 
     constructor(props) {
         super(props);
-        this.state = { isLoggedIn: false, error: "", businessName: "", dashboardLoaded: false };
+        this.state = { isLoggedIn: false, error: "", businessName: "", dashboardLoaded: false, pageNumber: 1, cameFrom: 0 };
            
         console.log("the businessId: " + this.props.data2);
-           
+        this.callLogout = this.callLogout.bind(this);
     }
 
     callLogout() {
@@ -32,6 +30,28 @@ export class EmployeeDashBoardLayout extends Component {
         }
     }
 
+    changePageNumber(pageNumber) {
+        this.setState({ pageNumber: pageNumber});
+    }
+
+    changePage() {
+        if (this.state.pageNumber == 1) {
+            <Redirect to="/dashboard" />
+            return <div><Dashboard data2={this.props.data2} changePage={this.changePageNumber.bind(this)} updateParentState={this.callLogout.bind(this)}></Dashboard></div>;
+        }
+        else if (this.state.pageNumber == 2) {
+            <Link to={`/ModifyGame`} ></Link>
+            return <EmployeeGameMod data2={this.props.data2} changePage={this.changePageNumber.bind(this)}></EmployeeGameMod>
+        } else if (this.state.pageNumber == 3) {
+            <Link to={`/ShowGames`} ></Link>
+            return <EmployeeShowGames data2={this.props.data2} changePage={this.changePageNumber.bind(this)}></EmployeeShowGames>
+        }
+        else if (this.state.pageNumber == 4) {
+            <Link to="/Report" ></Link>
+            return <EmployeeGameReport data2={this.props.data2} changePage={this.changePageNumber.bind(this)}></EmployeeGameReport>
+        }
+    }
+
     render() {
 
         return (
@@ -39,18 +59,17 @@ export class EmployeeDashBoardLayout extends Component {
                 <EmployeeNav data1={this.props.data1} updateParentState={this.props.updateParentState}></EmployeeNav>
                 
 
-                <Redirect to={{
-                    pathname: '/dashboard',
-                    state: { id: this.props.data2 }                   
-
-                }}
-
-                    
-                />
-
-                {this.props.children}
+                {this.changePage()}
+                
             </div>
             
             )
     }
 }
+//{this.props.children}
+
+//<Redirect to={{
+//    pathname: '/dashboard',
+//    state: { id: this.props.data2 }
+
+//}}
