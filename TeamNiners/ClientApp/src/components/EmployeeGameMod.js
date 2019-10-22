@@ -26,7 +26,7 @@ export class EmployeeGameMod extends Component {
         this.gameDescInput = null;
         this.gameCostInput = null;
 
-        axios.get('http://localhost:50392/api/GameCategory')
+        axios.get('http://localhost:64874/api/GameCategory')
             .then(res => {
                 console.log(res.data);
                 this.setState({gameCategories: res.data})
@@ -35,7 +35,7 @@ export class EmployeeGameMod extends Component {
                 //});
             })
  
-        axios.get('http://localhost:50392/api/GamePlatform')
+        axios.get('http://localhost:64874/api/GamePlatform')
             .then(res => {
                 console.log(res.data);
                 this.setState({ gamePlatforms: res.data })

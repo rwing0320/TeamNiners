@@ -24,7 +24,7 @@ namespace TeamNiners.Services
     {
 
         //Sets up dependency injection to grab connectionString later
-        public IConfiguration connectionString;
+        private IConfiguration connectionString;
 
 
         public void SetupUserServiceConnection()

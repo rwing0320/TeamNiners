@@ -110,6 +110,15 @@ namespace TeamNiners.Controllers
         //public void Delete(int id)
         //{
         //}
+          [Route("/api/game/showgames_business")]
+          [HttpGet]
+          public IActionResult DisplayGames_ShowGamesPage() {
+
+            
+
+            return Ok();
+        }
+
 
         public List<BusinessGames> getBusinessGames()
         {
