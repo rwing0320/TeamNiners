@@ -24,7 +24,7 @@ namespace TeamNiners.Services
     {
 
         //Sets up dependency injection to grab connectionString later
-        public IConfiguration connectionString;
+        private IConfiguration connectionString;
 
 
         public void SetupUserServiceConnection()
@@ -99,7 +99,15 @@ namespace TeamNiners.Services
 
                 adapter.Fill(ds);
 
-                id = (int)ds.Tables[0].Rows[0]["ID"];
+                //Error handling for incorrect usernames
+                try { 
+
+                    id = (int)ds.Tables[0].Rows[0]["ID"];
+
+                } catch (Exception)
+                {
+
+                }
 
                 sqlConnection.Close();
 

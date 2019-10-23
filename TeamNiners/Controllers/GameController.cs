@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using TeamNiners.Models;
+using TeamNiners.Helpers;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -14,6 +15,7 @@ namespace TeamNiners.Controllers
     {
         private readonly dbo_NinersContext _context;
         GamingInfo gi = new GamingInfo();
+        ShowGameItem gameHelper = new ShowGameItem();
 
         public GameController(dbo_NinersContext context)
         {
@@ -110,10 +112,21 @@ namespace TeamNiners.Controllers
         //public void Delete(int id)
         //{
         //}
+          [Route("/api/game/showgames_business")]
+          [HttpGet]
+          public List<ShowGameItem> DisplayGames_ShowGamesPage() {
 
-        public List<BusinessGames> getBusinessGames()
+            List<ShowGameItem> gameList = getBusinessGames();
+
+            return gameList;
+        }
+
+
+        public List<ShowGameItem> getBusinessGames()
         {
-            List<BusinessGames> gameList = new List<BusinessGames>();
+            List<ShowGameItem> gameList = new List<ShowGameItem>();
+
+            gameList = gameHelper.GetGamesList();
 
             return gameList;
 
