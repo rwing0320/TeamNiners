@@ -9,5 +9,6 @@ namespace TeamNiners.Helpers
     {
         public static string memberEmail = "";
         public static int memberId = 0;
+
     }
 }

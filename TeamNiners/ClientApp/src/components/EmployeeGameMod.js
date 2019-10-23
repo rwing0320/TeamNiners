@@ -106,7 +106,7 @@ export class EmployeeGameMod extends Component {
         var gameId = 0;
         var businessId = this.props.data2;
         var success = true;
-        axios.post('http://localhost:50392/api/Game', {
+        axios.post('http://localhost:64874/api/Game', {
             GameTitle: this.state.gameName,
             GameDescription: this.state.gameDesc,
             ReleaseDate: this.state.gameReleaseDate,
@@ -121,7 +121,7 @@ export class EmployeeGameMod extends Component {
                 gameId = response.data.gameId;
                 console.log("the game id is: " + gameId);
 
-                axios.post('http://localhost:50392/api/Game/AddBusinessGame', {
+                axios.post('http://localhost:64874/api/Game/AddBusinessGame', {
                     businessId: businessId,
                     gameId: gameId,
 

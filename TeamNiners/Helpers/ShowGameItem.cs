@@ -14,7 +14,8 @@ namespace TeamNiners.Helpers
         public string Description { get; set; }
         public DateTime releaseDate { get; set; }
         public string Platform { get; set; }
-        public double Price { get; set; }
+        public string Category { get; set; }
+        public Int64 Price { get; set; }
 
 
         private IConfiguration connectionString;
@@ -28,6 +29,8 @@ namespace TeamNiners.Helpers
 
         public List<ShowGameItem> GetGamesList()
         {
+            SetupUserServiceConnection();
+            int id = UserTempStorage.id;
             List<ShowGameItem> gamesList = new List<ShowGameItem>();
 
             DataSet ds = new DataSet();
@@ -41,7 +44,11 @@ namespace TeamNiners.Helpers
                 //Get all the games from GameInfo where GameInfo.GameID == BusinessGame.GameID 
                 // AND BusinessGame.BusinessID == currently signed in ID
                 SqlCommand command = new SqlCommand(
-                   "SELECT id FROM dbo.BusinessLogin WHERE email = '" + "" + "';",
+                   "SELECT * FROM (" +
+                   "SELECT GI.gameTitle, GI.gameDescription, GI.releaseDate, GI.gamePlatform, GI.gameCategory, GI.gamePrice," +
+                   "BG.gameID, BG.businessID FROM dbo.GamingInfo GI " +
+                   "JOIN dbo.BusinessGames BG ON GI.gameID = BG.gameID)" +
+                   "BusinessInfo where BusinessInfo.businessID = '" + id + "';",
                     sqlConnection);
 
                 command.CommandType = CommandType.Text;
@@ -56,6 +63,21 @@ namespace TeamNiners.Helpers
 
                 sqlConnection.Close();
 
+            }
+
+            foreach (DataTable dt in ds.Tables)
+            {
+                foreach (DataRow dr in dt.Rows)
+                {
+                    ShowGameItem tempGame = new ShowGameItem();
+                    tempGame.Title = (string)dr["gameTitle"];
+                    tempGame.Description = (string)dr["gameDescription"];
+                    tempGame.releaseDate = (DateTime)dr["releaseDate"];
+                    tempGame.Platform = EnumParser.GetEnumValue((int)dr["gamePlatform"], "Platform");
+                    tempGame.Category = EnumParser.GetEnumValue((int)dr["gameCategory"], "Category");
+                    tempGame.Price = (Int64)dr["gamePrice"];
+                    gamesList.Add(tempGame);
+                }
             }
 
             return gamesList;

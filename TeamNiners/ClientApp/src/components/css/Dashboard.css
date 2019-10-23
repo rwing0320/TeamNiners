@@ -126,7 +126,7 @@
 }
 
 
-#gameButton {
+.gameButton {
     height: 10%;
     width: 15%;
     margin: 0 1% 0 1%;
@@ -144,7 +144,7 @@
     -webkit-transition: border-radius 0.5s;
 }
 
-    #gameButton:hover {
+    .gameButton:hover {
         opacity: 0.75;
         border-radius: 10px 100px / 120px;
         transition: all 2s ease;

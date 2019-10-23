@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.28803.452
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.106
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TeamNiners", "TeamNiners\TeamNiners.csproj", "{B513F9DC-7C64-4A17-B7E8-13CBC654B479}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TeamNiners", "TeamNiners\TeamNiners.csproj", "{B513F9DC-7C64-4A17-B7E8-13CBC654B479}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TeamNiners.Tests", "TeamNiners.Tests\TeamNiners.Tests.csproj", "{02142748-878E-45B0-A8FB-E3207471907A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{B513F9DC-7C64-4A17-B7E8-13CBC654B479}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B513F9DC-7C64-4A17-B7E8-13CBC654B479}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B513F9DC-7C64-4A17-B7E8-13CBC654B479}.Release|Any CPU.Build.0 = Release|Any CPU
+		{02142748-878E-45B0-A8FB-E3207471907A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{02142748-878E-45B0-A8FB-E3207471907A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{02142748-878E-45B0-A8FB-E3207471907A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{02142748-878E-45B0-A8FB-E3207471907A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
