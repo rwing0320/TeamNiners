@@ -77,7 +77,7 @@ export class Dashboard extends Component {
 
         var isLoggedOut = false;
 
-        axios.put('http://localhost:50392/api/users/changepassword',
+        axios.put('http://localhost:64874/api/users/changepassword',
             {
                 oldPassword: this.state.oldPassword,
                 newPassword: this.state.newPassword,
@@ -86,7 +86,7 @@ export class Dashboard extends Component {
                 
             })
             .then(res => {
-                axios.post('http://localhost:50392/api/users/Logout', {
+                axios.post('http://localhost:64874/api/users/Logout', {
 
                 })
                     .then(function (response) {

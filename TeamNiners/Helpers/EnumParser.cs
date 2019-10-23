@@ -42,6 +42,10 @@ namespace TeamNiners.Helpers
             Role_Playing
         }
 
+        /// <summary>
+        /// Grabs the enum value based off of the int value retrived from DB and the enum type.
+        /// Also normalizes by applying spacing and hyphens
+        /// </summary>
         public static string GetEnumValue(int index, string enumType)
         {
             string val = "";

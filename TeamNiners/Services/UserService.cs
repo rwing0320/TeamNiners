@@ -99,15 +99,13 @@ namespace TeamNiners.Services
 
                 adapter.Fill(ds);
 
-                //Error handling for incorrect usernames
-                try { 
+                if (ds.Tables[0].Rows.Count != 0)
+                {
 
                     id = (int)ds.Tables[0].Rows[0]["ID"];
 
-                } catch (Exception)
-                {
-
                 }
+
 
                 sqlConnection.Close();
 
@@ -211,6 +209,7 @@ namespace TeamNiners.Services
             var securityInstance = new SecurityService();
             DataTable tempTable;
             string HashedPassword = string.Empty;
+            string salt = string.Empty;
 
 
             tempTable = GetBusinessLoginData();
@@ -218,8 +217,12 @@ namespace TeamNiners.Services
 
             //Gets the Salt & ID for the specific user
             int id = GetUserID(username);
-            string salt = (string)tempTable.Rows[id - 1]["Salt"];
 
+            //Handles errors when the email is incorrect so that it won't break
+            if (tempTable.Rows.Count != 0 && id != 0)
+            {
+                    salt = (string)tempTable.Rows[id - 1]["Salt"];
+            }
             List<BusinessLogin> _users = new List<BusinessLogin>();
 
             //Checks Dictionary to see if it contains the Email
@@ -228,7 +231,7 @@ namespace TeamNiners.Services
                 //Use this for generating salts on account creation,
                 //for now uncomment when you want to generate a salt for a new BusinessLogin
                 //string tempGeneratedSalt = securityInstance.GenerateSalt(password);
-                
+
 
                 //Generates the hashed password value using the entered password and the stored salt
                 HashedPassword = securityInstance.HashingCheckLogin(password, salt);
