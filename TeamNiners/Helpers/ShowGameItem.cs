@@ -26,7 +26,11 @@ namespace TeamNiners.Helpers
             var config = builder.Build();
             connectionString = config;
         }
-
+        
+        /// <summary>
+        /// Retrieves the list of games that the business has posted.
+        /// Uses the id stored in UserTempStorage in query to get games for logged in user
+        /// </summary>
         public List<ShowGameItem> GetGamesList()
         {
             SetupUserServiceConnection();
@@ -59,12 +63,11 @@ namespace TeamNiners.Helpers
 
                 adapter.Fill(ds);
 
-                //id = (int)ds.Tables[0].Rows[0]["ID"];
-
                 sqlConnection.Close();
 
             }
 
+            //Iterating through and mapping table values to object properties before adding to list
             foreach (DataTable dt in ds.Tables)
             {
                 foreach (DataRow dr in dt.Rows)
