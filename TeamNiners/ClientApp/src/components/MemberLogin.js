@@ -113,7 +113,7 @@ export class MemberLogin extends Component {
                 psswd: this.state.password
             }
 
-            await axios.post('http://localhost:64874/api/members/authenticate', {
+            await axios.post('http://localhost:60529/api/members/authenticate', {
                 memberUsername: this.state.email,
                 memberPassword: this.state.password
             })
@@ -135,7 +135,7 @@ export class MemberLogin extends Component {
 
                 this.setMemberName(memberName, memberId);
 
-                await axios.post('http://localhost:64874/api/members/memberId', {
+                await axios.post('http://localhost:60529/api/members/memberId', {
                     memberID: memberId
                 })
                     .then(res => {

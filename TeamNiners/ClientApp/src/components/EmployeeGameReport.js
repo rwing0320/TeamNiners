@@ -57,13 +57,13 @@ export class EmployeeGameReport extends Component {
 
     exportDetail() {
         const doc = new jsPDF();
-        doc.text('Game Detail Report', 85,10)
+        doc.text('Game Detail Report', 80,10)
         doc.autoTable({ html: '.table' });
         doc.save('GameDetail.pdf');
     }
     exportList() {
         const doc = new jsPDF();
-        doc.text('Game List Report', 85, 10)
+        doc.text('Game List Report', 80, 10)
         doc.autoTable({ html: '.table' });
         doc.save('GameList.pdf');
     }
