@@ -2,21 +2,29 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using TeamNiners.Services;
+using TeamNiners.Controllers;
 
 namespace TeamNiners.Tests
 {
-    class Class1
+    class MemberTests
     {
+        private UserService userService;
         [SetUp]
         public void Setup()
         {
-
         }
 
         [Test]
         public void Test1()
         {
-            Assert.Pass();
+            //Arrange
+
+            //Act
+
+            //Assert
+
+            Assert.AreEqual("", "");
         }
     }
 }
