@@ -42,12 +42,12 @@ namespace TeamNiners.Controllers
 
         [Route("api/member/createMemberAccount")]
         [HttpPost]
-        public Task<IActionResult> CreateAccount([FromBody] int memberId, string memberPassword, string userName)
+        public IActionResult CreateAccount([FromBody] int memberId, string memberPassword, string userName)
         {
 
             //var item = new MemberLogin();
             var member =  _memberService.createAccount(memberId, memberPassword, userName);
-            
+
 
             //_memberService.Authenticate(member.MemberUsername, member.MemberPassword,member.Salt);
 
