@@ -233,23 +233,33 @@ export class MemberNewAccount extends Component {
         }).then(function (response) {
             var memberId = response.data.memberId;
             var memberEmail = response.data.memberEmail;
-            axios.post(webAddress + 'api/MemberAccount/AddMemberLogin', {
+            //axios.post(webAddress + 'api/MemberAccount/AddMemberLogin', {
+            //    MemberId: memberId,
+            //    MemberUsername: memberEmail,
+            //    MemberPassword: memberPassword
+
+            //})
+            //    .then(function (response) {
+            //        console.log(response);
+            //        //successFlag = true;
+            //        console.log(response.data);
+            //        //businessName = response.data.businessName;
+
+            //    })
+            //    .catch(function (error) {
+            //        success = false;
+            //        console.log("this is the error: " + error);
+            //    });
+            axios.post(webAddress + 'api/member/createMemberAccount', {
                 MemberId: memberId,
-                MemberUsername: memberEmail,
-                MemberPassword: memberPassword
+                MemberPassword: memberPassword,
+                MemberUsername: memberEmail
+            }).then(function (response) {
+                console.log(response.data);
+            }).catch(function (error) {
+                console.log("the error for creating an account is: " + error);
+            });
 
-            })
-                .then(function (response) {
-                    console.log(response);
-                    //successFlag = true;
-                    console.log(response.data);
-                    //businessName = response.data.businessName;
-
-                })
-                .catch(function (error) {
-                    success = false;
-                    console.log("this is the error: " + error);
-                });
         });
 
         if (success == true) {

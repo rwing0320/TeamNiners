@@ -18,6 +18,8 @@ namespace TeamNiners.Controllers
     {
         private IUserService _userService;
         public IlocalService _localService;
+        private IMemberService _memberService;
+
         private readonly dbo_NinersContext _context;
 
         public MemberLoginsController(dbo_NinersContext context)
@@ -36,6 +38,20 @@ namespace TeamNiners.Controllers
                 return BadRequest(new { message = "Username or password is incorrect" });
 
             return Ok(user);
+        }
+
+        [Route("api/member/createMemberAccount")]
+        [HttpPost]
+        public Task<IActionResult> CreateAccount([FromBody] int memberId, string memberPassword, string userName)
+        {
+
+            //var item = new MemberLogin();
+            var member =  _memberService.createAccount(memberId, memberPassword, userName);
+            
+
+            //_memberService.Authenticate(member.MemberUsername, member.MemberPassword,member.Salt);
+
+            return Ok(member);
         }
 
         // GET: api/MemberLogins

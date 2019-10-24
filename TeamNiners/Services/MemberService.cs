@@ -25,6 +25,7 @@ namespace TeamNiners.Services
 
         //Sets up dependency injection to grab connectionString later
         public IConfiguration connectionString;
+        private readonly dbo_NinersContext _context;
 
 
         public void SetupUserServiceConnection()
@@ -107,6 +108,36 @@ namespace TeamNiners.Services
             }
 
             return id;
+        }
+
+
+        public async Task<MemberLogin> createAccount(int memberId, string memberPassword, string memberUserName)
+        {
+            //DataTable tempTable = new DataTable();
+            var securityInstance = new SecurityService();
+
+            MemberLogin login = new MemberLogin();
+            login.MemberPassword = memberPassword;
+            login.MemberId = memberId;
+            login.MemberUsername = memberUserName;
+
+            string salt = securityInstance.GenerateSalt(login.MemberPassword);
+            //tempTable = GetBusinessLoginData();
+            //FillUserList(tempTable);
+
+            login.Salt = salt;
+
+            string hashedInputPassword = securityInstance.HashingCheckLogin(login.MemberPassword, salt);
+
+            login.MemberPassword = hashedInputPassword;
+
+            _context.MemberLogin.Add(login);
+            await _context.SaveChangesAsync();
+
+            Authenticate(login.MemberUsername, login.MemberPassword, salt);
+            //Logout(username);
+
+            return login;
         }
 
         public DataTable GetMemberLoginData()
