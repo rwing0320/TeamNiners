@@ -162,17 +162,13 @@ export class EmployeeGameReport extends Component {
 
                                         <tbody>
                                             {this.state.info.map(gameInfo =>
-                                                <tr key={gameInfo.gameID}>
-                                                    <td>{gameInfo.gameTitle}</td>
-                                                    <td>{gameInfo.gameDescription}</td>
-                                                    <td>{gameInfo.releaseDate}</td>
-
-                                                    <td> {this.state.platformName}</td>
-
-                                                    {this.state.gameCategories.map(gameCat =>
-                                                        <td> {gameCat.categoryName}</td>
-                                                    )}
-                                                    <td>{gameInfo.gamePrice}</td>
+                                                <tr key={gameInfo.id}>
+                                                    <td>{gameInfo.title}</td>
+                                                    <td>{gameInfo.description}</td>
+                                                    <td>{gameInfo.releasedate}</td>
+                                                    <td>{gameInfo.platform}</td>
+                                                    <td>{gameInfo.category}</td>
+                                                    <td>${gameInfo.price}</td>
                                                 </tr>
                                             )}
                                         </tbody>
@@ -185,7 +181,9 @@ export class EmployeeGameReport extends Component {
                     </div>
                     {this.goToDashboard()}
                     <h1>Game Report Page</h1>
-                    <button onClick={() => this.changePage()}>Back</button>
+                    <Link to={'/DashBoard'}>
+                        <button onClick={() => this.goToDashboard()}>Back</button>
+                    </Link>
 
 
                 </div>
@@ -217,7 +215,9 @@ export class EmployeeGameReport extends Component {
                     </div>
                     {this.goToDashboard()}
                     <h1>Game Report Page</h1>
-                    <button onClick={() => this.changePage()}>Back</button>
+                    <Link to={'/DashBoard'}>
+                        <button onClick={() => this.goToDashboard()}>Back</button>
+                    </Link>
 
 
                 </div>
