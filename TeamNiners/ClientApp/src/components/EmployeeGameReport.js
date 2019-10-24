@@ -6,6 +6,7 @@ import 'jspdf-autotable';
 import { Redirect, Route } from 'react-router-dom';
 import { EmployeeNav } from './EmployeeNav';
 import { Link } from 'react-router-dom';
+import './css/Report.css';
 
 
 export class EmployeeGameReport extends Component {
@@ -16,15 +17,12 @@ export class EmployeeGameReport extends Component {
         this.listInput = null;
         this.makeChange = this.makeChange.bind(this);
 
-        axios.get('http://localhost:50524/api/game/showgames_business')
+        axios.get('http://localhost:60529/api/game/showgames_business')
             .then(res => {
                 console.log(res.data);
                 this.setState({ info: res.data })
    
             })
-
-        super(props);
-        this.state = { changePage: false };
         this.goToDashboard = this.goToDashboard.bind(this);
     }
 
@@ -34,6 +32,9 @@ export class EmployeeGameReport extends Component {
     }
 
     goToDashboard() {
+        //if (this.state.changePage) {
+        //    return <Redirect to='/dashboard' />
+        //}
         this.props.changePage(1)
     }
     makeChange(event) {
@@ -54,10 +55,17 @@ export class EmployeeGameReport extends Component {
         }
     }
 
-    exportPDF() {
+    exportDetail() {
         const doc = new jsPDF();
+        doc.text('Game Detail Report', 85,10)
         doc.autoTable({ html: '.table' });
-        doc.save('table.pdf');
+        doc.save('GameDetail.pdf');
+    }
+    exportList() {
+        const doc = new jsPDF();
+        doc.text('Game List Report', 85, 10)
+        doc.autoTable({ html: '.table' });
+        doc.save('GameList.pdf');
     }
 
     changePage() {
@@ -91,8 +99,8 @@ export class EmployeeGameReport extends Component {
 
 
 
-                                    <h4 id="widgetTitle">Game Lists</h4>
-                                    <table className="table1">
+                                    <h3 id="gameInsightsTitle">Game Lists</h3>
+                                    <table className="table" id="#gamesTable1">
                                         <thead>
                                             <tr>
                                                 <th>Game Name</th>
@@ -102,22 +110,22 @@ export class EmployeeGameReport extends Component {
                                         </thead>
 
                                         <tbody>
-                                            {this.state.info.map(gameInfo =>
-                                                <tr key={gameInfo.gameID}>
-                                                    <td>{gameInfo.gameTitle}</td>
-                                                    <td>{gameInfo.gameDescription}</td>
-                                                    <td>{gameInfo.gamePrice}</td>
-                                                </tr>
-                                            )}
+                                            <tr>
+                                                {this.state.info.map(gameInfo =>
+                                                    <th scope="col">{gameInfo.title}</th>
+                                                    )}
+                                                <td>3350</td>
+                                                <td>7.8</td>
+                                            </tr>
                                         </tbody>
                                     </table>
+                                    <button onClick={() => this.exportList()}>Generate Report</button>
                                 </Col>
                             </Row>
 
                         </Grid>
                     </div>
                     {this.goToDashboard()}
-                    <h1>Game Report Page</h1>
                     <Link to={'/DashBoard'}>
                         <button onClick={() => this.goToDashboard()}>Back</button>
                     </Link>
@@ -142,13 +150,11 @@ export class EmployeeGameReport extends Component {
                                             <option value="gameList">Game List</option>
                                             <option value="gameDetail">Game Detail</option>
                                         </select>
+
                                     </form>
 
-
-
-                                    <h4 id="widgetTitle">Game Detail</h4>
-                                    <table className="table">
-                                        <caption>Game Detail</caption>
+                                    <h3 id="gameInsightsTitle">Game Details</h3>
+                                    <table className="table" id="#gamesTable">
                                         <thead>
                                             <tr>
                                                 <th>Game Name</th>
@@ -161,26 +167,28 @@ export class EmployeeGameReport extends Component {
                                         </thead>
 
                                         <tbody>
+                                            
                                             {this.state.info.map(gameInfo =>
                                                 <tr key={gameInfo.id}>
-                                                    <td>{gameInfo.title}</td>
+                                                    <th scope="col">{gameInfo.title}</th>
                                                     <td>{gameInfo.description}</td>
-                                                    <td>{gameInfo.releasedate}</td>
+                                                    <td>{gameInfo.releaseDate}</td>
                                                     <td>{gameInfo.platform}</td>
                                                     <td>{gameInfo.category}</td>
                                                     <td>${gameInfo.price}</td>
                                                 </tr>
-                                            )}
+                                            )}                                                                        
+
                                         </tbody>
                                     </table>
-                                    <button onClick={() => this.exportPDF()}>Generate Report</button>
+
+                                    <button onClick={() => this.exportDetail()}>Generate Report</button>
                                 </Col>
                             </Row>
 
                         </Grid>
                     </div>
                     {this.goToDashboard()}
-                    <h1>Game Report Page</h1>
                     <Link to={'/DashBoard'}>
                         <button onClick={() => this.goToDashboard()}>Back</button>
                     </Link>
@@ -214,7 +222,6 @@ export class EmployeeGameReport extends Component {
                         </Grid>
                     </div>
                     {this.goToDashboard()}
-                    <h1>Game Report Page</h1>
                     <Link to={'/DashBoard'}>
                         <button onClick={() => this.goToDashboard()}>Back</button>
                     </Link>

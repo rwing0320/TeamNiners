@@ -27,7 +27,7 @@ export class EmployeeShowGames extends Component {
     }
 
     getGames() {
-        axios.get('http://localhost:64874/api/game/showgames_business')
+        axios.get('http://localhost:60529/api/game/showgames_business')
             .then(res => {
                 const games = res.data;
                 this.setState({ games });
