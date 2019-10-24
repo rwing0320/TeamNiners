@@ -13,6 +13,18 @@ export class Home extends Component {
         this.getData = this.getData.bind(this);
         this.getBusinessLoginData = this.getBusinessLoginData.bind(this);
 
+
+        axios.get(webAddress + 'api/member/memberId', {
+            
+        })
+            .then(function (response) {
+                console.log("The member ID for Login on home page is: " + response.data);
+
+            })
+            .catch(function (error) {
+                //errorMessage = ""
+                console.log("this is the error on the login page for saving the id: " + error);
+            });
         //try {
         //    console.log(this.props.location.state.isLoggedIn);
 

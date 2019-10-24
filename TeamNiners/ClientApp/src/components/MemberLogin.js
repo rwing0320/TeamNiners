@@ -140,7 +140,7 @@ export class MemberLogin extends Component {
                         });
                     
 
-                    console.log("The memberId: " + memberId);
+                    //console.log("The memberId: " + memberId);
 
                 })
                 .catch(function (error) {
@@ -156,7 +156,7 @@ export class MemberLogin extends Component {
                     memberID: memberId
                 })
                     .then(res => {
-                        console.log("The member ID for Login is: " + res.data);
+                        //console.log("The member ID for Login is: " + res.data);
 
                         console.log("hit " + successFlag);
 

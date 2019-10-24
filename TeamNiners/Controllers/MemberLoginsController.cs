@@ -151,13 +151,22 @@ namespace TeamNiners.Controllers
 
         [HttpPost]
         [Route("/api/member/memberId")]
-        public IActionResult EmployeeId([FromBody]LocalMember id)
+        public IActionResult MemberId([FromBody]LocalMember id)
         {
 
-            UserTempStorage.id = id.memberId;
+            UserTempStorage.memberID = id.memberId;
 
 
-            return Ok(UserTempStorage.id);
+            return Ok(UserTempStorage.memberID);
+        }
+
+        [HttpGet]
+        [Route("/api/member/memberId")]
+        public IActionResult GetEmployeeId()
+        {
+
+            return Ok(UserTempStorage.memberID);
+
         }
 
 
