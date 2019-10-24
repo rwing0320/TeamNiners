@@ -76,6 +76,7 @@ namespace TeamNiners.Services
 
         public int GetMemberID(string email)
         {
+            SetupUserServiceConnection();
             int id = 0;
             DataSet ds = new DataSet();
 
@@ -203,6 +204,8 @@ namespace TeamNiners.Services
         {
             DataTable tempTable = new DataTable();
 
+            SetupUserServiceConnection();
+
             using (SqlConnection sqlConnection = new SqlConnection(connectionString.GetSection("ConnectionStrings").GetSection("NinersConnection").Value))
             {
                 SqlDataAdapter adapter = new SqlDataAdapter();
@@ -285,6 +288,9 @@ namespace TeamNiners.Services
         }
         public MemberLogin Authenticate(string username, string password, string storedSalt)
         {
+
+            SetupUserServiceConnection();
+
             //Setting up necessary variables and a SecurityService instance to use hashing method
             var securityInstance = new SecurityService();
             DataTable tempTable;

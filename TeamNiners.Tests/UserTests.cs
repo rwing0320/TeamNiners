@@ -2,11 +2,12 @@ using NUnit.Framework;
 
 namespace Tests
 {
-    public class Tests
+    public class UserTests
     {
         [SetUp]
         public void Setup()
         {
+
         }
 
         [Test]
