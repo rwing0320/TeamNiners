@@ -3,7 +3,9 @@ import { Col, Grid, Row, Glyphicon, Carousel, Button } from 'react-bootstrap';
 import axios from 'axios';
 import './css/Dashboard.css';
 import ryansRacerImage from './img/ryansRacerCarouselImage.jpg';
-import { Redirect, Link} from 'react-router-dom';
+import { Redirect, Link } from 'react-router-dom';
+
+import { webAddress } from './reference/reference';
 
 export class Dashboard extends Component {
     displayName = "Employee Dashboard"
@@ -20,7 +22,7 @@ export class Dashboard extends Component {
         this.setNewPasswordConfirmation = this.setNewPasswordConfirmation.bind(this);
         this.changePassword = this.changePassword.bind(this);
 
-        axios.get('http://localhost:64874/api/users/getEmployeeId')
+        axios.get('http://localhost:51308/api/users/getEmployeeId')
             .then(res => {
                 console.log("The business ID for dashboard is: " + res.data);
                 this.setState({ businessId: res.data })
@@ -77,7 +79,7 @@ export class Dashboard extends Component {
 
         var isLoggedOut = false;
 
-        axios.put('http://localhost:64874/api/users/changepassword',
+        axios.put(webAddress + 'api/users/changepassword',
             {
                 oldPassword: this.state.oldPassword,
                 newPassword: this.state.newPassword,
@@ -86,7 +88,7 @@ export class Dashboard extends Component {
                 
             })
             .then(res => {
-                axios.post('http://localhost:64874/api/users/Logout', {
+                axios.post(webAddress + 'api/users/Logout', {
 
                 })
                     .then(function (response) {

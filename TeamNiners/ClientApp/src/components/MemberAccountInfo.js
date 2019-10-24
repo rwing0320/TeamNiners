@@ -4,6 +4,7 @@ import { Tabs, Tab, Accordion, Panel, Button } from 'react-bootstrap';
 
 import './css/MemberAccountInfo.css';
 
+import { webAddress } from './reference/reference';
 
 export class MemberAccountInfo extends Component {
     displayName = MemberAccountInfo.name

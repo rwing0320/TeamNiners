@@ -12,5 +12,7 @@ namespace TeamNiners.Helpers
         public static int id = 0;
         public static string salt = "";
 
+        public static int memberID = 0;
+
     }
 }

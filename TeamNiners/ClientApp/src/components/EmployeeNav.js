@@ -6,6 +6,8 @@ import logo from './img/9ners_Logo.svg';
 import './css/employeeNavBar.css';
 import axios from 'axios';
 
+import { webAddress } from './reference/reference';
+
 
 export class EmployeeNav extends Component {
     displayName = EmployeeNav.name
@@ -22,7 +24,7 @@ export class EmployeeNav extends Component {
 
         var isLoggedOut = false;
         //call api to delete key
-        await axios.post('http://localhost:64874/api/users/Logout', {
+        await axios.post(webAddress + 'api/users/Logout', {
            
         })
             .then(function (response) {

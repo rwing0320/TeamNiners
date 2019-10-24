@@ -8,6 +8,8 @@ import './css/LoginPage.css';
 import { EmployeeNav } from './EmployeeNav';
 import { Layout } from './Layout';
 
+import { webAddress } from './reference/reference';
+
 export class EmployeeLogin extends Component {
     displayName = EmployeeLogin.name
 
@@ -24,7 +26,7 @@ export class EmployeeLogin extends Component {
 
         this.goToMemberHome = this.goToMemberHome.bind(this);
         //this.changePage = this.changePage.bind(this);
-
+        console.log(webAddress);
 
         this.emailInput = null;
         this.passwordInput = null;
@@ -115,7 +117,7 @@ export class EmployeeLogin extends Component {
                     psswd: this.state.password
                 }
 
-                await axios.post('http://localhost:64874/api/users/authenticate', {
+                await axios.post(webAddress + 'api/users/authenticate', {
                     email: this.state.email,
                     psswd: this.state.password
                 })
@@ -137,7 +139,7 @@ export class EmployeeLogin extends Component {
 
                     this.setBusinessName(businessName, businessId);
 
-                    await axios.post('http://localhost:64874/api/users/employeeId', {
+                    await axios.post(webAddress + 'api/users/employeeId', {
                         businessId: businessId
                     })
                         .then(res => {
@@ -152,9 +154,7 @@ export class EmployeeLogin extends Component {
                             });
 
                             this.props.updatePageState(this.state.data1, this.state.data2);
-                            //this.setState({
-                            //    businessCity: res.data[0].businessCity
-                            //});
+
 
                         })
                         .catch(function (error) {

@@ -8,6 +8,8 @@ import './css/MemberLoginPage.css';
 import { EmployeeNav } from './EmployeeNav';
 import { Layout } from './Layout';
 
+import { webAddress } from './reference/reference';
+
 export class MemberLogin extends Component {
     displayName = MemberLogin.name;
 
@@ -102,6 +104,7 @@ export class MemberLogin extends Component {
 
     async getData() {
         var memberName;
+        var memberLastName;
         var memberId;
         if (this.makeChange() != false) {
             let successFlag = false;
@@ -113,7 +116,7 @@ export class MemberLogin extends Component {
                 psswd: this.state.password
             }
 
-            await axios.post('http://localhost:64874/api/members/authenticate', {
+            await axios.post(webAddress + 'api/members/authenticate', {
                 memberUsername: this.state.email,
                 memberPassword: this.state.password
             })
@@ -121,7 +124,21 @@ export class MemberLogin extends Component {
                     console.log(response);
                     successFlag = true;
                     memberName = response.data.memberName;
+
                     memberId = response.data.memberId;
+
+                    axios.post(webAddress + 'api/member/memberId', {
+                        memberId: memberId
+                    })
+                        .then(function(response) {
+                            console.log("The member ID for Login is: " + response.data);
+
+                        })
+                        .catch(function (error) {
+                            errorMessage = ""
+                            console.log("this is the error on the login page for saving the id: " + error);
+                        });
+                    
 
                     console.log("The memberId: " + memberId);
 
@@ -135,7 +152,7 @@ export class MemberLogin extends Component {
 
                 this.setMemberName(memberName, memberId);
 
-                await axios.post('http://localhost:64874/api/members/memberId', {
+                await axios.post(webAddress + 'api/members/memberId', {
                     memberID: memberId
                 })
                     .then(res => {
@@ -149,8 +166,10 @@ export class MemberLogin extends Component {
 
                         });
 
-                        this.props.changePage(3, this.state.data1);
+                        this.props.changePage(3, memberName, true);
                         this.props.loginUser();
+                        //this.props.changePage(3, memberName);
+                      
 
                     })
                     .catch(function (error) {
