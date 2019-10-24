@@ -1,0 +1,19 @@
+﻿
+
+.table {
+    table-layout: fixed;
+    width: 100%;
+}
+td {
+    width: 100%;
+   word-wrap: break-word;
+}
+th {
+    width: 100%;
+    word-wrap:inherit;
+}
+
+
+h1{
+    text-align: center;
+}
