@@ -25,7 +25,7 @@ namespace TeamNiners.Services
 
         //Sets up dependency injection to grab connectionString later
         public IConfiguration connectionString;
-        private readonly dbo_NinersContext _context;
+       
 
 
         public void SetupUserServiceConnection()
@@ -111,15 +111,18 @@ namespace TeamNiners.Services
         }
 
 
-        public async Task<MemberLogin> createAccount(int memberId, string memberPassword, string memberUserName)
+        public MemberLogin createAccount(MemberLogin memberLogin)
         {
             //DataTable tempTable = new DataTable();
+            SetupUserServiceConnection();
+
             var securityInstance = new SecurityService();
 
             MemberLogin login = new MemberLogin();
-            login.MemberPassword = memberPassword;
-            login.MemberId = memberId;
-            login.MemberUsername = memberUserName;
+            login.MemberPassword = memberLogin.MemberPassword;
+            login.MemberId = memberLogin.MemberId;
+            login.MemberUsername = memberLogin.MemberUsername;
+            login.MemberName = memberLogin.MemberName;
 
             string salt = securityInstance.GenerateSalt(login.MemberPassword);
             //tempTable = GetBusinessLoginData();
@@ -131,8 +134,32 @@ namespace TeamNiners.Services
 
             login.MemberPassword = hashedInputPassword;
 
-            _context.MemberLogin.Add(login);
-            await _context.SaveChangesAsync();
+            using (SqlConnection sqlConnection = new SqlConnection(connectionString.GetSection("ConnectionStrings").GetSection("NinersConnection").Value))
+            {
+                SqlDataAdapter adapter = new SqlDataAdapter();
+
+                adapter.TableMappings.Add("BusinessLogin", "Logins");
+
+                sqlConnection.Open();
+
+                SqlCommand command = new SqlCommand(
+                    "INSERT INTO dbo.MemberLogin VALUES('" + login.MemberUsername +  "','" + login.MemberPassword + "'," + 1 +",'" + login.MemberName + "','NULL','" + salt + ") ';",
+                    sqlConnection);
+
+                command.CommandType = CommandType.Text;
+
+                adapter.InsertCommand = command;
+
+                //adapter.Insert(tempTable);
+
+                command.ExecuteNonQuery();
+
+                sqlConnection.Close();
+
+            }
+
+            //_context.MemberLogin.Add(login);
+            //_context.SaveChanges();
 
             Authenticate(login.MemberUsername, login.MemberPassword, salt);
             //Logout(username);

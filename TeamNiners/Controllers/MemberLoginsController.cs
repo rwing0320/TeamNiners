@@ -22,10 +22,10 @@ namespace TeamNiners.Controllers
 
         private readonly dbo_NinersContext _context;
 
-        public MemberLoginsController(dbo_NinersContext context)
+        public MemberLoginsController(dbo_NinersContext context, IMemberService memberService)
         {
-        
-        _context = context;
+            _memberService = memberService;
+            _context = context;
         }
 
         [AllowAnonymous]
@@ -40,13 +40,16 @@ namespace TeamNiners.Controllers
             return Ok(user);
         }
 
-        [Route("api/member/createMemberAccount")]
+        
         [HttpPost]
-        public IActionResult CreateAccount([FromBody] int memberId, string memberPassword, string userName)
+        [Route("/api/member/createMember")]
+        public IActionResult CreateAccount([FromBody]MemberLogin login)
         {
+            //MemberLogin member = new MemberLogin();
+
 
             //var item = new MemberLogin();
-            var member =  _memberService.createAccount(memberId, memberPassword, userName);
+              var member = _memberService.createAccount(login);
 
 
             //_memberService.Authenticate(member.MemberUsername, member.MemberPassword,member.Salt);

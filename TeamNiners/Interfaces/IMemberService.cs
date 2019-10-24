@@ -11,7 +11,7 @@ namespace TeamNiners.Interfaces
         MemberLogin Authenticate(string username, string password, string storedSalt);
         IEnumerable<MemberLogin> GetAll();
 
-        Task<MemberLogin> createAccount(int memberId, string memberPassword, string memberUserName);
+        MemberLogin createAccount(MemberLogin login);
         MemberLogin Logout(string email);
         int GetMemberID(string email);
     }

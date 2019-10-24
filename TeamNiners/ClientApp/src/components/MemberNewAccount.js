@@ -108,9 +108,9 @@ export class MemberNewAccount extends Component {
 
     setFirstName(event) {
         this.setState({ error: "" });
-        this.state.firstname = event.target.value
+        this.state.firsname = event.target.value
 
-        this.setInputed(this.state.firstname, 0);
+        this.setInputed(this.state.firsname, 0);
        
 
     }
@@ -221,6 +221,9 @@ export class MemberNewAccount extends Component {
         var success = true;
         var memberPassword = this.state.password;
 
+        var memberId = 0;
+        var memberEmail = "";
+
         axios.post(webAddress + 'api/MemberAccount', {
             FirstName: this.state.firsname,
             LastName: this.state.lastName,
@@ -231,41 +234,32 @@ export class MemberNewAccount extends Component {
             MemberPhoneNumber: this.state.phoneNumber,
             MemberEmail: this.state.email
         }).then(function (response) {
-            var memberId = response.data.memberId;
-            var memberEmail = response.data.memberEmail;
-            //axios.post(webAddress + 'api/MemberAccount/AddMemberLogin', {
-            //    MemberId: memberId,
-            //    MemberUsername: memberEmail,
-            //    MemberPassword: memberPassword
-
-            //})
-            //    .then(function (response) {
-            //        console.log(response);
-            //        //successFlag = true;
-            //        console.log(response.data);
-            //        //businessName = response.data.businessName;
-
-            //    })
-            //    .catch(function (error) {
-            //        success = false;
-            //        console.log("this is the error: " + error);
-            //    });
-            axios.post(webAddress + 'api/member/createMemberAccount', {
-                MemberId: memberId,
-                MemberPassword: memberPassword,
-                MemberUsername: memberEmail
-            }).then(function (response) {
-                console.log(response.data);
-            }).catch(function (error) {
-                console.log("the error for creating an account is: " + error);
-            });
+            memberId = response.data.memberId;
+            memberEmail = response.data.memberEmail;
 
         });
 
-        if (success == true) {
-            this.setState({ newAccountSuccessful: true });
-        }
+       await axios.post(webAddress + 'api/member/createMember', {
+            MemberId: memberId,
+            MemberPassword: memberPassword,
+            MemberUsername: this.state.email,
+            MemberName: this.state.firsname
+        })
+            .then(function (response) {
+                console.log(response.data);
+                if (success == true) {
+                    this.setState({ newAccountSuccessful: true });
+                }
+
+            })
+            .catch(function (error) {
+                console.log("the error for creating an account is: " + error);
+            });
+
+      
     }
+
+
 
 
 
