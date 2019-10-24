@@ -18,6 +18,7 @@ namespace TeamNiners.Tests
         public static IOptions<AppSettings> _config;
 
 
+
         [Test]
         public void Check_Hashing_Functionality()
         {
