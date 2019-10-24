@@ -17,7 +17,7 @@ export class MemberNewAccount extends Component {
 
     constructor(props) {
         super(props);
-        this.state = { firsname: "", lastName: "", phoneNumber: "", email: "", address: "", country: "", city: "", postalcode: "", password: "", retypedpassword: "hello", error: "", retypeerror: "", postalCodeError: "", phoneNumberError: "", emailError: "", data1: "", data2: "", newAccountSuccessful: false };
+        this.state = { memberID: 0, firsname: "", lastName: "", phoneNumber: "", email: "", address: "", country: "", city: "", postalcode: "", password: "", retypedpassword: "hello", error: "", retypeerror: "", postalCodeError: "", phoneNumberError: "", emailError: "", data1: "", data2: "", newAccountSuccessful: false };
 
 
 
@@ -34,6 +34,8 @@ export class MemberNewAccount extends Component {
         this.setPhoneNumber = this.setPhoneNumber.bind(this);
         this.setInputed = this.setInputed.bind(this);
         this.validateForm = this.validateForm.bind(this);
+
+        this.changeLoginSuccess = this.changeLoginSuccess.bind(this);
 
         this.emailInput = null;
         this.passwordInput = null;
@@ -223,6 +225,8 @@ export class MemberNewAccount extends Component {
 
         var memberId = 0;
         var memberEmail = "";
+        var salt = "";
+
 
         axios.post(webAddress + 'api/MemberAccount', {
             FirstName: this.state.firsname,
@@ -233,33 +237,63 @@ export class MemberNewAccount extends Component {
             MemberPostalCode: this.state.postalcode,
             MemberPhoneNumber: this.state.phoneNumber,
             MemberEmail: this.state.email
-        }).then(function (response) {
-            memberId = response.data.memberId;
-            memberEmail = response.data.memberEmail;
+        }).then(res => {
+            memberId = res.data.memberId;
+            this.state.memberID = res.data.memberId;
+            axios.post(webAddress + 'api/member/createMember', {
+                MemberId: memberId,
+                MemberPassword: memberPassword,
+                MemberUsername: this.state.email,
+                MemberName: this.state.firsname
+            })
+                .then(res2 => {
+
+                    salt = res2.data.Salt;
+                    //console.log(response.data);
+                    //success = true;
+                    axios.post(webAddress + 'api/member/memberId', {
+                        memberID: res.data.memberId
+                    })
+                        .then(res3 => {
+                            success = true;
+                            console.log(res3.data.memberID);
+                            //this.setState({ newAccountSuccessful: true });  
+                            this.changeLoginSuccess(this.state.email, salt);
+
+                        })
+                        .catch(function (error) {
+                            //errorMessage = ""
+                            console.log("this is the error on the login page for saving the id: " + error);
+                        });
+                   
+
+                })
+                .catch(function (error) {
+                    console.log("the error for creating an account is: " + error);
+                });
 
         });
 
-       await axios.post(webAddress + 'api/member/createMember', {
-            MemberId: memberId,
-            MemberPassword: memberPassword,
-            MemberUsername: this.state.email,
-            MemberName: this.state.firsname
-        })
-            .then(function (response) {
-                console.log(response.data);
-                if (success == true) {
-                    this.setState({ newAccountSuccessful: true });
-                }
-
-            })
-            .catch(function (error) {
-                console.log("the error for creating an account is: " + error);
-            });
-
-      
+            
     }
 
 
+    changeLoginSuccess(username, salt) {
+        axios.post(webAddress + 'api/member/memberData', {
+            MemberUsername: username,
+            Salt: salt
+        })
+            .then(res => {
+                //success = true;
+                console.log(res.data.memberID);
+                this.setState({ newAccountSuccessful: true });
+
+            })
+            .catch(function (error) {
+                //errorMessage = ""
+                console.log("this is the error on the login page for saving the id: " + error);
+            });  
+    }
 
 
 
@@ -270,7 +304,7 @@ export class MemberNewAccount extends Component {
             console.log(this.state.firstname);
             //return <Redirect to='/member' />
             try {
-                this.props.changePage(3, this.state.firstname + " " + this.state.lastName.charAt(0), true);
+                this.props.changePage(3, this.state.firsname + " " + this.state.lastName.charAt(0), true);
                 this.props.loginUser();
                
             } catch (e) {
