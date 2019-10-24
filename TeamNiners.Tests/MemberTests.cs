@@ -1,12 +1,16 @@
-using NUnit.Framework;
+﻿using NUnit.Framework;
+using System;
+using System.Collections.Generic;
+using System.Text;
 
-namespace Tests
+namespace TeamNiners.Tests
 {
-    public class Tests
+    class Class1
     {
         [SetUp]
         public void Setup()
         {
+
         }
 
         [Test]
