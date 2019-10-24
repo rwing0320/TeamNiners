@@ -8,7 +8,8 @@ import './css/LoginPage.css';
 import './css/MemberCreateAccountPage.css';
 import { EmployeeNav } from './EmployeeNav';
 import { Layout } from './Layout';
-import { MemberNav } from './MemberNav'
+import { MemberNav } from './MemberNav';
+import { webAddress } from './reference/reference';
 
 
 export class MemberNewAccount extends Component {
@@ -220,7 +221,7 @@ export class MemberNewAccount extends Component {
         var success = true;
         var memberPassword = this.state.password;
 
-        axios.post('http://localhost:52899/api/MemberAccount', {
+        axios.post(webAddress + 'api/MemberAccount', {
             FirstName: this.state.firsname,
             LastName: this.state.lastName,
             MemberAddress: this.state.address,
@@ -232,7 +233,7 @@ export class MemberNewAccount extends Component {
         }).then(function (response) {
             var memberId = response.data.memberId;
             var memberEmail = response.data.memberEmail;
-            axios.post('http://localhost:52899/api/MemberAccount/AddMemberLogin', {
+            axios.post(webAddress + 'api/MemberAccount/AddMemberLogin', {
                 MemberId: memberId,
                 MemberUsername: memberEmail,
                 MemberPassword: memberPassword
@@ -265,7 +266,7 @@ export class MemberNewAccount extends Component {
             console.log(this.state.firstname);
             //return <Redirect to='/member' />
             try {
-                this.props.changePage(3, this.state.firstname + " " + this.state.lastName.charAt(0));
+                this.props.changePage(3, this.state.firstname + " " + this.state.lastName.charAt(0), true);
                 this.props.loginUser();
                
             } catch (e) {

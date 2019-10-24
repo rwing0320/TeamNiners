@@ -3,6 +3,7 @@ import { Col, Grid, Row, Button, Accordion, Panel } from 'react-bootstrap';
 import axios from 'axios';
 import { Redirect, Link } from 'react-router-dom';
 import './css/EmployeeGameModPage.css';
+import { webAddress } from './reference/reference';
 
 
 export class EmployeeGameMod extends Component {
@@ -26,7 +27,7 @@ export class EmployeeGameMod extends Component {
         this.gameDescInput = null;
         this.gameCostInput = null;
 
-        axios.get('http://localhost:64874/api/GameCategory')
+        axios.get(webAddress + 'api/GameCategory')
             .then(res => {
                 console.log(res.data);
                 this.setState({gameCategories: res.data})
@@ -35,7 +36,7 @@ export class EmployeeGameMod extends Component {
                 //});
             })
  
-        axios.get('http://localhost:64874/api/GamePlatform')
+        axios.get(webAddress + 'api/GamePlatform')
             .then(res => {
                 console.log(res.data);
                 this.setState({ gamePlatforms: res.data })
@@ -106,7 +107,7 @@ export class EmployeeGameMod extends Component {
         var gameId = 0;
         var businessId = this.props.data2;
         var success = true;
-        axios.post('http://localhost:64874/api/Game', {
+        axios.post(webAddress + 'api/Game', {
             GameTitle: this.state.gameName,
             GameDescription: this.state.gameDesc,
             ReleaseDate: this.state.gameReleaseDate,
@@ -121,7 +122,7 @@ export class EmployeeGameMod extends Component {
                 gameId = response.data.gameId;
                 console.log("the game id is: " + gameId);
 
-                axios.post('http://localhost:64874/api/Game/AddBusinessGame', {
+                axios.post(webAddress + 'api/Game/AddBusinessGame', {
                     businessId: businessId,
                     gameId: gameId,
 

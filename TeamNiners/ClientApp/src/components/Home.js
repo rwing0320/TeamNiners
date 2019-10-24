@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import { MemberNav } from './MemberNav'
 
+import { webAddress } from './reference/reference';
+
 export class Home extends Component {
   displayName = Home.name
 
@@ -11,12 +13,24 @@ export class Home extends Component {
         this.getData = this.getData.bind(this);
         this.getBusinessLoginData = this.getBusinessLoginData.bind(this);
 
-        try {
-            console.log(this.props.location.state.isLoggedIn);
 
-        } catch (e) {
-            console.log("error");
-        }
+        axios.get(webAddress + 'api/member/memberId', {
+            
+        })
+            .then(function (response) {
+                console.log("The member ID for Login on home page is: " + response.data);
+
+            })
+            .catch(function (error) {
+                //errorMessage = ""
+                console.log("this is the error on the login page for saving the id: " + error);
+            });
+        //try {
+        //    console.log(this.props.location.state.isLoggedIn);
+
+        //} catch (e) {
+        //    console.log("error");
+        //}
 
         //new MemberNav().trialFunction();
 
@@ -25,7 +39,7 @@ export class Home extends Component {
     getData() {
 
         console.log("test");
-        axios.get('http://localhost:64874/api/APIBusinesses')
+        axios.get(webAddress + 'api/APIBusinesses')
             .then(res => {
                 console.log(res.data);
                 this.setState({
@@ -37,7 +51,7 @@ export class Home extends Component {
     getBusinessLoginData() {
 
     console.log("test");
-            axios.get('http://localhost:54047/api/BusinessLogins')
+            axios.get(webAddress + 'api/BusinessLogins')
         .then(res => {
             console.log(res.data);
             this.setState({
@@ -50,7 +64,7 @@ export class Home extends Component {
 
     myFunction = () => {
         console.log("test");
-        axios.get('http://localhost:54047/api/APIBusinesses')
+        axios.get(webAddress + 'api/APIBusinesses')
             .then(res => {
                 console.log(res.data);
             })

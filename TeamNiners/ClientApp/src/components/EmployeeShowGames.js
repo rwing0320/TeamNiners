@@ -4,6 +4,8 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 import './css/ShowGamesPage.css';
 
+import { webAddress } from './reference/reference';
+
 
 export class EmployeeShowGames extends Component {
     constructor(props) {
@@ -27,7 +29,7 @@ export class EmployeeShowGames extends Component {
     }
 
     getGames() {
-        axios.get('http://localhost:60529/api/game/showgames_business')
+        axios.get(webAddress + 'api/game/showgames_business')
             .then(res => {
                 const games = res.data;
                 this.setState({ games });

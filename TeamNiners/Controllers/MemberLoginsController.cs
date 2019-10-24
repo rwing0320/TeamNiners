@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using TeamNiners.Helpers;
 using TeamNiners.Interfaces;
 using TeamNiners.Models;
 
@@ -147,6 +148,27 @@ namespace TeamNiners.Controllers
 
             return Ok(memberLogin);
         }
+
+        [HttpPost]
+        [Route("/api/member/memberId")]
+        public IActionResult MemberId([FromBody]LocalMember id)
+        {
+
+            UserTempStorage.memberID = id.memberId;
+
+
+            return Ok(UserTempStorage.memberID);
+        }
+
+        [HttpGet]
+        [Route("/api/member/memberId")]
+        public IActionResult GetEmployeeId()
+        {
+
+            return Ok(UserTempStorage.memberID);
+
+        }
+
 
         private bool MemberLoginExists(int id)
         {
