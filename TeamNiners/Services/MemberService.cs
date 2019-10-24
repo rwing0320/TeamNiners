@@ -25,6 +25,7 @@ namespace TeamNiners.Services
 
         //Sets up dependency injection to grab connectionString later
         public IConfiguration connectionString;
+       
 
 
         public void SetupUserServiceConnection()
@@ -110,6 +111,63 @@ namespace TeamNiners.Services
             return id;
         }
 
+
+        public MemberLogin createAccount(MemberLogin memberLogin)
+        {
+            //DataTable tempTable = new DataTable();
+            SetupUserServiceConnection();
+
+            var securityInstance = new SecurityService();
+
+            MemberLogin login = new MemberLogin();
+            login.MemberPassword = memberLogin.MemberPassword;
+            login.MemberId = memberLogin.MemberId;
+            login.MemberUsername = memberLogin.MemberUsername;
+            login.MemberName = memberLogin.MemberName;
+
+            string salt = securityInstance.GenerateSalt(login.MemberPassword);
+            //tempTable = GetBusinessLoginData();
+            //FillUserList(tempTable);
+
+            login.Salt = salt;
+
+            string hashedInputPassword = securityInstance.HashingCheckLogin(login.MemberPassword, salt);
+
+            login.MemberPassword = hashedInputPassword;
+
+            using (SqlConnection sqlConnection = new SqlConnection(connectionString.GetSection("ConnectionStrings").GetSection("NinersConnection").Value))
+            {
+                SqlDataAdapter adapter = new SqlDataAdapter();
+
+                adapter.TableMappings.Add("BusinessLogin", "Logins");
+
+                sqlConnection.Open();
+
+                SqlCommand command = new SqlCommand(
+                    "INSERT INTO dbo.MemberLogin VALUES(" + login.MemberId  + ",'" + login.MemberUsername +  "','" + login.MemberPassword + "'," + 0 +",'" + login.MemberName + "','NULL','" + salt + "');",
+                    sqlConnection);
+
+                command.CommandType = CommandType.Text;
+
+                adapter.InsertCommand = command;
+
+                //adapter.Insert(tempTable);
+
+                command.ExecuteNonQuery();
+
+                sqlConnection.Close();
+
+            }
+
+            //_context.MemberLogin.Add(login);
+            //_context.SaveChanges();
+
+            AuthenticateNewUser(login);
+            //Logout(username);
+
+            return login;
+        }
+
         public DataTable GetMemberLoginData()
         {
 
@@ -193,6 +251,41 @@ namespace TeamNiners.Services
             _appSettings = appSettings.Value;
         }
 
+
+        public MemberLogin AuthenticateNewUser(MemberLogin login)
+        {
+            //Setting up necessary variables and a SecurityService instance to use hashing method
+            var securityInstance = new SecurityService();
+            DataTable tempTable = new DataTable();
+            string HashedPassword = login.MemberPassword;
+            string salt = login.Salt;
+            
+
+         
+            // Authentication successful so generate JWT Token
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var key = Encoding.ASCII.GetBytes(_appSettings.Secret);
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(new Claim[]
+                {
+                new Claim(ClaimTypes.Name, login.MemberUsername.ToString())
+                }),
+                Expires = DateTime.UtcNow.AddDays(7),
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+            };
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+            login.Token = tokenHandler.WriteToken(token);
+
+            // Remove password before returning
+            login.MemberPassword = null;
+            
+
+            setMemberLoginData(tempTable, login.Token, login.MemberId);
+
+            return login;
+
+        }
         public MemberLogin Authenticate(string username, string password, string storedSalt)
         {
 
@@ -277,6 +370,65 @@ namespace TeamNiners.Services
             return user;
 
         }
+
+
+        public MemberLogin ChangePassword(string oldPassword, string newPassword, string username, string salt)
+        {
+
+            DataTable tempTable = new DataTable();
+            var securityInstance = new SecurityService();
+
+            tempTable = GetMemberLoginData();
+            FillUserList(tempTable);
+
+            string hashedInputPassword = securityInstance.HashingCheckLogin(oldPassword, salt);
+
+            try
+            {
+                if (userList[username] == hashedInputPassword)
+                {
+
+                    string NewSalt = securityInstance.GenerateSalt(newPassword);
+                    string setNewPassword = securityInstance.HashingCheckLogin(newPassword, NewSalt);
+
+
+                    using (SqlConnection sqlConnection = new SqlConnection(connectionString.GetSection("ConnectionStrings").GetSection("NinersConnection").Value))
+                    {
+                        SqlDataAdapter adapter = new SqlDataAdapter();
+
+                        adapter.TableMappings.Add("BusinessLogin", "Logins");
+
+                        sqlConnection.Open();
+
+                        SqlCommand command = new SqlCommand(
+                            "UPDATE dbo.MemberLogin SET memberPassword = '" + setNewPassword + "', Salt = '" + NewSalt + "' WHERE email = '" + username + "';",
+                            sqlConnection);
+
+                        command.CommandType = CommandType.Text;
+
+                        adapter.UpdateCommand = command;
+
+                        adapter.Update(tempTable);
+
+                        command.ExecuteNonQuery();
+
+                        sqlConnection.Close();
+
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                return null;
+            }
+
+            //Logout(username);
+
+            return null;
+        }
+
+       
+
 
         public IEnumerable<MemberLogin> GetAll()
         {

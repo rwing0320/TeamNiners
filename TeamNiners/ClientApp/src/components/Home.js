@@ -18,7 +18,7 @@ export class Home extends Component {
             
         })
             .then(function (response) {
-                console.log("The member ID for Login on home page is: " + response.data);
+                console.log("The member info for Login on home page is: " + response.data[0] + " , " + response.data[1] + " , " + response.data[2]);
 
             })
             .catch(function (error) {

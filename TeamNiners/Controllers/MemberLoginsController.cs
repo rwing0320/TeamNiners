@@ -18,12 +18,16 @@ namespace TeamNiners.Controllers
     {
         private IUserService _userService;
         public IlocalService _localService;
+        private IMemberService _memberService;
+
+        MemberLogin ml = new MemberLogin();
+
         private readonly dbo_NinersContext _context;
 
-        public MemberLoginsController(dbo_NinersContext context)
+        public MemberLoginsController(dbo_NinersContext context, IMemberService memberService)
         {
-        
-        _context = context;
+            _memberService = memberService;
+            _context = context;
         }
 
         [AllowAnonymous]
@@ -38,6 +42,23 @@ namespace TeamNiners.Controllers
             return Ok(user);
         }
 
+        
+        [HttpPost]
+        [Route("/api/member/createMember")]
+        public IActionResult CreateAccount([FromBody]MemberLogin login)
+        {
+            //MemberLogin member = new MemberLogin();
+
+
+            //var item = new MemberLogin();
+              var member = _memberService.createAccount(login);
+
+
+            //_memberService.Authenticate(member.MemberUsername, member.MemberPassword,member.Salt);
+
+            return Ok(member);
+        }
+
         // GET: api/MemberLogins
         [HttpGet]
         public IEnumerable<MemberLogin> GetMemberLogin()
@@ -47,6 +68,7 @@ namespace TeamNiners.Controllers
 
         // GET: api/MemberLogins/5
         [HttpGet("{id}")]
+        [Route("/api/member/GetMemberLogin")]
         public async Task<IActionResult> GetMemberLogin([FromRoute] int id)
         {
             if (!ModelState.IsValid)
@@ -160,15 +182,39 @@ namespace TeamNiners.Controllers
             return Ok(UserTempStorage.memberID);
         }
 
+    
+
+        [HttpPost]
+        [Route("/api/member/memberData")]
+        public IActionResult MemberData([FromBody]MemberLogin id)
+        {
+
+            UserTempStorage.email = id.MemberUsername;
+            UserTempStorage.salt = id.Salt;
+
+            return Ok(UserTempStorage.memberID);
+        }
+
+
+
         [HttpGet]
         [Route("/api/member/memberId")]
         public IActionResult GetEmployeeId()
         {
-
-            return Ok(UserTempStorage.memberID);
+            string[] myArray = { UserTempStorage.memberID.ToString(), UserTempStorage.email, UserTempStorage.salt }; 
+            return Ok(myArray);
 
         }
 
+        [AllowAnonymous]
+        [HttpPut]
+        [Route("/api/member/changepassword")]
+        public IActionResult ChangePassword([FromBody] ChangePassword inputValues)
+        {
+            ml = _memberService.ChangePassword(inputValues.OldPassword, inputValues.NewPassword,
+                UserTempStorage.email, UserTempStorage.salt);
+            return Ok(inputValues);
+        }
 
         private bool MemberLoginExists(int id)
         {

@@ -22,7 +22,7 @@ export class Dashboard extends Component {
         this.setNewPasswordConfirmation = this.setNewPasswordConfirmation.bind(this);
         this.changePassword = this.changePassword.bind(this);
 
-        axios.get('http://localhost:51308/api/users/getEmployeeId')
+        axios.get(webAddress + 'api/users/getEmployeeId')
             .then(res => {
                 console.log("The business ID for dashboard is: " + res.data);
                 this.setState({ businessId: res.data })

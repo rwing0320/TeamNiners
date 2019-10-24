@@ -6,6 +6,8 @@ import './css/MemberAccountInfo.css';
 
 import { webAddress } from './reference/reference';
 
+import axios from 'axios';
+
 export class MemberAccountInfo extends Component {
     displayName = MemberAccountInfo.name
 
@@ -96,6 +98,17 @@ export class MemberAccountInfo extends Component {
 
     savePassword() {
         console.log("Saving Password");
+        axios.put(webAddress + 'api/member/changepassword',
+            {
+                oldPassword: this.state.oldPassword,
+                newPassword: this.state.password,
+                newPasswordConfirmation: this.state.re_enteredPassword
+            })
+            .then(res => {
+               
+            })
+
+
     }
 
 
