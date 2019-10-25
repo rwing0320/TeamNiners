@@ -69,7 +69,7 @@ namespace TeamNiners.Controllers
         // GET: api/MemberLogins/5
         [HttpGet("{id}")]
         [Route("/api/member/GetMemberLogin")]
-        public async Task< ActionResult<MemberLogin>> GetMemberLogin([FromRoute] int id)
+        public async Task<ActionResult<MemberLogin>> GetMemberLogin([FromRoute] int id)
         {
             if (!ModelState.IsValid)
             {
@@ -83,7 +83,7 @@ namespace TeamNiners.Controllers
 
             if (memberLogin == null)
             {
-                return NotFound();
+                return NotFound(new { Message = "No Member Found"});
             }
 
             return memberLogin;

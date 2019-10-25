@@ -58,8 +58,7 @@ namespace TeamNiners.Tests
             var memberId = returnedMember.Value.MemberId;
 
             // Assert
-            //Assert.IsNotEmpty(returnedMember.ToString());
-            Assert.IsNotNull(returnedMember);
+            Assert.AreEqual(memberId, id);
             
         }
 
@@ -70,19 +69,11 @@ namespace TeamNiners.Tests
             int id = 0;
             var dbContext = DbContextMock.context(nameof(Check_GetMemberLogin_ReturnMemberLoginObjectIsNull));
             var controller = new MemberLoginsController(dbContext, null);
-
-
+            
             // Act
             var returnedMember = await controller.GetMemberLogin(id);
-            
-            
-            
-                 
-            Assert.AreEqual(returnedMember, id);
-            //Assert.Is(returnedMember);
-
-           
-            
+            //Assert
+            Assert.AreEqual(returnedMember.Value, null);
 
         }
 
