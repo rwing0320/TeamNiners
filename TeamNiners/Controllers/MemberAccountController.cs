@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using TeamNiners.Helpers;
 using TeamNiners.Models;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -34,6 +35,22 @@ namespace TeamNiners.Controllers
             return CreatedAtAction("PostMember", new { id = Member.MemberId }, Member);
         }
 
+        [HttpGet]
+        [Route("/api/MemberAccount/GetMember")]
+        public async Task<IActionResult> GetMember()
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var member = await _context.Member.FindAsync(UserTempStorage.memberID);
+
+
+            return Ok(member);
+        }
+
+       
 
         [HttpPost]
         [Route("/api/MemberAccount/AddMemberLogin")]
@@ -50,36 +67,6 @@ namespace TeamNiners.Controllers
             //return CreatedAtAction("GetBusinessGames", new { id = businessGamingInfo.GameId }, businessGamingInfo);
             return CreatedAtAction("PostMemberLogin", new { id = memberLogin.MemberId }, memberLogin);
         }
-        //// GET: api/<controller>
-        //[HttpGet]
-        //public IEnumerable<string> Get()
-        //{
-        //    return new string[] { "value1", "value2" };
-        //}
-
-        //// GET api/<controller>/5
-        //[HttpGet("{id}")]
-        //public string Get(int id)
-        //{
-        //    return "value";
-        //}
-
-        //// POST api/<controller>
-        //[HttpPost]
-        //public void Post([FromBody]string value)
-        //{
-        //}
-
-        //// PUT api/<controller>/5
-        //[HttpPut("{id}")]
-        //public void Put(int id, [FromBody]string value)
-        //{
-        //}
-
-        //// DELETE api/<controller>/5
-        //[HttpDelete("{id}")]
-        //public void Delete(int id)
-        //{
-        //}
+     
     }
 }

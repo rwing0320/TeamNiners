@@ -25,14 +25,7 @@ export class Home extends Component {
                 //errorMessage = ""
                 console.log("this is the error on the login page for saving the id: " + error);
             });
-        //try {
-        //    console.log(this.props.location.state.isLoggedIn);
-
-        //} catch (e) {
-        //    console.log("error");
-        //}
-
-        //new MemberNav().trialFunction();
+     
 
   }
 

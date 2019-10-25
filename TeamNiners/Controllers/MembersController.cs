@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using TeamNiners.Models;
 using TeamNiners.Interfaces;
 using TeamNiners.Helpers;
+using System.Linq;
 
 namespace TeamNiners.Controllers
 {
@@ -13,12 +14,13 @@ namespace TeamNiners.Controllers
         private IMemberService _memberService;
 
         MemberLogin ml = new MemberLogin();
-       // public IlocalService _localService;
+        // public IlocalService _localService;
+        private readonly dbo_NinersContext _context;
 
-
-        public MembersController(IMemberService memberService)
+        public MembersController(dbo_NinersContext context, IMemberService memberService)
         {
             _memberService = memberService;
+            _context = context;
         }
 
         [HttpGet]
@@ -49,6 +51,30 @@ namespace TeamNiners.Controllers
             return Ok(ml);
         }
 
+
+        // [AllowAnonymous]
+        [HttpPost]
+        [Route("/api/members/checkEmail")]
+        public IActionResult CheckEmail([FromBody]Member login)
+        {
+            
+            //var user = _userService.Authenticate(userParam.Email, userParam.Psswd);
+             var memberLogin = _context.Member.Where(p => p.MemberEmail == login.MemberEmail);
+
+            //var memberLogin = _context.MemberLogin.Find();
+           // log.d(memberLogin.Count());
+
+            if (memberLogin.Count() == 0)
+            {
+                return Ok(new { message = "" });
+
+            }
+
+            //MemberTempStorage.memberEmail = ml.MemberUsername;
+
+            return Ok(new { message = "Email Already Used!"});
+        }
+
         [HttpPost]
         [Route("/api/members/memberId")]
         public IActionResult MemberId([FromBody]LocalMember id)
@@ -64,14 +90,6 @@ namespace TeamNiners.Controllers
         [Route("/api/members/getEmployeeId")]
         public IActionResult GetMemberId()
         {
-
-           
-
-            //LocalEmployee lemp = new LocalEmployee();
-
-            //lemp.businessId = id.businessId;
-            //id.businessId = id;
-
 
             return Ok(MemberTempStorage.memberId);
         }
@@ -93,10 +111,7 @@ namespace TeamNiners.Controllers
 
             return Ok(ml);
 
-            //if (user == null)
-            //    return BadRequest(new { message = "Username or password is incorrect" });
 
-            //return Ok(user);
         }
 
     }

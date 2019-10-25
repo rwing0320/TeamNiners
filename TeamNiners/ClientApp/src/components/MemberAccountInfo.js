@@ -13,7 +13,7 @@ export class MemberAccountInfo extends Component {
 
     constructor(props) {
         super(props);
-        this.state = { password: "", re_enteredPassword: "", oldPassword: "", passwordError: false, passwordRetypeError: false, accordionVal: 0, onHome: true };
+        this.state = { password: "", re_enteredPassword: "", oldPassword: "", passwordError: false, passwordRetypeError: false, accordionVal: 0, onHome: true, firstName: "", lastName: "", phoneNumber: "", email: "", address: "", country: "", city: "", postalCode: ""  };
 
         this.setOldPassword = this.setOldPassword.bind(this);
         this.setNewPassword = this.setNewPassword.bind(this);
@@ -28,6 +28,33 @@ export class MemberAccountInfo extends Component {
         this.passwordInput = null;
         this.re_EnteredPasswordInput = null;
         this.oldPasswordInput = null;
+
+        axios.get(webAddress + 'api/member/memberId', {
+
+        })
+            .then(res => {
+                console.log("The member info for Login on home page is: " + res.data[0] + " , " + res.data[1] + " , " + res.data[2]);
+
+                axios.get(webAddress + 'api/MemberAccount/GetMember', {
+                    
+                })
+                    .then(res2 => {
+                        console.log(res2.data);
+                        this.setState({firstName: res2.data.firstName, lastName: res2.data.lastName, phoneNumber: res2.data.memberPhoneNumber, email: res2.data.memberEmail, address: res2.data.memberAddress, country: res2.data.memberCountry, city: res2.data.memberCity, postalCode: res2.data.memberPostalCode});
+
+
+                    })
+                    .catch(function (error) {
+                        //errorMessage = ""
+                        console.log("this is the error on the login page for saving the id: " + error);
+                    });
+
+            })
+            .catch(function (error) {
+                //errorMessage = ""
+                console.log("this is the error on the login page for saving the id: " + error);
+            });
+
     }
 
 
@@ -204,14 +231,14 @@ export class MemberAccountInfo extends Component {
 
                         <div className="input-group">
                             <span className="input-group-addon" id="basic-addon1">Username</span>
-                            <input type="text" className="form-control" placeholder="Email" aria-describedby="basic-addon1" readOnly />
+                            <input type="text" className="form-control" placeholder="Email" aria-describedby="basic-addon1" value={this.state.email} readOnly />
                         </div>
 
                         <br />
 
 
                         <div className="input-group">
-                            <input type="text" className="form-control" placeholder="Recipient's first name" aria-describedby="basic-addon2" readOnly />
+                            <input type="text" className="form-control" placeholder="Recipient's first name" aria-describedby="basic-addon2" value={this.state.firstName} readOnly />
                             <span className="input-group-addon" id="basic-addon2">First Name</span>
                         </div>
 
@@ -219,14 +246,14 @@ export class MemberAccountInfo extends Component {
 
 
                         <div className="input-group">
-                            <input type="text" className="form-control" placeholder="Recipient's last name" aria-describedby="basic-addon2" readOnly />
+                            <input type="text" className="form-control" placeholder="Recipient's last name" aria-describedby="basic-addon2" value={this.state.lastName} readOnly />
                             <span className="input-group-addon" id="basic-addon2">Last Name</span>
                         </div>
 
                         <br />
 
                         <div className="input-group">
-                            <input type="text" className="form-control" placeholder="Phone Number" aria-describedby="basic-addon2" readOnly />
+                            <input type="text" className="form-control" placeholder="Phone Number" aria-describedby="basic-addon2" value={this.state.phoneNumber} readOnly />
                             <span className="input-group-addon" id="basic-addon2">Phone Number</span>
                         </div>
 
@@ -243,7 +270,7 @@ export class MemberAccountInfo extends Component {
 
                         <div className="input-group">
                             <span className="input-group-addon" id="basic-addon1">Address</span>
-                            <input type="text" className="form-control" placeholder="Address" aria-describedby="basic-addon1" />
+                            <input type="text" className="form-control" placeholder="Address" value={this.state.address} aria-describedby="basic-addon1" readOnly />
                         </div>
 
                         <br />
@@ -252,12 +279,12 @@ export class MemberAccountInfo extends Component {
                             <div className="col-lg-6">
                                 <div className="input-group">
                                     <span className="input-group-addon" id="basic-addon1">Country</span>
-                                    <input type="text" className="form-control" placeholder="Country" aria-describedby="basic-addon1" />
+                                    <input type="text" className="form-control" placeholder="Country" value={this.state.country} aria-describedby="basic-addon1" readOnly/>
                                 </div>
                             </div>
                             <div className="col-lg-6">
                                 <div className="input-group">
-                                    <input type="text" className="form-control" placeholder="City" aria-describedby="basic-addon2" />
+                                    <input type="text" className="form-control" placeholder="City" value={this.state.city} aria-describedby="basic-addon2" readOnly/>
                                     <span className="input-group-addon" id="basic-addon2">City</span>
                                 </div>
                             </div>
@@ -267,7 +294,7 @@ export class MemberAccountInfo extends Component {
 
 
                         <div className="input-group">
-                            <input type="text" className="form-control" placeholder="Postal Code" aria-describedby="basic-addon2" />
+                            <input type="text" className="form-control" placeholder="Postal Code" value={this.state.postalCode} aria-describedby="basic-addon2" readOnly/>
                             <span className="input-group-addon" id="basic-addon2">Postal Code</span>
                         </div>
 
