@@ -1,20 +1,19 @@
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using NUnit.Framework;
+using System;
+using System.Collections.Generic;
+using System.Text;
 using TeamNiners.Helpers;
 using TeamNiners.Services;
 
-namespace Tests
+namespace TeamNiners.Tests
 {
-    public class UserTests
+    class UserTestsFInal
     {
         //Sets up dependency injection to grab connectionString later
         public IConfiguration connectionString;
         public static IOptions<AppSettings> _config;
-
-
-
-       
 
         [SetUp]
         public void Setup()
@@ -53,6 +52,7 @@ namespace Tests
 
             Assert.AreEqual(expectedID, actualID);
         }
+
 
 
     }

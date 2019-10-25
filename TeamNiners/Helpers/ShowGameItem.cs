@@ -18,9 +18,9 @@ namespace TeamNiners.Helpers
         public Int64 Price { get; set; }
 
 
-        private IConfiguration connectionString;
+        private static IConfiguration connectionString;
 
-        public void SetupUserServiceConnection()
+        public static void SetupUserServiceConnection()
         {
             var builder = new ConfigurationBuilder().AddJsonFile("appsettings.json").SetBasePath(System.Environment.CurrentDirectory);
             var config = builder.Build();
@@ -31,7 +31,7 @@ namespace TeamNiners.Helpers
         /// Retrieves the list of games that the business has posted.
         /// Uses the id stored in UserTempStorage in query to get games for logged in user
         /// </summary>
-        public List<ShowGameItem> GetGamesList()
+        public static List<ShowGameItem> GetGamesList()
         {
             SetupUserServiceConnection();
             int id = UserTempStorage.id;

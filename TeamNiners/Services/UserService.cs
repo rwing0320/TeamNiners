@@ -78,6 +78,8 @@ namespace TeamNiners.Services
         /// </summary>
         public int GetUserID(string email)
         {
+            SetupUserServiceConnection();
+
             int id = 0;
             DataSet ds = new DataSet();
 

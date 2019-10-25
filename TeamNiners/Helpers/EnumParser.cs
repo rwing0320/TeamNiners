@@ -65,17 +65,25 @@ namespace TeamNiners.Helpers
 
         public static string NormalizeOutput(string val)
         {
-            if (val != "Sci_Fi" || val != "Role_Playing")
-            {
-                val = val.Replace('_', ' ');
-            } else
-            {
-                val = val.Replace('_', '-');
-            }
 
-            if (val == "Nintendo_Sixty_Four")
+            try
             {
-                val = "Nintendo 64";
+                if (val != "Sci_Fi" || val != "Role_Playing")
+                {
+                    val = val.Replace('_', ' ');
+                }
+                else
+                {
+                    val = val.Replace('_', '-');
+                }
+
+                if (val == "Nintendo_Sixty_Four")
+                {
+                    val = "Nintendo 64";
+                }
+            }catch(Exception e)
+            {
+                val = "";
             }
 
             return val;
