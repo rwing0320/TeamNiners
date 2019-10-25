@@ -65,14 +65,6 @@ namespace TeamNiners.Controllers
         public IActionResult GetMemberId()
         {
 
-           
-
-            //LocalEmployee lemp = new LocalEmployee();
-
-            //lemp.businessId = id.businessId;
-            //id.businessId = id;
-
-
             return Ok(MemberTempStorage.memberId);
         }
 
@@ -93,10 +85,6 @@ namespace TeamNiners.Controllers
 
             return Ok(ml);
 
-            //if (user == null)
-            //    return BadRequest(new { message = "Username or password is incorrect" });
-
-            //return Ok(user);
         }
 
     }

@@ -125,8 +125,8 @@ namespace TeamNiners.Controllers
         public List<ShowGameItem> getBusinessGames()
         {
             List<ShowGameItem> gameList = new List<ShowGameItem>();
-
-            gameList = gameHelper.GetGamesList();
+            //ShowGameItem gameHelper = new ShowGameItem();
+            gameList = ShowGameItem.GetGamesList();
 
             return gameList;
 

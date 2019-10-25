@@ -69,7 +69,7 @@ namespace TeamNiners.Controllers
         // GET: api/MemberLogins/5
         [HttpGet("{id}")]
         [Route("/api/member/GetMemberLogin")]
-        public async Task<IActionResult> GetMemberLogin([FromRoute] int id)
+        public async Task< ActionResult<MemberLogin>> GetMemberLogin([FromRoute] int id)
         {
             if (!ModelState.IsValid)
             {
@@ -78,12 +78,15 @@ namespace TeamNiners.Controllers
 
             var memberLogin = await _context.MemberLogin.FindAsync(id);
 
+            
+            //var memberLogin = _context.MemberLogin.Where(p => p.MemberId == id);
+
             if (memberLogin == null)
             {
                 return NotFound();
             }
 
-            return Ok(memberLogin);
+            return memberLogin;
         }
 
         // PUT: api/MemberLogins/5
