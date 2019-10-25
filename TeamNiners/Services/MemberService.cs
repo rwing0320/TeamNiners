@@ -277,8 +277,14 @@ namespace TeamNiners.Services
             var token = tokenHandler.CreateToken(tokenDescriptor);
             login.Token = tokenHandler.WriteToken(token);
 
+            UserTempStorage.memberID = login.MemberId;
+            UserTempStorage.email = login.MemberUsername;
+            UserTempStorage.salt = salt;
+
             // Remove password before returning
             login.MemberPassword = null;
+
+
             
 
             setMemberLoginData(tempTable, login.Token, login.MemberId);
@@ -346,6 +352,9 @@ namespace TeamNiners.Services
             }
             else
             {
+
+
+
                 // Authentication successful so generate JWT Token
                 var tokenHandler = new JwtSecurityTokenHandler();
                 var key = Encoding.ASCII.GetBytes(_appSettings.Secret);
@@ -360,6 +369,9 @@ namespace TeamNiners.Services
                 };
                 var token = tokenHandler.CreateToken(tokenDescriptor);
                 user.Token = tokenHandler.WriteToken(token);
+
+                UserTempStorage.email = username;
+                UserTempStorage.salt = salt;
 
                 // Remove password before returning
                 user.MemberPassword = null;

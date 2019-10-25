@@ -34,8 +34,9 @@ export class MemberNewAccount extends Component {
         this.setPhoneNumber = this.setPhoneNumber.bind(this);
         this.setInputed = this.setInputed.bind(this);
         this.validateForm = this.validateForm.bind(this);
+        this.checkEmail = this.checkEmail.bind(this);
 
-        this.changeLoginSuccess = this.changeLoginSuccess.bind(this);
+        //this.changeLoginSuccess = this.changeLoginSuccess.bind(this);
 
         this.emailInput = null;
         this.passwordInput = null;
@@ -61,6 +62,30 @@ export class MemberNewAccount extends Component {
         this.props.changePage(3, "Peter P");
     }
 
+    checkEmail() {
+        console.log("check email function hit");
+        if (this.state.email != "") {
+            axios.post(webAddress + 'api/members/checkEmail', {
+                memberEmail: this.state.email
+            }).then(res => {
+                console.log(res.data);
+
+                if (res.data.message == "") {
+                    this.setInputed(this.state.email, 3);
+                    this.setState({ emailError: "" });
+                }
+                else {
+
+                    var newError = this.state.emailError + res.data.message; 
+                    this.setState({ emailError: newError });
+
+                    this.setInputed("", 3);
+                }
+                
+            });
+        }
+
+    }
 
     setEmail(event) {
         this.setState({ error: "" });
@@ -249,23 +274,8 @@ export class MemberNewAccount extends Component {
                 .then(res2 => {
 
                     salt = res2.data.Salt;
-                    //console.log(response.data);
-                    //success = true;
-                    axios.post(webAddress + 'api/member/memberId', {
-                        memberID: res.data.memberId
-                    })
-                        .then(res3 => {
-                            success = true;
-                            console.log(res3.data.memberID);
-                            //this.setState({ newAccountSuccessful: true });  
-                            this.changeLoginSuccess(this.state.email, salt);
 
-                        })
-                        .catch(function (error) {
-                            //errorMessage = ""
-                            console.log("this is the error on the login page for saving the id: " + error);
-                        });
-                   
+                    this.setState({ newAccountSuccessful: true });
 
                 })
                 .catch(function (error) {
@@ -275,24 +285,6 @@ export class MemberNewAccount extends Component {
         });
 
             
-    }
-
-
-    changeLoginSuccess(username, salt) {
-        axios.post(webAddress + 'api/member/memberData', {
-            MemberUsername: username,
-            Salt: salt
-        })
-            .then(res => {
-                //success = true;
-                console.log(res.data.memberID);
-                this.setState({ newAccountSuccessful: true });
-
-            })
-            .catch(function (error) {
-                //errorMessage = ""
-                console.log("this is the error on the login page for saving the id: " + error);
-            });  
     }
 
 
@@ -337,15 +329,17 @@ export class MemberNewAccount extends Component {
 
                         Last Name
                         <input type="email" ref={elem => (this.lastNameInput = elem)} onChange={this.setLastName} id="memberfirstname" className="form-control" placeholder="" required  />
-                        <p className="passwordError">{this.state.emailError}</p>
+                        
                     </div>
 
                     Email
-                    <input type="email" ref={elem => (this.emailInput = elem)} onChange={this.setEmail} id="memberEmail" className="form-control" placeholder="" required />
+                    <input type="email" ref={elem => (this.emailInput = elem)} onChange={this.setEmail} id="memberEmail" className="form-control" placeholder="" onBlur={() => this.checkEmail()} required />
+                    <p className="passwordError">{this.state.emailError}</p>
 
                    Phone Number
                     <input type="tel" pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}"  ref={elem => (this.phoneNumberInput = elem)} onChange={this.setPhoneNumber} id="memberphone" className="form-control" placeholder="" required />
                     <p className="passwordError">{this.state.phoneNumberError}</p>
+                  
 
                     <h2 className="h3 mb-3 font-weight-normal"> Address Information </h2>
 
