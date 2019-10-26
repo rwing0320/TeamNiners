@@ -1,13 +1,13 @@
 ﻿import React, { Component } from 'react';
 import { Col, Grid, Row, Glyphicon, Button, Accordion, Panel } from 'react-bootstrap';
 import axios from 'axios';
-import jsPDF from 'jspdf';
-import 'jspdf-autotable';
+//import jsPDF from 'jspdf';
+//import 'jspdf-autotable';
 import { Redirect, Route } from 'react-router-dom';
 import { EmployeeNav } from './EmployeeNav';
 import { Link } from 'react-router-dom';
 import './css/Report.css';
-
+import { webAddress } from './reference/reference';
 
 export class EmployeeGameReport extends Component {
     constructor(props) {
@@ -17,7 +17,7 @@ export class EmployeeGameReport extends Component {
         this.listInput = null;
         this.makeChange = this.makeChange.bind(this);
 
-        axios.get('http://localhost:60529/api/game/showgames_business')
+        axios.get(webAddress + 'api/game/showgames_business')
             .then(res => {
                 console.log(res.data);
                 this.setState({ info: res.data })
@@ -56,16 +56,16 @@ export class EmployeeGameReport extends Component {
     }
 
     exportDetail() {
-        const doc = new jsPDF();
-        doc.text('Game Detail Report', 80,10)
-        doc.autoTable({ html: '.table' });
-        doc.save('GameDetail.pdf');
+    //    const doc = new jsPDF();
+   //     doc.text('Game Detail Report', 80,10)
+  ////      doc.autoTable({ html: '.table' });
+   //     doc.save('GameDetail.pdf');
     }
     exportList() {
-        const doc = new jsPDF();
-        doc.text('Game List Report', 80, 10)
-        doc.autoTable({ html: '.table' });
-        doc.save('GameList.pdf');
+    //    const doc = new jsPDF();
+    //    doc.text('Game List Report', 80, 10)
+   //     doc.autoTable({ html: '.table' });
+    //    doc.save('GameList.pdf');
     }
 
     changePage() {
