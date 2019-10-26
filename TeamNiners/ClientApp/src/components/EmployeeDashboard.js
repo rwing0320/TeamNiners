@@ -118,19 +118,19 @@ export class Dashboard extends Component {
                         <Row>
                             <Col xl={12} id="gameButtonsColumn">
                                 <Link to={'/GameMod'}>
-                                    <button href="#" class="gameButton" id="addGame" onClick={() => this.changePage(2)}>
+                                    <button href="#" className="gameButton" id="addGame" onClick={() => this.changePage(2)}>
                                         Add Game
                                     </button>
                                 </Link>
 
                                 <Link to={'/ShowGames'}>
-                                    <button href="" class="gameButton" id="showGames" onClick={() => this.changePage(3)}>
+                                    <button href="" className="gameButton" id="showGames" onClick={() => this.changePage(3)}>
                                         Show Games
                                     </button>
                                 </Link>
 
                                 <Link to={'/Report'}>
-                                    <button href="" class="gameButton" id="reports" onClick={() => this.changePage(4)}>
+                                    <button href="" className="gameButton" id="reports" onClick={() => this.changePage(4)}>
                                         Reports
                                     </button>
                                 </Link>

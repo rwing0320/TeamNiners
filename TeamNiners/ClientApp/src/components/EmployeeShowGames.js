@@ -61,13 +61,14 @@ export class EmployeeShowGames extends Component {
                         </Row>
                         <Row>
                             <div>
-
+                                <h1>Show Games Page</h1>
                                 <ul>
-
+                                   
                                     {this.state.games.map(game =>
                                         
 
-                                        <div id="showGameItem">
+                                        <div key={game.gameId} id="showGameItem">
+                                            
                                             <h5><b>Name:</b> {game.title}</h5>
                                             <h5><b>Description:</b> {game.description}</h5>
                                             <h5><b>Release Date:</b> {game.releaseDate}</h5>
@@ -82,7 +83,7 @@ export class EmployeeShowGames extends Component {
                                    
                                 </ul>
 
-                                <h1>Show Games Page</h1>
+                                
                                 <Link to={"/Dashboard"}>
                                     <button onClick={() => this.goToDashboard()}>Back</button>
                                 </Link>

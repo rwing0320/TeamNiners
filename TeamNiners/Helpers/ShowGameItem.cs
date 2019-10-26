@@ -17,6 +17,8 @@ namespace TeamNiners.Helpers
         public string Category { get; set; }
         public Int64 Price { get; set; }
 
+        public int gameId { get; set; }
+
 
         private static IConfiguration connectionString;
 
@@ -73,6 +75,7 @@ namespace TeamNiners.Helpers
                 foreach (DataRow dr in dt.Rows)
                 {
                     ShowGameItem tempGame = new ShowGameItem();
+                    tempGame.gameId = (int)dr["gameID"];
                     tempGame.Title = (string)dr["gameTitle"];
                     tempGame.Description = (string)dr["gameDescription"];
                     tempGame.releaseDate = (DateTime)dr["releaseDate"];

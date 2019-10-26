@@ -41,7 +41,7 @@ export class EmployeeDashBoardLayout extends Component {
         }
         else if (this.state.pageNumber == 2) {
             <Link to={`/ModifyGame`} ></Link>
-            return <EmployeeGameMod data2={this.props.data2} changePage={this.changePageNumber.bind(this)}></EmployeeGameMod>
+            return <EmployeeGameMod data2={this.state.pageNumber} changePage={this.changePageNumber.bind(this)}></EmployeeGameMod>
         } else if (this.state.pageNumber == 3) {
             <Link to={`/ShowGames`} ></Link>
             return <EmployeeShowGames data2={this.props.data2} changePage={this.changePageNumber.bind(this)}></EmployeeShowGames>
