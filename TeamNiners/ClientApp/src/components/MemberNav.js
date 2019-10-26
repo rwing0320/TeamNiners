@@ -45,10 +45,11 @@ export class MemberNav extends Component {
 
             });
 
-        // this.props.updateParentState();
         this.setState({ memberLoggedIn: false });
         console.log("member logged in? : " + this.state.memberLoggedIn);
-        this.loginUser();
+
+        this.props.memberLoggedOut();
+
     
 
     }
@@ -103,8 +104,8 @@ export class MemberNav extends Component {
                         <Glyphicon glyph='cog' /> Wish List
                             </NavItem>
                 </LinkContainer>
-                <NavItem onClick={() => this.passNewPage(1)}>
-                <span id="logoutSpan" onClick={this.logout}>
+                <NavItem onClick={() => this.logout}>
+                <span id="logoutSpan" >
                     <Glyphicon glyph='log-out' />
                         <span id="logout">Logout</span>
                     </span>
@@ -115,6 +116,10 @@ export class MemberNav extends Component {
             </Nav>
         } else {
             return <Nav>
+                <NavItem onClick={() => this.passNewPage(3)}>
+                    <Glyphicon glyph='user' /> Home
+                </NavItem>
+
                 <NavItem onClick={() => this.passNewPage(1)}>
                     <Glyphicon glyph='user' /> Login
                              </NavItem>
