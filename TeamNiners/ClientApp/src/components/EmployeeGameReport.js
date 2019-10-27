@@ -7,7 +7,7 @@ import { Redirect, Route } from 'react-router-dom';
 import { EmployeeNav } from './EmployeeNav';
 import { Link } from 'react-router-dom';
 import './css/Report.css';
-
+import { webAddress } from './reference/reference';
 
 export class EmployeeGameReport extends Component {
     constructor(props) {
@@ -17,7 +17,7 @@ export class EmployeeGameReport extends Component {
         this.listInput = null;
         this.makeChange = this.makeChange.bind(this);
 
-        axios.get('http://localhost:60529/api/game/showgames_business')
+        axios.get(webAddress + 'api/game/showgames_business')
             .then(res => {
                 console.log(res.data);
                 this.setState({ info: res.data })

@@ -20,6 +20,7 @@ export class MemberLayout extends Component {
         this.changePage = this.changePage.bind(this);
         this.changePageNumber = this.changePageNumber.bind(this);
         this.changeIsLoggedIn = this.changeIsLoggedIn.bind(this);
+        this.changeIsLoggedOut = this.changeIsLoggedOut.bind(this);
     }
 
 
@@ -58,6 +59,10 @@ export class MemberLayout extends Component {
         this.setState({ isLoggedIn: true });
     }
 
+    changeIsLoggedOut() {
+        this.setState({ isLoggedIn: false, pageNumber: 3 });
+    }
+
     changePage() {
         if (this.state.pageNumber == 1) {
             return <MemberLogin changePage={this.changePageNumber.bind(this)} loginUser={this.changeIsLoggedIn.bind(this)}></MemberLogin>;
@@ -74,10 +79,10 @@ export class MemberLayout extends Component {
 
     changeNavLayout() {
         if (this.state.isLoggedIn == false) {
-            return <MemberNav updatePageState={this.props.updatePageState} userName={this.state.userName} memberLoggedIn={this.state.isLoggedIn}  changePage={this.changePageNumber.bind(this)} />
+            return <MemberNav updatePageState={this.props.updatePageState} userName={this.state.userName} memberLoggedOut={this.changeIsLoggedOut.bind(this)} memberLoggedIn={this.state.isLoggedIn}  changePage={this.changePageNumber.bind(this)} />
         }
         else {
-            return <MemberNav updatePageState={this.props.updatePageState} userName={this.state.userName} memberLoggedIn={this.state.isLoggedIn} changePage={this.changePageNumber.bind(this)} />
+            return <MemberNav updatePageState={this.props.updatePageState} userName={this.state.userName} memberLoggedOut={this.changeIsLoggedOut.bind(this)} memberLoggedIn={this.state.isLoggedIn} changePage={this.changePageNumber.bind(this)} />
         }
     }
   

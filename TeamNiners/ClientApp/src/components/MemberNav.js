@@ -3,7 +3,8 @@ import { Link } from 'react-router-dom';
 import { Glyphicon, Nav, Navbar, NavItem } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 import './css/MemberNav.css';
-
+import { webAddress } from './reference/reference';
+import axios from 'axios';
 
 
 export class MemberNav extends Component {
@@ -19,9 +20,38 @@ export class MemberNav extends Component {
         this.goToBusinessLogin = this.goToBusinessLogin.bind(this);
         this.loginUser = this.loginUser.bind(this);
         this.checkUserName = this.checkUserName.bind(this);
+        this.logout = this.logout.bind(this);
         //this.functionCalled = this.functionCalled.bind(this);
        
       
+    }
+
+    logout() {
+
+        var isLoggedOut = false;
+        //call api to delete key
+         axios.post(webAddress + 'api/members/Logout', {
+
+        })
+            .then(function (response) {
+                console.log(response);
+                isLoggedOut = true;
+                this.setState({ memberLoggedIn: false });
+                
+
+            })
+            .catch(function (error) {
+                console.log("this is the error: " + error);
+
+            });
+
+        this.setState({ memberLoggedIn: false });
+        console.log("member logged in? : " + this.state.memberLoggedIn);
+
+        this.props.memberLoggedOut();
+
+    
+
     }
 
     componentDidMount() {
@@ -50,7 +80,7 @@ export class MemberNav extends Component {
     }
   
     loginUser() {
-        if (this.props.memberLoggedIn == true) {
+        if (this.props.memberLoggedIn === true) {
             return <Nav>
                 <LinkContainer to={'/member'} exact>
                     <NavItem onClick={() => this.passNewPage(3)}>
@@ -74,12 +104,21 @@ export class MemberNav extends Component {
                         <Glyphicon glyph='cog' /> Wish List
                             </NavItem>
                 </LinkContainer>
+                <LinkContainer to={'/'} exact>
+                    <NavItem onClick={this.logout}>
+                            <Glyphicon glyph='log-out' />Logout
+                     </NavItem>           
+                 </LinkContainer >
                 <NavItem id="BusinessLogin" onClick={this.goToBusinessLogin}>
                     <Glyphicon glyph='share' /> Business Login
                         </NavItem>
             </Nav>
         } else {
             return <Nav>
+                <NavItem onClick={() => this.passNewPage(3)}>
+                    <Glyphicon glyph='user' /> Home
+                </NavItem>
+
                 <NavItem onClick={() => this.passNewPage(1)}>
                     <Glyphicon glyph='user' /> Login
                              </NavItem>
