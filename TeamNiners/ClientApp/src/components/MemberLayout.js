@@ -82,7 +82,7 @@ export class MemberLayout extends Component {
             return <MemberNav updatePageState={this.props.updatePageState} userName={this.state.userName} memberLoggedOut={this.changeIsLoggedOut.bind(this)} memberLoggedIn={this.state.isLoggedIn}  changePage={this.changePageNumber.bind(this)} />
         }
         else {
-            return <MemberNav updatePageState={this.props.updatePageState} userName={this.state.userName} memberLoggedOut={this.changeIsLoggedOut.Bind(this)} memberLoggedIn={this.state.isLoggedIn} changePage={this.changePageNumber.bind(this)} />
+            return <MemberNav updatePageState={this.props.updatePageState} userName={this.state.userName} memberLoggedOut={this.changeIsLoggedOut.bind(this)} memberLoggedIn={this.state.isLoggedIn} changePage={this.changePageNumber.bind(this)} />
         }
     }
   

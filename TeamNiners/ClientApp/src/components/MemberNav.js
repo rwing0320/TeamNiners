@@ -104,12 +104,11 @@ export class MemberNav extends Component {
                         <Glyphicon glyph='cog' /> Wish List
                             </NavItem>
                 </LinkContainer>
-                <NavItem onClick={() => this.logout}>
-                <span id="logoutSpan" >
-                    <Glyphicon glyph='log-out' />
-                        <span id="logout">Logout</span>
-                    </span>
-                </NavItem>           
+                <LinkContainer to={'/'} exact>
+                    <NavItem onClick={this.logout}>
+                            <Glyphicon glyph='log-out' />Logout
+                     </NavItem>           
+                 </LinkContainer >
                 <NavItem id="BusinessLogin" onClick={this.goToBusinessLogin}>
                     <Glyphicon glyph='share' /> Business Login
                         </NavItem>

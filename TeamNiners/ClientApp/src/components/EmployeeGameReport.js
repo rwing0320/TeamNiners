@@ -1,8 +1,8 @@
 ﻿import React, { Component } from 'react';
 import { Col, Grid, Row, Glyphicon, Button, Accordion, Panel } from 'react-bootstrap';
 import axios from 'axios';
-//import jsPDF from 'jspdf';
-//import 'jspdf-autotable';
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
 import { Redirect, Route } from 'react-router-dom';
 import { EmployeeNav } from './EmployeeNav';
 import { Link } from 'react-router-dom';
@@ -56,16 +56,16 @@ export class EmployeeGameReport extends Component {
     }
 
     exportDetail() {
-    //    const doc = new jsPDF();
-   //     doc.text('Game Detail Report', 80,10)
-  ////      doc.autoTable({ html: '.table' });
-   //     doc.save('GameDetail.pdf');
+        const doc = new jsPDF();
+        doc.text('Game Detail Report', 80,10)
+        doc.autoTable({ html: '.table' });
+        doc.save('GameDetail.pdf');
     }
     exportList() {
-    //    const doc = new jsPDF();
-    //    doc.text('Game List Report', 80, 10)
-   //     doc.autoTable({ html: '.table' });
-    //    doc.save('GameList.pdf');
+        const doc = new jsPDF();
+        doc.text('Game List Report', 80, 10)
+        doc.autoTable({ html: '.table' });
+        doc.save('GameList.pdf');
     }
 
     changePage() {
