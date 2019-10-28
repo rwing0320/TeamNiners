@@ -32,7 +32,7 @@ namespace TeamNiners.Tests
 
             //Assert
 
-            Assert.IsNotEmpty(value);
+            Assert.AreEqual(value.Count, 0);
         }
 
         [Test]
