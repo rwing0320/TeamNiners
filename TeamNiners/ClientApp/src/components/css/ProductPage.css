@@ -1,0 +1,68 @@
+﻿
+
+
+
+.productForm {
+    
+    display: grid;
+    height: 25vh;
+    width: 100%;
+}
+
+
+.purchaseTable td:nth-child(2) {
+    width: 50%!important;
+}
+
+.productForm form {
+    width: 390px;
+    border-radius: 5px;
+    background-color: #eeeeee;
+    padding: 20px;
+    text-align: center;
+}
+
+
+.purchaseTable {
+    clear: both;
+    width: 85%;
+}
+
+
+
+.description {
+    clear: both;
+}
+
+.gameInfoElement {
+    margin-left: 10px;
+    margin-bottom: 335px;
+}
+
+.productPageCart {
+    height: 155px;
+    width: 100%;
+    margin-top: 20px;
+}
+
+.containerGlyphIcon {
+    display: inline-block;
+    margin-top: 2px;
+}
+
+.productPageDiv {
+    margin: auto;
+    width: 100%;
+}
+
+.cartPanel {
+}
+
+.accordionPanel {
+}
+
+.scrollCart {
+    height: 90px;
+    overflow-y: scroll;
+}
+

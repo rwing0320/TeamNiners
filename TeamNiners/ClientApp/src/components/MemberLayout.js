@@ -8,6 +8,7 @@ import { MemberAccountInfo } from './MemberAccountInfo';
 import { MemberLogin } from './MemberLogin';
 import { Redirect } from 'react-router-dom';
 import { Home } from './Home';
+import { ProductPage } from './ProductPage';
 
 export class MemberLayout extends Component {
     displayName = MemberLayout.name
@@ -70,10 +71,15 @@ export class MemberLayout extends Component {
         else if (this.state.pageNumber == 2) {
             return <MemberNewAccount changePage={this.changePageNumber.bind(this)} loginUser={this.changeIsLoggedIn.bind(this)}></MemberNewAccount>;
         } else if (this.state.pageNumber == 3) {
-            return <Home changePage={this.changePage.bind(this)}></Home>
+            return <Home changePage={this.changePageNumber.bind(this)}></Home>
         } else if (this.state.pageNumber == 4) {
             <Redirect to="/AccountInfo" push />
-            return <MemberAccountInfo changePage={this.changePage.bind(this)}></MemberAccountInfo>
+            return <MemberAccountInfo changePage={this.changePageNumber.bind(this)}></MemberAccountInfo>
+        }
+        else if(this.state.pageNumber == 5) {
+            <Redirect to="/product" push />
+            //return <MemberAccountInfo changePage={this.changePage.bind(this)}></MemberAccountInfo>
+            return <ProductPage changePage={this.changePageNumber.bind(this)}></ProductPage>
         }
     }
 
