@@ -59,8 +59,12 @@ namespace TeamNiners.Controllers
                 return BadRequest(ModelState);
             }
 
+            businessGamingInfo.BusinessId = UserTempStorage.id;
+
             _context.BusinessGames.Add(businessGamingInfo);
             await _context.SaveChangesAsync();
+
+
 
             //return CreatedAtAction("GetBusinessGames", new { id = businessGamingInfo.GameId }, businessGamingInfo);
             return CreatedAtAction("GetBusinessGames", new { id = businessGamingInfo.GameId }, businessGamingInfo);

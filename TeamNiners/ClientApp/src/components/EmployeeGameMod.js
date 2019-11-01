@@ -105,7 +105,7 @@ export class EmployeeGameMod extends Component {
 
     async addGame() {
         var gameId = 0;
-        var businessId = this.props.data2;
+        
         var success = true;
         axios.post(webAddress + 'api/Game', {
             GameTitle: this.state.gameName,
@@ -123,8 +123,7 @@ export class EmployeeGameMod extends Component {
                 console.log("the game id is: " + gameId);
 
                 axios.post(webAddress + 'api/Game/AddBusinessGame', {
-                    businessId: businessId,
-                    gameId: gameId,
+                    gameId: gameId
 
                 })
                     .then(function (response) {
