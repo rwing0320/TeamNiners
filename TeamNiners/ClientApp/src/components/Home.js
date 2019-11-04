@@ -12,6 +12,7 @@ export class Home extends Component {
     this.state = { businessCity: "", email: "" };
         this.getData = this.getData.bind(this);
         this.getBusinessLoginData = this.getBusinessLoginData.bind(this);
+        this.productPage = this.productPage.bind(this);
 
 
         axios.get(webAddress + 'api/member/memberId', {
@@ -64,6 +65,23 @@ export class Home extends Component {
 
     }
 
+    async productPage() {
+        await axios.post(webAddress + 'api/product/productID', {
+            GameId: 1           
+        })
+            .then(res => {
+                console.log(res);
+                
+                this.props.changePage(5);
+
+            })
+            .catch(function (error) {
+                //errorMessage = "You have entered in incorrect credentails! Please try Again!"
+                console.log("this is the error: " + error);
+            });
+
+       
+    }
 
   render() {
     return (
@@ -85,6 +103,8 @@ export class Home extends Component {
             <button onClick={this.getData}>Click Me</button>
             <button onClick={this.getBusinessLoginData}>Click Me</button>
             <p>{this.state.businessCity} AND the Email is {this.state.email}</p>
+
+            <button onClick={this.productPage}>Go To Product Page</button>
 
         </div>
     );

@@ -10,6 +10,7 @@ import { MemberLayout } from './components/MemberLayout';
 import { MemberLogin } from './components/MemberLogin';
 import { MemberNewAccount } from './components/MemberNewAccount';
 import { MemberAccountInfo } from './components/MemberAccountInfo';
+import { ProductPage } from './components/ProductPage';
 import { Redirect} from 'react-router-dom';
 
 export default class App extends Component {
@@ -61,6 +62,7 @@ export default class App extends Component {
                 <Route path='/memberlogin' component={MemberLogin} />
                 <Route path='/accountInfo' component={MemberAccountInfo} />
                 <Route path='/member/register' component={MemberNewAccount} />
+                <Route path='/product' component={ProductPage} />
             </MemberLayout> <Redirect to='/member' /></div>;
         }
     }

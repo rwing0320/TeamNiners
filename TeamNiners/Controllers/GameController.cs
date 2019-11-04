@@ -29,6 +29,8 @@ namespace TeamNiners.Controllers
             return _context.GamingInfo;
         }
 
+
+
         //[HttpPost]
         //public IActionResult PostGame([FromBody]GamingInfo userParam)
         //{
@@ -70,7 +72,16 @@ namespace TeamNiners.Controllers
             return CreatedAtAction("GetBusinessGames", new { id = businessGamingInfo.GameId }, businessGamingInfo);
         }
 
+        [HttpGet]
+        [Route("/api/Game/GetGame")]
+        public IEnumerable<GamingInfo> GetGame()
+        {
+            var gameID = UserTempStorage.gameID;
+            var game = _context.GamingInfo.Where(p => p.GameId == gameID);
 
+
+            return game;
+        }
         // POST: api/Game
         //[HttpPost]
         //public async Task<ActionResult<GamingInfo>> PostGame([FromBody]GamingInfo userParam)
@@ -116,7 +127,7 @@ namespace TeamNiners.Controllers
         //public void Delete(int id)
         //{
         //}
-          [Route("/api/game/showgames_business")]
+        [Route("/api/game/showgames_business")]
           [HttpGet]
           public List<ShowGameItem> DisplayGames_ShowGamesPage() {
 

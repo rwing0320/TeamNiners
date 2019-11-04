@@ -79,6 +79,18 @@ namespace TeamNiners.Controllers
             return Ok(UserTempStorage.id);
         }
 
+        [HttpPost]
+        [Route("/api/product/productID")]
+        public IActionResult ProductID([FromBody]GamingInfo id)
+        {
+
+            UserTempStorage.gameID = id.GameId;
+
+
+            return Ok(UserTempStorage.gameID);
+        }
+
+
         [HttpGet]
         [Route("/api/users/getEmployeeId")]
         public IActionResult GetEmployeeId()
