@@ -19,6 +19,7 @@ namespace TeamNiners.Models
         public virtual DbSet<BusinessGames> BusinessGames { get; set; }
         public virtual DbSet<BusinessLogin> BusinessLogin { get; set; }
         public virtual DbSet<Cart> Cart { get; set; }
+        public virtual DbSet<CartItems> CartItems { get; set; }
         public virtual DbSet<GamingCategory> GamingCategory { get; set; }
         public virtual DbSet<GamingInfo> GamingInfo { get; set; }
         public virtual DbSet<GamingPlatform> GamingPlatform { get; set; }
@@ -135,25 +136,38 @@ namespace TeamNiners.Models
 
             modelBuilder.Entity<Cart>(entity =>
             {
-                entity.Property(e => e.CartId)
-                    .HasColumnName("cartID")
-                    .ValueGeneratedNever();
-
-                entity.Property(e => e.GameId).HasColumnName("gameID");
+                entity.Property(e => e.CartId).HasColumnName("cartID");
 
                 entity.Property(e => e.MemberId).HasColumnName("memberID");
-
-                entity.HasOne(d => d.Game)
-                    .WithMany(p => p.Cart)
-                    .HasForeignKey(d => d.GameId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Cart__gameID__35BCFE0A");
 
                 entity.HasOne(d => d.Member)
                     .WithMany(p => p.Cart)
                     .HasForeignKey(d => d.MemberId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Cart__memberID__36B12243");
+                    .HasConstraintName("FK__Cart__memberID__5070F446");
+            });
+
+            modelBuilder.Entity<CartItems>(entity =>
+            {
+                entity.HasKey(e => e.CartItemdId);
+
+                entity.Property(e => e.CartItemdId).HasColumnName("cartItemdID");
+
+                entity.Property(e => e.CartId).HasColumnName("cartID");
+
+                entity.Property(e => e.GameId).HasColumnName("gameID");
+
+                entity.HasOne(d => d.Cart)
+                    .WithMany(p => p.CartItems)
+                    .HasForeignKey(d => d.CartId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__CartItems__cartI__534D60F1");
+
+                entity.HasOne(d => d.Game)
+                    .WithMany(p => p.CartItems)
+                    .HasForeignKey(d => d.GameId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__CartItems__gameI__5441852A");
             });
 
             modelBuilder.Entity<GamingCategory>(entity =>
@@ -284,6 +298,13 @@ namespace TeamNiners.Models
                     .HasColumnName("memberID")
                     .ValueGeneratedNever();
 
+                entity.Property(e => e.IsValid).HasColumnName("isValid");
+
+                entity.Property(e => e.MemberName)
+                    .HasColumnName("memberName")
+                    .HasMaxLength(255)
+                    .IsUnicode(false);
+
                 entity.Property(e => e.MemberPassword)
                     .IsRequired()
                     .HasColumnName("memberPassword")
@@ -293,6 +314,14 @@ namespace TeamNiners.Models
                 entity.Property(e => e.MemberUsername)
                     .IsRequired()
                     .HasColumnName("memberUsername")
+                    .HasMaxLength(255)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Salt)
+                    .HasMaxLength(255)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Token)
                     .HasMaxLength(255)
                     .IsUnicode(false);
 

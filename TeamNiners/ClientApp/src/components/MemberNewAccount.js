@@ -272,10 +272,38 @@ export class MemberNewAccount extends Component {
                 MemberName: this.state.firsname
             })
                 .then(res2 => {
-
                     salt = res2.data.Salt;
+                    axios.post(webAddress + 'api/cart', {
+                        MemberId: memberId                        
+                    })
+                        .then(res3 => {
+                            var cartId = res3.data.cartID;
 
-                    this.setState({ newAccountSuccessful: true });
+                            axios.post(webAddress + 'api/cart/saveCart', {
+                                cartID: cartId
+                            })
+                                .then(res4 => {
+                                    
+                                    //salt = res2.data.Salt;
+                                    this.setState({ newAccountSuccessful: true });
+                                    //this.setState({ newAccountSuccessful: true });
+
+                                })
+                                .catch(function (error) {
+                                    console.log("the error for creating an account is: " + error);
+                                });
+                            //salt = res2.data.Salt;
+                            //this.setState({ newAccountSuccessful: true });
+                            //this.setState({ newAccountSuccessful: true });
+
+                        })
+                        .catch(function (error) {
+                            console.log("the error for creating an account is: " + error);
+                        });
+
+                    
+
+                    
 
                 })
                 .catch(function (error) {
