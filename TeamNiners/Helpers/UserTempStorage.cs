@@ -14,6 +14,7 @@ namespace TeamNiners.Helpers
 
         public static int memberID = 0;
         public static int cartID = 0;
+        public static int gameID = 0;
 
     }
 }
