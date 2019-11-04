@@ -7,7 +7,7 @@ namespace TeamNiners.Models
     {
         public GamingInfo()
         {
-            Cart = new HashSet<Cart>();
+            CartItems = new HashSet<CartItems>();
         }
 
         public int GameId { get; set; }
@@ -21,6 +21,6 @@ namespace TeamNiners.Models
         public GamingCategory GameCategoryNavigation { get; set; }
         public GamingPlatform GamePlatformNavigation { get; set; }
         public BusinessGames BusinessGames { get; set; }
-        public ICollection<Cart> Cart { get; set; }
+        public ICollection<CartItems> CartItems { get; set; }
     }
 }
