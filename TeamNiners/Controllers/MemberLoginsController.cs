@@ -203,20 +203,17 @@ namespace TeamNiners.Controllers
         [Route("/api/member/saveMemberCart")]
         public IActionResult saveCartIdOnLogin([FromBody] MemberLogin memberLogin)
         {
-           
-            //Cart cart = (Cart) _context.Cart.Where(p => p.MemberId == memberLogin.MemberId);
-            //string cartId = _context.Cart.Where(p => p.MemberId == memberLogin.MemberId).ToString();
 
-           // UserTempStorage.cartID = cart.CartId;
-            //var business = await _context.Business.FindAsync(id);
-            //if (business == null)
-            //{
-            //   return NotFound();
-            //}
+            IQueryable<Cart> cart = _context.Cart.Where(p => p.MemberId == memberLogin.MemberId);
 
-            //_context.Business.Remove(business);
-            //await _context.SaveChangesAsync();
+            int cartId = 0;
+            foreach (Cart result in cart)
+            {
+                cartId = result.CartId;
+            }
 
+             UserTempStorage.cartID = cartId;
+            
             return Ok();
         }
 
