@@ -42,7 +42,7 @@ export class ProductPage extends Component {
         //    .then(res => {
         //        console.log(res.data);
                
-                //this.setState({ cartCount: this.state.cartCount + 1 });
+        this.setState({ cartCount: this.state.cartCount + 1 });
         //    })
         //    .catch(function (error) {
         //        //errorMessage = "You have entered in incorrect credentails! Please try Again!"
