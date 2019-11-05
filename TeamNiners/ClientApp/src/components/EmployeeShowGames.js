@@ -50,7 +50,7 @@ export class EmployeeShowGames extends Component {
 
 
         if (text == 'price_hl') {
-            this.setState
+
         }
 
         if (text == 'price_lh') {
