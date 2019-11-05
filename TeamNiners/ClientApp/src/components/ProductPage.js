@@ -10,14 +10,19 @@ export class ProductPage extends Component {
 
     constructor(props) {
         super(props);
-        this.state = { isTrue: false, pageOn: 1, cartCount: 0, gameTitle: "", gameCat: 0, gamePlat: 0, gamePrice: 0, gameDesc: ""};
+        this.state = { isTrue: false, pageOn: 1, cartCount: 0, gameTitle: "", gameCat: 0, gamePlat: 0, gamePrice: 0, gameDesc: "", isLoggedIn: true, btnDisabled: false};
 
       
         this.addToCart = this.addToCart.bind(this);
         this.getcartInfo = this.getcartInfo.bind(this);
         this.addToCart = this.addToCart.bind(this);
+        this.setCartInfo = this.setCartInfo.bind(this);
+
 
         this.getProductInfo();
+        this.getMemberId();
+
+
     }
 
    async getProductInfo() {
@@ -33,6 +38,25 @@ export class ProductPage extends Component {
                 console.log("this is the error: " + error);
             });
 
+    }
+
+   async getMemberId() {
+        await axios.get(webAddress + 'api/members/getEmployeeId', {
+
+        })
+            .then(res => {
+                console.log(res.data);
+                if (res.data == 0) {
+                    this.setState({ isLoggedIn: false, btnDisabled: true });
+                } else {
+                    this.setState({ btnDisabled: false });
+                }
+                //this.setState({ gameTitle: res.data[0].gameTitle, gameCat: res.data[0].gameCategory, gamePlat: res.data[0].gamePlatform, gamePrice: res.data[0].gamePrice, gameDesc: res.data[0].gameDescription });
+            })
+            .catch(function (error) {
+                //errorMessage = "You have entered in incorrect credentails! Please try Again!"
+                console.log("this is the error: " + error);
+            });
     }
 
      addToCart() {
@@ -55,7 +79,33 @@ export class ProductPage extends Component {
         return <h4><Glyphicon glyph='shopping-cart' /> Cart <span className="badge">{this.state.cartCount}</span></h4>;
     }
 
+    setCartInfo() {
+        if (this.state.btnDisabled == false) {
+            return <Accordion className="accordionPanel" >
+
+                <Panel className="cartPanel" header={this.getcartInfo()} eventKey='1'>
+                    <div className="scrollCart">
+                        There are no reviews available!lkdsafhjsalkfjsdlkfjldskfjds
+                               dsflkjsdflkjsdlkfjdslfdasdasdsadsadsadsad
+                       dasdsadsadsadsadsad
+                       dsadasdsadsadsa
+                       dasdsadsadsa
+                       dsadsadsad
+
+                                                 </div>
+                </Panel>
+
+            </Accordion>
+
+        }
+        else {
+            return ""
+        }
+    }
+
+
     render() {
+
         return (
             <div className="productPageDiv">
 
@@ -81,34 +131,20 @@ export class ProductPage extends Component {
                                         <h3 className="ProductPrice" align="left">Price: ${this.state.gamePrice}</h3>
                                         <br />
 
-                                        <Button className="btn btn-lg btn-info btn-block" onClick={this.addToCart}> Add To Cart </Button>
+                                        <Button className="btn btn-lg btn-info btn-block" disabled={this.state.btnDisabled} onClick={this.addToCart}> Add To Cart </Button>
 
 
-                                        <Button className="btn btn-lg btn-success btn-block"> Add To Favorites </Button>
+                                        <Button className="btn btn-lg btn-success btn-block" disabled={this.state.btnDisabled}> Add To Favorites </Button>
+
+                                        <div className="productPageCart"  >
+
+                                            {this.setCartInfo()}
+
+                                           
 
 
-
-                                        <div className="productPageCart">
-
-                                            <Accordion className="accordionPanel">
-
-                                                <Panel className="cartPanel" header={this.getcartInfo()} eventKey='1'>
-                                                    <div className="scrollCart">
-                                                        There are no reviews available!lkdsafhjsalkfjsdlkfjldskfjds
-                                                               dsflkjsdflkjsdlkfjdslfdasdasdsadsadsadsad
-                                                       dasdsadsadsadsadsad
-                                                       dsadasdsadsadsa
-                                                       dasdsadsadsa
-                                                       dsadsadsad
-                                                  
-                                                 </div>
-                                                </Panel>
-
-                                            </Accordion>
-
-
-                                        </div>
-
+                                        </div>;
+                            
                                     </form>
                                 </div>
                             </td>

@@ -81,7 +81,7 @@ namespace TeamNiners.Controllers
         {
 
             MemberTempStorage.memberId = id.memberId;
-
+            UserTempStorage.memberID = id.memberId;
 
             return Ok(MemberTempStorage.memberId);
         }
@@ -90,8 +90,7 @@ namespace TeamNiners.Controllers
         [Route("/api/members/getEmployeeId")]
         public IActionResult GetMemberId()
         {
-
-            return Ok(MemberTempStorage.memberId);
+            return Ok(UserTempStorage.memberID);
         }
 
 

@@ -33,10 +33,22 @@ export class MemberNav extends Component {
          axios.post(webAddress + 'api/members/Logout', {
 
         })
-            .then(function (response) {
-                console.log(response);
-                isLoggedOut = true;
-                this.setState({ memberLoggedIn: false });
+             .then(res => {
+
+                 axios.post(webAddress + 'api/member/memberId', {
+                     memberId: 0
+                 })
+                     .then(res2 => {
+                         //console.log("The member ID for Login is: " + response.data);
+                         //console.log(response);
+                         isLoggedOut = true;
+                         this.setState({ memberLoggedIn: false });
+                     })
+                     .catch(function (error) {
+                         //errorMessage = ""
+                         //console.log("this is the error on the login page for saving the id: " + error);
+                     });
+               
                 
 
             })
@@ -127,10 +139,7 @@ export class MemberNav extends Component {
                     <Glyphicon glyph='user' /> Create Account
                 </NavItem>
             
-                
-                <NavItem>
-                    <Glyphicon glyph='shopping-cart' /> Cart
-                </NavItem>
+              
               
                 <NavItem id="BusinessLogin" onClick={this.goToBusinessLogin}>
                    <Glyphicon glyph='share' /> Business Login
