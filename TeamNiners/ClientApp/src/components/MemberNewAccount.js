@@ -245,6 +245,8 @@ export class MemberNewAccount extends Component {
     }
 
     async saveNewAccount() {
+        /*Fixed issues*/
+
         var success = true;
         var memberPassword = this.state.password;
 
