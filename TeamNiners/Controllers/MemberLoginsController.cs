@@ -198,8 +198,29 @@ namespace TeamNiners.Controllers
             return Ok(UserTempStorage.memberID);
         }
 
+        // DELETE: api/APIBusinesses/5
+        [HttpPost]
+        [Route("/api/member/saveMemberCart")]
+        public IActionResult saveCartIdOnLogin([FromBody] MemberLogin memberLogin)
+        {
+           
+            //Cart cart = (Cart) _context.Cart.Where(p => p.MemberId == memberLogin.MemberId);
+            //string cartId = _context.Cart.Where(p => p.MemberId == memberLogin.MemberId).ToString();
 
+           // UserTempStorage.cartID = cart.CartId;
+            //var business = await _context.Business.FindAsync(id);
+            //if (business == null)
+            //{
+            //   return NotFound();
+            //}
 
+            //_context.Business.Remove(business);
+            //await _context.SaveChangesAsync();
+
+            return Ok();
+        }
+
+     
         [HttpGet]
         [Route("/api/member/memberId")]
         public IActionResult GetEmployeeId()

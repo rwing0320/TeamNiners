@@ -120,18 +120,28 @@ export class MemberLogin extends Component {
                 memberUsername: this.state.email,
                 memberPassword: this.state.password
             })
-                .then(function (response) {
-                    console.log(response);
+                .then(res => {
+                    console.log(res);
                     successFlag = true;
-                    memberName = response.data.memberName;
+                    memberName = res.data.memberName;
 
-                    memberId = response.data.memberId;
+                    memberId = res.data.memberId;
 
                     axios.post(webAddress + 'api/member/memberId', {
                         memberId: memberId
                     })
-                        .then(function(response) {
-                            console.log("The member ID for Login is: " + response.data);
+                        .then(res2 => {
+                            axios.post(webAddress + 'api/member/saveMemberCart', {
+                                MemberId: memberId
+                            })
+                            .then(res3 => {
+                              console.log("the information is " + res3.data);
+                            })
+                            .catch (function (error) {
+                        //    errorMessage = ""
+                        //    console.log("this is the error on the login page for saving the id: " + error);
+                            });
+                            //console.log("The member ID for Login is: " + response.data);
 
                         })
                         .catch(function (error) {

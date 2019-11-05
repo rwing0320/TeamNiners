@@ -23,8 +23,7 @@ namespace TeamNiners.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateCart([FromBody] Cart cart)
         {
-
-
+            
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -40,47 +39,34 @@ namespace TeamNiners.Controllers
         [Route("/api/cart/saveCart")]
         public IActionResult SaveCart([FromBody]Cart cart)
         {
-            //MemberLogin member = new MemberLogin();
 
             UserTempStorage.cartID = cart.CartId;
-            //var item = new MemberLogin();
-            //var member = _memberService.createAccount(login);
-
-
-            //_memberService.Authenticate(member.MemberUsername, member.MemberPassword,member.Salt);
-
+ 
             return Ok(cart);
         }
-        //// GET: api/Cart
-        //[HttpGet]
-        //public IEnumerable<string> Get()
-        //{
-        //    return new string[] { "value1", "value2" };
-        //}
 
-        //// GET: api/Cart/5
-        //[HttpGet("{id}", Name = "Get")]
-        //public string Get(int id)
-        //{
-        //    return "value";
-        //}
+        [HttpPost]
+        [Route("/api/cart/saveCartItems")]
+        public async Task<IActionResult> SaveCartItem()
+        {
+            CartItems cartItem = new CartItems();
+            cartItem.CartId = UserTempStorage.cartID;
+            cartItem.GameId = UserTempStorage.gameID;
+            //MemberLogin member = new MemberLogin();
 
-        //// POST: api/Cart
-        //[HttpPost]
-        //public void Post([FromBody] string value)
-        //{
-        //}
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
 
-        //// PUT: api/Cart/5
-        //[HttpPut("{id}")]
-        //public void Put(int id, [FromBody] string value)
-        //{
-        //}
+            _context.CartItems.Add(cartItem);
+            await _context.SaveChangesAsync();
 
-        //// DELETE: api/ApiWithActions/5
-        //[HttpDelete("{id}")]
-        //public void Delete(int id)
-        //{
-        //}
+            return CreatedAtAction("CreateCart", new { id = cartItem.CartItemdId }, cartItem);
+
+        }
+
+
+      
     }
 }
