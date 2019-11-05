@@ -1,3 +1,3 @@
 ﻿import React, { Component } from 'react';
 
-export const webAddress = 'http://localhost:56167/';
+export const webAddress = 'http://localhost:62082/';

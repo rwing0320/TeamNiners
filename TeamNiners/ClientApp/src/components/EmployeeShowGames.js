@@ -11,8 +11,9 @@ export class EmployeeShowGames extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            changePage: false, games: [] };
+            changePage: false, games: [], filter: "h-l" };
         this.goToDashboard = this.goToDashboard.bind(this);
+        this.filterGames = this.filterGames.bind(this);
         this.getGames();
     }
 
@@ -41,6 +42,33 @@ export class EmployeeShowGames extends Component {
             })
     }
 
+    filterGames(select) {
+
+        var text = select.target.value;
+        this.state.filter = text;
+        alert(this.state.filter);
+
+
+        if (text == 'price_hl') {
+            this.setState
+        }
+
+        if (text == 'price_lh') {
+
+        }
+
+        if (text == 'name_desc') {
+
+        }
+
+        if (text == 'name_asc') {
+
+        }
+
+
+
+    }
+
 
     render() {
         return (
@@ -50,7 +78,7 @@ export class EmployeeShowGames extends Component {
                         <Row>
                             <Col xl={12} id="filterColumn">
                                 <div id="filterBar">
-                                    <select>
+                                    <select onChange={this.filterGames}>
                                         <option value="price_hl">Price: High to Low</option>
                                         <option value="price_lh">Price: Low to High</option>
                                         <option value="name_desc">Name: Descending</option>
@@ -63,7 +91,8 @@ export class EmployeeShowGames extends Component {
                             <div>
                                 <h1>Show Games Page</h1>
                                 <ul>
-                                   
+                                     
+
                                     {this.state.games.map(game =>
                                         
 
