@@ -36,18 +36,18 @@ export class ProductPage extends Component {
     }
 
      addToCart() {
-        axios.post(webAddress + 'api/Cart', {
+        //axios.post(webAddress + 'api/Cart', {
             
-        })
-            .then(res => {
-                console.log(res.data);
+        //})
+        //    .then(res => {
+        //        console.log(res.data);
                
-                this.setState({ cartCount: this.state.cartCount + 1 });
-            })
-            .catch(function (error) {
-                //errorMessage = "You have entered in incorrect credentails! Please try Again!"
-                console.log("this is the error: " + error);
-            });
+                //this.setState({ cartCount: this.state.cartCount + 1 });
+        //    })
+        //    .catch(function (error) {
+        //        //errorMessage = "You have entered in incorrect credentails! Please try Again!"
+        //        console.log("this is the error: " + error);
+        //    });
         
     }
 
