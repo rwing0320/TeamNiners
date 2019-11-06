@@ -5,6 +5,11 @@ namespace TeamNiners.Models
 {
     public partial class MemberLogin
     {
+        public MemberLogin()
+        {
+            WishList = new HashSet<WishList>();
+        }
+
         public int MemberId { get; set; }
         public string MemberUsername { get; set; }
         public string MemberPassword { get; set; }
@@ -14,5 +19,6 @@ namespace TeamNiners.Models
         public string Salt { get; set; }
 
         public Member Member { get; set; }
+        public ICollection<WishList> WishList { get; set; }
     }
 }

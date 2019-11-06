@@ -198,7 +198,7 @@ namespace TeamNiners.Controllers
             return Ok(UserTempStorage.memberID);
         }
 
-        // DELETE: api/APIBusinesses/5
+       
         [HttpPost]
         [Route("/api/member/saveMemberCart")]
         public IActionResult saveCartIdOnLogin([FromBody] MemberLogin memberLogin)
@@ -217,7 +217,25 @@ namespace TeamNiners.Controllers
             return Ok();
         }
 
-     
+        [HttpPost]
+        [Route("/api/member/saveMemberWishList")]
+        public IActionResult saveWishListIdOnLogin([FromBody] MemberLogin memberLogin)
+        {
+
+            IQueryable<WishList> wish = _context.WishList.Where(p => p.MemberId == memberLogin.MemberId);
+
+            int wishId = 0;
+            foreach (WishList result in wish)
+            {
+                wishId = result.WishListId;
+            }
+
+            UserTempStorage.wishID = wishId;
+
+            return Ok();
+        }
+
+
         [HttpGet]
         [Route("/api/member/memberId")]
         public IActionResult GetEmployeeId()

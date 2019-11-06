@@ -8,6 +8,7 @@ namespace TeamNiners.Models
         public GamingInfo()
         {
             CartItems = new HashSet<CartItems>();
+            WishListItems = new HashSet<WishListItems>();
         }
 
         public int GameId { get; set; }
@@ -22,5 +23,6 @@ namespace TeamNiners.Models
         public GamingPlatform GamePlatformNavigation { get; set; }
         public BusinessGames BusinessGames { get; set; }
         public ICollection<CartItems> CartItems { get; set; }
+        public ICollection<WishListItems> WishListItems { get; set; }
     }
 }

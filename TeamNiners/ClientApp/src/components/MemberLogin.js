@@ -134,15 +134,22 @@ export class MemberLogin extends Component {
                             axios.post(webAddress + 'api/member/saveMemberCart', {
                                 MemberId: memberId
                             })
-                            .then(res3 => {
-                              console.log("the information is " + res3.data);
+                                .then(res3 => {
+
+                                    console.log("the information is " + res3.data);
+                                    axios.post(webAddress + 'api/member/saveMemberWishList', {
+                                        MemberId: memberId
+                                    })
+                                        .then(res3 => {
+                                            console.log("the information is " + res3.data);
+                                        })
+                                        .catch(function (error) {
+                                        
+                                        });
                             })
                             .catch (function (error) {
-                        //    errorMessage = ""
-                        //    console.log("this is the error on the login page for saving the id: " + error);
+                    
                             });
-                            //console.log("The member ID for Login is: " + response.data);
-
                         })
                         .catch(function (error) {
                             errorMessage = ""

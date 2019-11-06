@@ -16,6 +16,7 @@ export class ProductPage extends Component {
         this.addToCart = this.addToCart.bind(this);
         this.getcartInfo = this.getcartInfo.bind(this);
         this.addToCart = this.addToCart.bind(this);
+        this.addToWishList = this.addToWishList.bind(this);
         this.setCartInfo = this.setCartInfo.bind(this);
 
 
@@ -73,6 +74,40 @@ export class ProductPage extends Component {
                 console.log("this is the error: " + error);
             });
         
+    }
+
+    addToWishList() {
+        axios.post(webAddress + 'api/wishList/checkWishList', {
+
+        })
+            .then(res => {
+                if (res.data.message == "") {
+                    axios.post(webAddress + 'api/wishList/saveWishListItems', {
+
+                    })
+                        .then(res => {
+
+                            console.log(res.data);
+                            alert("Successfully added to wish list!");
+                        })
+                        .catch(function (error) {
+                            //errormessage = "you have entered in incorrect credentails! please try again!"
+                            console.log("this is the error: " + error);
+                        });
+                }
+                else {
+                    alert("Game already In Wish List!");
+                }
+                //console.log(res.data);
+                //alert("Successfully added to wish list!");
+            })
+            .catch(function (error) {
+                //errormessage = "you have entered in incorrect credentails! please try again!"
+                console.log("this is the error: " + error);
+            });
+
+
+      
     }
 
     getcartInfo() {
@@ -134,7 +169,7 @@ export class ProductPage extends Component {
                                         <Button className="btn btn-lg btn-info btn-block" disabled={this.state.btnDisabled} onClick={this.addToCart}> Add To Cart </Button>
 
 
-                                        <Button className="btn btn-lg btn-success btn-block" disabled={this.state.btnDisabled}> Add To Favorites </Button>
+                                        <Button className="btn btn-lg btn-success btn-block" disabled={this.state.btnDisabled} onClick={this.addToWishList}> Add To Favorites </Button>
 
                                         <div className="productPageCart"  >
 
