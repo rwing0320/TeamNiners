@@ -111,7 +111,7 @@ export class EmployeeShowGames extends Component {
 
                                                         <label for="gamePriceLabel">Price:</label>
                                                         <input type="text" class="form-control" id="gameInputBox" placeholder={game.price} readOnly />
-
+                                                        <br/>
                                                     </Col>
                                                 </Row>
 
