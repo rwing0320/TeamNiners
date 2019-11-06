@@ -11,9 +11,10 @@ export class EmployeeShowGames extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            changePage: false, games: [], filter: "h-l" };
+            changePage: false, games: [], filterValue: 'name_desc' };
         this.goToDashboard = this.goToDashboard.bind(this);
         this.filterGames = this.filterGames.bind(this);
+        this.getGames = this.getGames.bind(this);
         this.getGames();
     }
 
@@ -30,7 +31,8 @@ export class EmployeeShowGames extends Component {
     }
 
     getGames() {
-        axios.get(webAddress + 'api/game/showgames_business')
+        
+        axios.get(webAddress + 'api/game/showgames_business/' + this.state.filterValue)
             .then(res => {
                 const games = res.data;
                 this.setState({ games });
@@ -42,30 +44,12 @@ export class EmployeeShowGames extends Component {
             })
     }
 
+
     filterGames(select) {
 
         var text = select.target.value;
-        this.state.filter = text;
-        alert(this.state.filter);
-
-
-        if (text == 'price_hl') {
-
-        }
-
-        if (text == 'price_lh') {
-
-        }
-
-        if (text == 'name_desc') {
-
-        }
-
-        if (text == 'name_asc') {
-
-        }
-
-
+        this.state.filterValue = text;
+        this.getGames();
 
     }
 
@@ -77,19 +61,23 @@ export class EmployeeShowGames extends Component {
                     <Grid fluid>
                         <Row>
                             <Col xl={12} id="filterColumn">
+                             
                                 <div id="filterBar">
+                                    <Link to={"/Dashboard"}>
+                                        <span id="backButton" onClick={() => this.goToDashboard()} class="glyphicon glyphicon-arrow-left fa-lg" aria-hidden="true"></span>
+                                    </Link>
                                     <select onChange={this.filterGames}>
-                                        <option value="price_hl">Price: High to Low</option>
-                                        <option value="price_lh">Price: Low to High</option>
                                         <option value="name_desc">Name: Descending</option>
                                         <option value="name_asc">Name: Ascending</option>
+                                        <option value="price_hl">Price: High to Low</option>
+                                        <option value="price_lh">Price: Low to High</option>
                                     </select>
                                 </div>
                             </Col>
                         </Row>
                         <Row>
                             <div>
-                                <h1>Show Games Page</h1>
+                                <h1 id="pageTitle"><b>Show Games Page</b></h1>
                                 <ul>
                                      
 
@@ -97,13 +85,38 @@ export class EmployeeShowGames extends Component {
                                         
 
                                         <div key={game.gameId} id="showGameItem">
-                                            
-                                            <h5><b>Name:</b> {game.title}</h5>
-                                            <h5><b>Description:</b> {game.description}</h5>
-                                            <h5><b>Release Date:</b> {game.releaseDate}</h5>
-                                            <h5><b>Platform:</b> {game.platform}</h5>
-                                            <h5><b>Category:</b> {game.category}</h5>
-                                            <h5><b>Price:</b> ${game.price}</h5>
+
+                                            <Grid fluid>
+                                                <Row>
+                                                    <Col xl={12} id="gameColumn">
+                                                        <label for="gameNameLabel">Title:</label>
+                                                        <input type="text" class="form-control" id="gameInputBox" placeholder={game.title} readOnly />
+
+                                                        <label for="gameDescriptionLabel">Description:</label>
+                                                        <input type="text" class="form-control" id="gameInputBox" placeholder={game.description} readOnly />
+
+                                                        <label for="gameReleaseLabel">Release Date:</label>
+                                                        <input type="text" class="form-control" id="gameInputBox" placeholder={game.releaseDate} readOnly />
+
+                                                    </Col>
+                                                </Row>
+
+                                                <Row>
+                                                    <Col xl={12} id="gameColumn2">
+                                                        <label for="gamePlatformLabel">Platform:</label>
+                                                        <input type="text" class="form-control" id="gameInputBox" placeholder={game.platform} readOnly />
+
+                                                        <label for="gameCategoryLabel">Category:</label>
+                                                        <input type="text" class="form-control" id="gameInputBox" placeholder={game.category} readOnly />
+
+                                                        <label for="gamePriceLabel">Price:</label>
+                                                        <input type="text" class="form-control" id="gameInputBox" placeholder={game.price} readOnly />
+
+                                                    </Col>
+                                                </Row>
+
+                                            </Grid>
+                                       
 
                                         </div>
                                         
@@ -111,11 +124,6 @@ export class EmployeeShowGames extends Component {
 
                                    
                                 </ul>
-
-                                
-                                <Link to={"/Dashboard"}>
-                                    <button onClick={() => this.goToDashboard()}>Back</button>
-                                </Link>
                             </div>
                         </Row>
                     </Grid>

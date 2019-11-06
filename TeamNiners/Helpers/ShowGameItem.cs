@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace TeamNiners.Helpers
 {
     public class ShowGameItem
-    { 
+    {
         public string Title { get; set; }
         public string Description { get; set; }
         public DateTime releaseDate { get; set; }
@@ -28,12 +28,12 @@ namespace TeamNiners.Helpers
             var config = builder.Build();
             connectionString = config;
         }
-        
+
         /// <summary>
         /// Retrieves the list of games that the business has posted.
         /// Uses the id stored in UserTempStorage in query to get games for logged in user
         /// </summary>
-        public static List<ShowGameItem> GetGamesList()
+        public static List<ShowGameItem> GetGamesList(string filter)
         {
             SetupUserServiceConnection();
             int id = UserTempStorage.id;
@@ -47,21 +47,64 @@ namespace TeamNiners.Helpers
 
                 sqlConnection.Open();
 
-                //Get all the games from GameInfo where GameInfo.GameID == BusinessGame.GameID 
+                // Command will get all the games from GameInfo where GameInfo.GameID == BusinessGame.GameID 
                 // AND BusinessGame.BusinessID == currently signed in ID
-                SqlCommand command = new SqlCommand(
-                   "SELECT * FROM (" +
-                   "SELECT GI.gameTitle, GI.gameDescription, GI.releaseDate, GI.gamePlatform, GI.gameCategory, GI.gamePrice," +
-                   "BG.gameID, BG.businessID FROM dbo.GamingInfo GI " +
-                   "JOIN dbo.BusinessGames BG ON GI.gameID = BG.gameID)" +
-                   "BusinessInfo where BusinessInfo.businessID = '" + id + "';",
-                    sqlConnection);
+                SqlCommand filteredQueryCommand = new SqlCommand("");
 
-                command.CommandType = CommandType.Text;
+                //The filter is handled by a select input on the show games page
+                //Based on the value selected, different order bys will be used
+                switch (filter)
+                {
+                    case "price_hl":
 
-                adapter.SelectCommand = command;
+                        filteredQueryCommand = new SqlCommand("SELECT * FROM (" +
+                       "SELECT GI.gameTitle, GI.gameDescription, GI.releaseDate, GI.gamePlatform, GI.gameCategory, GI.gamePrice," +
+                       "BG.gameID, BG.businessID FROM dbo.GamingInfo GI " +
+                       "JOIN dbo.BusinessGames BG ON GI.gameID = BG.gameID)" +
+                       "BusinessInfo where BusinessInfo.businessID = '" + id + "' ORDER BY gamePrice desc;",
+                        sqlConnection);
 
-                command.ExecuteNonQuery();
+                        break;
+
+                    case "price_lh":
+
+                        filteredQueryCommand = new SqlCommand("SELECT * FROM (" +
+                     "SELECT GI.gameTitle, GI.gameDescription, GI.releaseDate, GI.gamePlatform, GI.gameCategory, GI.gamePrice," +
+                     "BG.gameID, BG.businessID FROM dbo.GamingInfo GI " +
+                     "JOIN dbo.BusinessGames BG ON GI.gameID = BG.gameID)" +
+                     "BusinessInfo where BusinessInfo.businessID = '" + id + "' ORDER BY gamePrice asc;",
+                      sqlConnection);
+
+                        break;
+
+                    case "name_desc":
+
+                        filteredQueryCommand = new SqlCommand("SELECT * FROM (" +
+                     "SELECT GI.gameTitle, GI.gameDescription, GI.releaseDate, GI.gamePlatform, GI.gameCategory, GI.gamePrice," +
+                     "BG.gameID, BG.businessID FROM dbo.GamingInfo GI " +
+                     "JOIN dbo.BusinessGames BG ON GI.gameID = BG.gameID)" +
+                     "BusinessInfo where BusinessInfo.businessID = '" + id + "' ORDER BY gameTitle asc;",
+                      sqlConnection);
+
+                        break;
+
+                    case "name_asc":
+
+                        filteredQueryCommand = new SqlCommand("SELECT * FROM (" +
+                     "SELECT GI.gameTitle, GI.gameDescription, GI.releaseDate, GI.gamePlatform, GI.gameCategory, GI.gamePrice," +
+                     "BG.gameID, BG.businessID FROM dbo.GamingInfo GI " +
+                     "JOIN dbo.BusinessGames BG ON GI.gameID = BG.gameID)" +
+                     "BusinessInfo where BusinessInfo.businessID = '" + id + "' ORDER BY gameTitle desc;",
+                      sqlConnection);
+
+                        break;
+                }
+
+                filteredQueryCommand.CommandType = CommandType.Text;
+
+                adapter.SelectCommand = filteredQueryCommand;
+
+                filteredQueryCommand.ExecuteNonQuery();
 
                 adapter.Fill(ds);
 
@@ -88,10 +131,5 @@ namespace TeamNiners.Helpers
 
             return gamesList;
         }
-
     }
-
-
-
-
 }

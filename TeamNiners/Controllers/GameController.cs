@@ -127,21 +127,22 @@ namespace TeamNiners.Controllers
         //public void Delete(int id)
         //{
         //}
-        [Route("/api/game/showgames_business")]
-          [HttpGet]
-          public List<ShowGameItem> DisplayGames_ShowGamesPage() {
+        [HttpGet]
+        [Route("/api/game/showgames_business/{filterValue}")]
+        public List<ShowGameItem> DisplayGames_ShowGamesPage([FromRoute]string filterValue)
+        {
 
-            List<ShowGameItem> gameList = getBusinessGames();
+            List<ShowGameItem> gameList = getBusinessGames(filterValue);
 
             return gameList;
         }
 
 
-        public List<ShowGameItem> getBusinessGames()
+        public List<ShowGameItem> getBusinessGames(string filter)
         {
             List<ShowGameItem> gameList = new List<ShowGameItem>();
             //ShowGameItem gameHelper = new ShowGameItem();
-            gameList = ShowGameItem.GetGamesList();
+            gameList = ShowGameItem.GetGamesList(filter);
 
             return gameList;
 
