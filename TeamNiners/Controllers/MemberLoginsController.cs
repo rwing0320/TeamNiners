@@ -198,6 +198,42 @@ namespace TeamNiners.Controllers
             return Ok(UserTempStorage.memberID);
         }
 
+       
+        [HttpPost]
+        [Route("/api/member/saveMemberCart")]
+        public IActionResult saveCartIdOnLogin([FromBody] MemberLogin memberLogin)
+        {
+
+            IQueryable<Cart> cart = _context.Cart.Where(p => p.MemberId == memberLogin.MemberId);
+
+            int cartId = 0;
+            foreach (Cart result in cart)
+            {
+                cartId = result.CartId;
+            }
+
+             UserTempStorage.cartID = cartId;
+            
+            return Ok();
+        }
+
+        [HttpPost]
+        [Route("/api/member/saveMemberWishList")]
+        public IActionResult saveWishListIdOnLogin([FromBody] MemberLogin memberLogin)
+        {
+
+            IQueryable<WishList> wish = _context.WishList.Where(p => p.MemberId == memberLogin.MemberId);
+
+            int wishId = 0;
+            foreach (WishList result in wish)
+            {
+                wishId = result.WishListId;
+            }
+
+            UserTempStorage.wishID = wishId;
+
+            return Ok();
+        }
 
 
         [HttpGet]

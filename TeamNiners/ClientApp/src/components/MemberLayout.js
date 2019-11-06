@@ -6,6 +6,7 @@ import './css/LoginPage.css';
 import { MemberNewAccount } from './MemberNewAccount';
 import { MemberAccountInfo } from './MemberAccountInfo';
 import { MemberLogin } from './MemberLogin';
+import { WishList } from './WishList';
 import { Redirect } from 'react-router-dom';
 import { Home } from './Home';
 import { ProductPage } from './ProductPage';
@@ -80,6 +81,11 @@ export class MemberLayout extends Component {
             <Redirect to="/product" push />
             //return <MemberAccountInfo changePage={this.changePage.bind(this)}></MemberAccountInfo>
             return <ProductPage changePage={this.changePageNumber.bind(this)}></ProductPage>
+        }
+        else if (this.state.pageNumber == 6) {
+            <Redirect to="/wishlist" push />
+            //return <MemberAccountInfo changePage={this.changePage.bind(this)}></MemberAccountInfo>
+            return <WishList changePage={this.changePageNumber.bind(this)}></WishList>
         }
     }
 

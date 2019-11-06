@@ -285,27 +285,41 @@ export class MemberNewAccount extends Component {
                                 cartID: cartId
                             })
                                 .then(res4 => {
-                                    
-                                    //salt = res2.data.Salt;
-                                    this.setState({ newAccountSuccessful: true });
-                                    //this.setState({ newAccountSuccessful: true });
+
+                                    axios.post(webAddress + 'api/wishlist', {
+                                        
+                                    })
+                                        .then(res5 => {
+                                            var wishID = res5.data.wishListId;
+
+                                            axios.post(webAddress + 'api/wishlist/saveWishList', {
+                                                wishListId: wishID
+                                            })
+                                                .then(res6 => {
+
+                                                    //salt = res2.data.Salt;
+                                                    this.setState({ newAccountSuccessful: true });
+                                                    //this.setState({ newAccountSuccessful: true });
+
+                                                })
+                                                .catch(function (error) {
+                                                    console.log("the error for creating an account is: " + error);
+                                                });
+                                           
+                                        })
+                                        .catch(function (error) {
+                                            console.log("the error for creating an account is: " + error);
+                                        });
 
                                 })
                                 .catch(function (error) {
                                     console.log("the error for creating an account is: " + error);
                                 });
-                            //salt = res2.data.Salt;
-                            //this.setState({ newAccountSuccessful: true });
-                            //this.setState({ newAccountSuccessful: true });
 
                         })
                         .catch(function (error) {
                             console.log("the error for creating an account is: " + error);
                         });
-
-                    
-
-                    
 
                 })
                 .catch(function (error) {

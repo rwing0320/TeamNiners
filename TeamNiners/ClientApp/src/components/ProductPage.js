@@ -10,14 +10,20 @@ export class ProductPage extends Component {
 
     constructor(props) {
         super(props);
-        this.state = { isTrue: false, pageOn: 1, cartCount: 0, gameTitle: "", gameCat: 0, gamePlat: 0, gamePrice: 0, gameDesc: ""};
+        this.state = { isTrue: false, pageOn: 1, cartCount: 0, gameTitle: "", gameCat: 0, gamePlat: 0, gamePrice: 0, gameDesc: "", isLoggedIn: true, btnDisabled: false};
 
       
         this.addToCart = this.addToCart.bind(this);
         this.getcartInfo = this.getcartInfo.bind(this);
         this.addToCart = this.addToCart.bind(this);
+        this.addToWishList = this.addToWishList.bind(this);
+        this.setCartInfo = this.setCartInfo.bind(this);
+
 
         this.getProductInfo();
+        this.getMemberId();
+
+
     }
 
    async getProductInfo() {
@@ -25,8 +31,34 @@ export class ProductPage extends Component {
             
         })
             .then(res => {
-                console.log(res.data[0].gameTitle);              
-                this.setState({ gameTitle: res.data[0].gameTitle, gameCat: res.data[0].gameCategory, gamePlat: res.data[0].gamePlatform, gamePrice: res.data[0].gamePrice, gameDesc: res.data[0].gameDescription });
+                console.log(res.data[0].gameTitle);
+                this.setState({ gameTitle: res.data[0].gameTitle, gamePrice: res.data[0].gamePrice, gameDesc: res.data[0].gameDescription });
+
+
+                axios.post(webAddress + 'api/Game/GetGameCat', {
+                    cat: res.data[0].gameCategory
+                })
+                    .then(res2 => {
+                        console.log(res2.data);
+                        this.setState({ gameCat: res2.data });
+                        axios.post(webAddress + 'api/Game/GetGamePlat', {
+                            plat: res.data[0].gamePlatform
+                        })
+                            .then(res3 => {
+                                console.log(res3.data);
+                                this.setState({ gamePlat: res3.data });
+
+                            })
+                            .catch(function (error) {
+                                //errorMessage = "You have entered in incorrect credentails! Please try Again!"
+                                console.log("this is the error: " + error);
+                            });
+                    })
+                    .catch(function (error) {
+                        //errorMessage = "You have entered in incorrect credentails! Please try Again!"
+                        console.log("this is the error: " + error);
+                    });
+               
             })
             .catch(function (error) {
                 //errorMessage = "You have entered in incorrect credentails! Please try Again!"
@@ -35,27 +67,106 @@ export class ProductPage extends Component {
 
     }
 
+   async getMemberId() {
+        await axios.get(webAddress + 'api/members/getEmployeeId', {
+
+        })
+            .then(res => {
+                console.log(res.data);
+                if (res.data == 0) {
+                    this.setState({ isLoggedIn: false, btnDisabled: true });
+                } else {
+                    this.setState({ btnDisabled: false });
+                }
+     
+            })
+            .catch(function (error) {
+                //errorMessage = "You have entered in incorrect credentails! Please try Again!"
+                console.log("this is the error: " + error);
+            });
+    }
+
      addToCart() {
-        //axios.post(webAddress + 'api/Cart', {
+         axios.post(webAddress + 'api/cart/saveCartItems', {
             
-        //})
-        //    .then(res => {
-        //        console.log(res.data);
+        })
+            .then(res => {
+                console.log(res.data);
                
-        this.setState({ cartCount: this.state.cartCount + 1 });
-        //    })
-        //    .catch(function (error) {
-        //        //errorMessage = "You have entered in incorrect credentails! Please try Again!"
-        //        console.log("this is the error: " + error);
-        //    });
+                this.setState({ cartCount: this.state.cartCount + 1 });
+            })
+            .catch(function (error) {
+                //errormessage = "you have entered in incorrect credentails! please try again!"
+                console.log("this is the error: " + error);
+            });
         
+    }
+
+    addToWishList() {
+        axios.post(webAddress + 'api/wishList/checkWishList', {
+
+        })
+            .then(res => {
+                if (res.data.message == "") {
+                    axios.post(webAddress + 'api/wishList/saveWishListItems', {
+
+                    })
+                        .then(res => {
+
+                            console.log(res.data);
+                            alert("Successfully added to wish list!");
+                        })
+                        .catch(function (error) {
+                            //errormessage = "you have entered in incorrect credentails! please try again!"
+                            console.log("this is the error: " + error);
+                        });
+                }
+                else {
+                    alert("Game already In Wish List!");
+                }
+                //console.log(res.data);
+                //alert("Successfully added to wish list!");
+            })
+            .catch(function (error) {
+                //errormessage = "you have entered in incorrect credentails! please try again!"
+                console.log("this is the error: " + error);
+            });
+
+
+      
     }
 
     getcartInfo() {
         return <h4><Glyphicon glyph='shopping-cart' /> Cart <span className="badge">{this.state.cartCount}</span></h4>;
     }
 
+    setCartInfo() {
+        if (this.state.btnDisabled == false) {
+            return <Accordion className="accordionPanel" >
+
+                <Panel className="cartPanel" header={this.getcartInfo()} eventKey='1'>
+                    <div className="scrollCart">
+                        There are no reviews available!lkdsafhjsalkfjsdlkfjldskfjds
+                               dsflkjsdflkjsdlkfjdslfdasdasdsadsadsadsad
+                       dasdsadsadsadsadsad
+                       dsadasdsadsadsa
+                       dasdsadsadsa
+                       dsadsadsad
+
+                                                 </div>
+                </Panel>
+
+            </Accordion>
+
+        }
+        else {
+            return ""
+        }
+    }
+
+
     render() {
+
         return (
             <div className="productPageDiv">
 
@@ -70,8 +181,8 @@ export class ProductPage extends Component {
                             <td width="50% ">
                                 <div className="gameInfoElement">
                                     <h2 className="Title">{this.state.gameTitle}</h2>
-                                    <h2 className="Platform">{this.state.gamePlat}</h2>
-                                    <h2 className="Category">{this.state.gameCat}</h2>
+                                    <h2 className="Platform">Platform: {this.state.gamePlat}</h2>
+                                    <h2 className="Category">Category: {this.state.gameCat}</h2>
                                 </div>
                             </td>
 
@@ -81,34 +192,20 @@ export class ProductPage extends Component {
                                         <h3 className="ProductPrice" align="left">Price: ${this.state.gamePrice}</h3>
                                         <br />
 
-                                        <Button className="btn btn-lg btn-info btn-block" onClick={this.addToCart}> Add To Cart </Button>
+                                        <Button className="btn btn-lg btn-info btn-block" disabled={this.state.btnDisabled} onClick={this.addToCart}> Add To Cart </Button>
 
 
-                                        <Button className="btn btn-lg btn-success btn-block"> Add To Favorites </Button>
+                                        <Button className="btn btn-lg btn-success btn-block" disabled={this.state.btnDisabled} onClick={this.addToWishList}> Add To Favorites </Button>
+
+                                        <div className="productPageCart"  >
+
+                                            {this.setCartInfo()}
+
+                                           
 
 
-
-                                        <div className="productPageCart">
-
-                                            <Accordion className="accordionPanel">
-
-                                                <Panel className="cartPanel" header={this.getcartInfo()} eventKey='1'>
-                                                    <div className="scrollCart">
-                                                        There are no reviews available!lkdsafhjsalkfjsdlkfjldskfjds
-                                                               dsflkjsdflkjsdlkfjdslfdasdasdsadsadsadsad
-                                                       dasdsadsadsadsadsad
-                                                       dsadasdsadsadsa
-                                                       dasdsadsadsa
-                                                       dsadsadsad
-                                                  
-                                                 </div>
-                                                </Panel>
-
-                                            </Accordion>
-
-
-                                        </div>
-
+                                        </div>;
+                            
                                     </form>
                                 </div>
                             </td>
