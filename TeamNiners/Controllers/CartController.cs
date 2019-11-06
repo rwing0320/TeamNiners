@@ -66,7 +66,28 @@ namespace TeamNiners.Controllers
 
         }
 
-     
+        [HttpPost]
+        [Route("/api/cart/saveCartItemsFromWishList")]
+        public async Task<IActionResult> SaveWishListCartItem([FromBody] CartItems cartItem)
+        {
+            //CartItems cartItem = new CartItems();
+            cartItem.CartId = UserTempStorage.cartID;
+            //cartItem.GameId = UserTempStorage.gameID;
+            //MemberLogin member = new MemberLogin();
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            _context.CartItems.Add(cartItem);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction("CreateCart", new { id = cartItem.CartItemdId }, cartItem);
+
+        }
+
+
 
 
     }

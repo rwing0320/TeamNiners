@@ -76,9 +76,7 @@ namespace TeamNiners.Controllers
         public List<ShowGameItem> DisplayGames_ShowGamesPage()
         {
             List<ShowGameItem> gameList = new List<ShowGameItem>();
-            //ShowGameItem gameHelper = new ShowGameItem();
             gameList = ShowGameItem.GetGamesListForWishList();
-           // List<ShowGameItem> gameList = getBusinessGames(filterValue);
 
             return gameList;
         }
@@ -90,10 +88,6 @@ namespace TeamNiners.Controllers
 
             var wishList = _context.WishListItems.Where(p => p.WishListId == UserTempStorage.wishID && p.ProductId == UserTempStorage.gameID);
 
-            //CartItems cartItem = new CartItems();
-            //cartItem.CartId = UserTempStorage.cartID;
-            //cartItem.GameId = UserTempStorage.gameID;
-            //MemberLogin member = new MemberLogin();
             if (wishList.Count() == 0)
             {
                 return Ok(new { message = "" });
@@ -106,9 +100,9 @@ namespace TeamNiners.Controllers
 
         }
 
-        [HttpDelete]
+        [HttpPost]
         [Route("/api/wishList/deleteWishItem")]
-        public async Task<IActionResult> DeleteBusiness([FromRoute] WishListItems wi)
+        public async Task<IActionResult> DeleteBusiness([FromBody] WishListItems wi)
         {
 
             if (!ModelState.IsValid)
@@ -120,14 +114,17 @@ namespace TeamNiners.Controllers
             wi.WishListId = UserTempStorage.wishID;
 
 
-           var wishItem = _context.WishListItems.Where(p => p.ProductId == wi.ProductId && p.WishListId == UserTempStorage.wishID);
-            //wishItem = wishItem.FirstOrDefault();
-            if (wishItem == null)
+           IQueryable<WishListItems> wishItem = _context.WishListItems.Where(p => p.ProductId == wi.ProductId && p.WishListId == UserTempStorage.wishID);
+
+            int recordId = 0;
+            foreach(var item in wishItem)
             {
-              return NotFound();
+                recordId = item.Id;
             }
 
-            _context.WishListItems.Remove(wishItem.FirstOrDefault());
+          var wishListItem = _context.WishListItems.Find(recordId);
+
+            _context.WishListItems.Remove(wishListItem);
             await _context.SaveChangesAsync();
 
             return Ok(wi);

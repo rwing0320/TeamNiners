@@ -51,11 +51,24 @@ export class WishList extends Component {
 
     addToCart(productId) {
         console.log("the productId for addToCart is " + productId)
+        axios.post(webAddress + 'api/cart/saveCartItems', {
+            GameId: productId
+        })
+            .then(res => {
+                console.log(res.data);
+                alert("Successfully added to Cart!");
+                //this.setState({ cartCount: this.state.cartCount + 1 });
+            })
+            .catch(function (error) {
+                //errormessage = "you have entered in incorrect credentails! please try again!"
+                console.log("this is the error: " + error);
+            });
+
     }
 
    async  deleteFromWishList(pid) {
         console.log("the productId for deleteFromWishList is " + pid)
-        await axios.delete(webAddress + 'api/wishList/deleteWishItem', {
+        await axios.post(webAddress + 'api/wishList/deleteWishItem', {
             productId: pid
         })
             .then(res => {

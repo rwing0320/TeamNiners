@@ -31,8 +31,34 @@ export class ProductPage extends Component {
             
         })
             .then(res => {
-                console.log(res.data[0].gameTitle);              
-                this.setState({ gameTitle: res.data[0].gameTitle, gameCat: res.data[0].gameCategory, gamePlat: res.data[0].gamePlatform, gamePrice: res.data[0].gamePrice, gameDesc: res.data[0].gameDescription });
+                console.log(res.data[0].gameTitle);
+                this.setState({ gameTitle: res.data[0].gameTitle, gamePrice: res.data[0].gamePrice, gameDesc: res.data[0].gameDescription });
+
+
+                axios.post(webAddress + 'api/Game/GetGameCat', {
+                    cat: res.data[0].gameCategory
+                })
+                    .then(res2 => {
+                        console.log(res2.data);
+                        this.setState({ gameCat: res2.data });
+                        axios.post(webAddress + 'api/Game/GetGamePlat', {
+                            plat: res.data[0].gamePlatform
+                        })
+                            .then(res3 => {
+                                console.log(res3.data);
+                                this.setState({ gamePlat: res3.data });
+
+                            })
+                            .catch(function (error) {
+                                //errorMessage = "You have entered in incorrect credentails! Please try Again!"
+                                console.log("this is the error: " + error);
+                            });
+                    })
+                    .catch(function (error) {
+                        //errorMessage = "You have entered in incorrect credentails! Please try Again!"
+                        console.log("this is the error: " + error);
+                    });
+               
             })
             .catch(function (error) {
                 //errorMessage = "You have entered in incorrect credentails! Please try Again!"
@@ -52,7 +78,7 @@ export class ProductPage extends Component {
                 } else {
                     this.setState({ btnDisabled: false });
                 }
-                //this.setState({ gameTitle: res.data[0].gameTitle, gameCat: res.data[0].gameCategory, gamePlat: res.data[0].gamePlatform, gamePrice: res.data[0].gamePrice, gameDesc: res.data[0].gameDescription });
+     
             })
             .catch(function (error) {
                 //errorMessage = "You have entered in incorrect credentails! Please try Again!"
@@ -155,8 +181,8 @@ export class ProductPage extends Component {
                             <td width="50% ">
                                 <div className="gameInfoElement">
                                     <h2 className="Title">{this.state.gameTitle}</h2>
-                                    <h2 className="Platform">{this.state.gamePlat}</h2>
-                                    <h2 className="Category">{this.state.gameCat}</h2>
+                                    <h2 className="Platform">Platform: {this.state.gamePlat}</h2>
+                                    <h2 className="Category">Category: {this.state.gameCat}</h2>
                                 </div>
                             </td>
 

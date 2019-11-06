@@ -82,51 +82,27 @@ namespace TeamNiners.Controllers
 
             return game;
         }
-        // POST: api/Game
-        //[HttpPost]
-        //public async Task<ActionResult<GamingInfo>> PostGame([FromBody]GamingInfo userParam)
-        //{
-        //    //_context.Songs.Add(item);
 
-        //    //_context.GamingInfo.Add(userParam);
-        //    //await _context.SaveChangesAsync();
+        [HttpPost]
+        [Route("/api/Game/GetGameCat")]
+        public string GetGameCategory([FromBody] int cat)
+        {
+            string category = EnumParser.GetEnumValue(cat, "Category");
 
-        //    //return Ok(_context.GamingInfo);
-        //    //return CreatedAtAction(_context.GamingInfo);
-        //    //return CreatedAtAction(nameof(GetSong), new { id = item.Id }, item);
-        //
+             return category;
+        }
 
-        //// GET: api/<controller>
-        //[HttpGet]
-        //public IEnumerable<string> Get()
-        //{
-        //    return new string[] { "value1", "value2" };
-        //}
+        [HttpPost]
+        [Route("/api/Game/GetGamePlat")]
+        public string GetGamePlat([FromBody] int plat)
+        {
 
-        //// GET api/<controller>/5
-        //[HttpGet("{id}")]
-        //public string Get(int id)
-        //{
-        //    return "value";
-        //}
+            string platform = EnumParser.GetEnumValue(plat, "Platform");
 
-        //// POST api/<controller>
-        //[HttpPost]
-        //public void Post([FromBody]string value)
-        //{
-        //}
+            return platform;
 
-        //// PUT api/<controller>/5
-        //[HttpPut("{id}")]
-        //public void Put(int id, [FromBody]string value)
-        //{
-        //}
-
-        //// DELETE api/<controller>/5
-        //[HttpDelete("{id}")]
-        //public void Delete(int id)
-        //{
-        //}
+        }
+     
         [HttpGet]
         [Route("/api/game/showgames_business/{filterValue}")]
         public List<ShowGameItem> DisplayGames_ShowGamesPage([FromRoute]string filterValue)
