@@ -1,5 +1,5 @@
 ﻿import React, { Component } from 'react';
-import { Glyphicon, Button, Accordion, Panel } from 'react-bootstrap';
+import { Glyphicon, Button, Accordion, Panel, Col, Grid, Row } from 'react-bootstrap';
 import './css/ProductPage.css';
 import videoGame from './img/Video_Game.jpg';
 import axios from 'axios';
@@ -10,16 +10,16 @@ export class ProductPage extends Component {
 
     constructor(props) {
         super(props);
-        this.state = { isTrue: false, pageOn: 1, cartCount: 0, gameTitle: "", gameCat: 0, gamePlat: 0, gamePrice: 0, gameDesc: "", isLoggedIn: true, btnDisabled: false, games: []};
+        this.state = { isTrue: false, pageOn: 1, cartCount: 0, gameTitle: "", gameCat: 0, gamePlat: 0, gamePrice: 0, gameDesc: "", isLoggedIn: true, btnDisabled: false, games: [] };
 
-      
+
         this.addToCart = this.addToCart.bind(this);
         this.getcartInfo = this.getcartInfo.bind(this);
         this.addToCart = this.addToCart.bind(this);
         this.addToWishList = this.addToWishList.bind(this);
         this.setCartInfo = this.setCartInfo.bind(this);
         this.getGames = this.getGames.bind(this);
-         this.setCartCount = this.setCartCount.bind(this);
+        this.setCartCount = this.setCartCount.bind(this);
 
         this.getProductInfo();
         this.getMemberId();
@@ -29,7 +29,7 @@ export class ProductPage extends Component {
 
 
     setCartCount() {
-      
+
         axios.get(webAddress + 'api/cart/getCartCount', {
 
         })
@@ -48,7 +48,7 @@ export class ProductPage extends Component {
                 console.log("this is the error: " + error);
             });
     }
-    
+
 
     getGames() {
 
@@ -61,9 +61,9 @@ export class ProductPage extends Component {
             })
     }
 
-   async getProductInfo() {
+    async getProductInfo() {
         await axios.get(webAddress + 'api/Game/GetGame', {
-            
+
         })
             .then(res => {
                 console.log(res.data[0].gameTitle);
@@ -93,7 +93,7 @@ export class ProductPage extends Component {
                         //errorMessage = "You have entered in incorrect credentails! Please try Again!"
                         console.log("this is the error: " + error);
                     });
-               
+
             })
             .catch(function (error) {
                 //errorMessage = "You have entered in incorrect credentails! Please try Again!"
@@ -102,7 +102,7 @@ export class ProductPage extends Component {
 
     }
 
-   async getMemberId() {
+    async getMemberId() {
         await axios.get(webAddress + 'api/members/getEmployeeId', {
 
         })
@@ -115,7 +115,7 @@ export class ProductPage extends Component {
                     this.getGames();
                     this.setCartCount();
                 }
-     
+
             })
             .catch(function (error) {
                 //errorMessage = "You have entered in incorrect credentails! Please try Again!"
@@ -123,13 +123,13 @@ export class ProductPage extends Component {
             });
     }
 
-     addToCart() {
-         axios.post(webAddress + 'api/cart/saveCartItems', {
-            
+    addToCart() {
+        axios.post(webAddress + 'api/cart/saveCartItems', {
+
         })
             .then(res => {
                 console.log(res.data);
-               
+
                 //this.setState({ cartCount: this.state.cartCount + 1 });
                 this.getGames();
                 this.setCartCount();
@@ -138,7 +138,7 @@ export class ProductPage extends Component {
                 //errormessage = "you have entered in incorrect credentails! please try again!"
                 console.log("this is the error: " + error);
             });
-        
+
     }
 
     addToWishList() {
@@ -172,10 +172,10 @@ export class ProductPage extends Component {
             });
 
 
-      
+
     }
 
- 
+
     getcartInfo() {
         return <h4><Glyphicon glyph='shopping-cart' /> Cart <span className="badge">{this.state.cartCount}</span></h4>;
     }
@@ -190,8 +190,8 @@ export class ProductPage extends Component {
                         <table>
                             <tbody>
 
-                                {this.state.games.map(game => 
-                                   
+                                {this.state.games.map(game =>
+
                                     <tr key={game.cartLineId} className="myTableRow" >
                                         <td width="75%">
                                             <br />
@@ -203,14 +203,14 @@ export class ProductPage extends Component {
                                         </td>
 
                                         <td width="25%">
-                                            <br />                                      
+                                            <br />
                                             <Button type="button" className="btn btn-small btn-warning btn-block" id="" onClick={() => this.deleteFromCartList(game.gameId)} >Remove</Button>
                                             <br />
                                         </td>
 
                                     </tr>
 
-                                  
+
                                 )}
 
                             </tbody>
@@ -254,67 +254,87 @@ export class ProductPage extends Component {
         return (
             <div className="productPageDiv">
 
+                <Grid fluid>
+                    <Row>
+                        <Col md={6} id="gameImageColumn">
+                            <div id="gameImageDiv">
+                                <img id="gameImage" src={videoGame} />
+                            </div>
+                        </Col>
 
-                <table className="table-borderless purchaseTable">
-                    <tbody>
-                        <tr >
-                            <td width="30%">
-                                <img src={videoGame} />
-                            </td>
+                        <Col sm={3} id="gameInfoColumn">
 
-                            <td width="50% ">
-                                <div className="gameInfoElement">
-                                    <h2 className="Title">{this.state.gameTitle}</h2>
-                                    <h2 className="Platform">Platform: {this.state.gamePlat}</h2>
-                                    <h2 className="Category">Category: {this.state.gameCat}</h2>
+                            <div className="gameInfoElement">
+
+                                <div id="gameInfo">
+                                    <label for="gameTitle">Title:</label>
+                                    <input type="text" class="form-control" id="gameTitle" placeholder={this.state.gameTitle} readOnly />
+
+                                    <label for="gamePlatform">Platform:</label>
+                                    <input type="text" class="form-control" id="gamePlatform" placeholder={this.state.gamePlat} readOnly />
+
+                                    <label for="gameCategory">Category:</label>
+                                    <input type="text" class="form-control" id="gameCategory" placeholder={this.state.gameCat} readOnly />
                                 </div>
-                            </td>
+                            </div>
 
-                            <td width="20%">
-                                <div className="productForm">
-                                    <form className="">
-                                        <h3 className="ProductPrice" align="left">Price: ${this.state.gamePrice}</h3>
-                                        <br />
+                        </Col>
 
-                                        <Button className="btn btn-lg btn-info btn-block" disabled={this.state.btnDisabled} onClick={this.addToCart}> Add To Cart </Button>
+                        <Col sm={3} id="gameFormColumn">
 
+                            <div className="productForm">
+                                <form className="">
+                                    <h3 className="ProductPrice" align="left">Price: ${this.state.gamePrice}</h3>
+                                    <br />
 
-                                        <Button className="btn btn-lg btn-success btn-block" disabled={this.state.btnDisabled} onClick={this.addToWishList}> Add To Favorites </Button>
-
-                                        <div className="productPageCart"  >
-
-                                            {this.setCartInfo()}
-
-                                           
+                                    <Button className="btn btn-lg btn-info btn-block" disabled={this.state.btnDisabled} onClick={this.addToCart}> Add To Cart </Button>
 
 
-                                        </div>;
-                            
+                                    <Button className="btn btn-lg btn-success btn-block" disabled={this.state.btnDisabled} onClick={this.addToWishList}> Add To Favorites </Button>
+
+                                    <div className="productPageCart"  >
+
+                                        {this.setCartInfo()}
+
+
+
+
+                                    </div>;
+
                                     </form>
-                                </div>
-                            </td>
+                            </div>
 
+                        </Col>
 
+                    </Row>
 
-                        </tr>
-                        <tr className="description">
-                            <td colSpan="3" >
+                    <Row>
+
+                        <Col xl={12} id="gameReviewsColumn">
+
+                            <div id="gameReviewsDiv">
+
                                 <h3 className="DescriptionTitle">Description</h3>
                                 <p className="Description">{this.state.gameDesc}</p>
-                            </td>
-                        </tr>
-                    </tbody>
 
-                </table>
+                                <Accordion>
+                                    <Panel header="Reviews" eventKey='1'>
+                                        There are no reviews available!
+                                    </Panel>
+                                </Accordion>
+                            </div>
 
-                <Accordion>
-                    <Panel header="Reviews" eventKey='1'>
-                        There are no reviews available!
-                </Panel>
-                </Accordion>
+                        </Col>
+                    </Row>
+
+                </Grid>
+
+                
+                
+
 
 
             </div>
-        );
-    }
-}
+                );
+            }
+        }

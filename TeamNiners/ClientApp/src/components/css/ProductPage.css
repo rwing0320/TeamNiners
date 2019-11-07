@@ -5,8 +5,8 @@
 .productForm {
     
     display: grid;
-    height: 25vh;
     width: 100%;
+    margin-top: 1%;
 }
 
 
@@ -29,14 +29,27 @@
 }
 
 
-
-.description {
-    clear: both;
+.gameInfoElement {
+    margin-left: 20%;
+    margin-bottom: 2%;
+    margin-top: 2%;
+    background: linear-gradient(#4F4F4F, #7F7F7F, #9E9E9E);
 }
 
-.gameInfoElement {
-    margin-left: 10px;
-    margin-bottom: 335px;
+#gameInfo {
+    padding: 1% 1%;
+
+}
+
+#gameInfo input {
+    margin-bottom: 6%;
+}
+
+#gameReviewsDiv {
+    margin: 0 auto;
+    text-align: center;
+    margin-top: 2%;
+    
 }
 
 .productPageCart {
@@ -69,5 +82,16 @@
 .scrollCart {
     height: 90px;
     overflow-y: scroll;
+}
+
+#gameImageDiv {
+    margin-top: 1%;
+    width: 50%;
+   
+}
+
+
+#gameFormColumn {
+    margin: 0 auto;
 }
 
