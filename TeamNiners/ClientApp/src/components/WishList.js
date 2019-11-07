@@ -51,7 +51,7 @@ export class WishList extends Component {
 
     addToCart(productId) {
         console.log("the productId for addToCart is " + productId)
-        axios.post(webAddress + 'api/cart/saveCartItems', {
+        axios.post(webAddress + 'api/cart/saveCartItemsFromWishList', {
             GameId: productId
         })
             .then(res => {
