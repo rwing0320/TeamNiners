@@ -23,6 +23,7 @@ export class EmployeeGameReport extends Component {
                 this.setState({ info: res.data })
    
             })
+
         this.goToDashboard = this.goToDashboard.bind(this);
     }
 
@@ -37,6 +38,8 @@ export class EmployeeGameReport extends Component {
         //}
         this.props.changePage(1)
     }
+
+
     makeChange(event) {
         this.state.listName = event.target.value;
         if (this.state.listName == "gameList") {
@@ -68,15 +71,7 @@ export class EmployeeGameReport extends Component {
         doc.save('GameList.pdf');
     }
 
-    changePage() {
-        this.setState({ changePage: true })
-    }
-
-    goToDashboard() {
-        if (this.state.changePage) {
-            return <Redirect to='/dashboard' />
-        }
-    }
+ 
 
     render() {
 
@@ -87,16 +82,22 @@ export class EmployeeGameReport extends Component {
                         <Grid fluid>
                             <Row>
                                 <Col xl={12} id="widgetOne">
-                                    <h3 id="widgetTitle">All Reports</h3>
+                                    <div id="reportsTitle_andSelect">
+                                        <Link to={"/dashboard"}>
+                                            <span id="backButton" onClick={() => this.goToDashboard()} className="glyphicon glyphicon-arrow-left fa-lg" aria-hidden="true"></span>
+                                        </Link>
+                                        <h2 id="widgetTitle">All Reports</h2>
+                                        
                                     <form action="/action_page.php">
-                                        <span class="choose">Choose Report: </span>
+                                            <span class="choose">Choose Report: </span>
+                                            <br />
                                         <select name="chooseReport" onChange={this.makeChange}>
                                             <option value=""></option>
                                             <option value="gameList">Game List</option>
                                             <option value="gameDetail">Game Detail</option>
                                         </select>
                                     </form>
-
+                                    </div>
 
 
                                     <h3 id="gameInsightsTitle">Game Lists</h3>
@@ -119,39 +120,41 @@ export class EmployeeGameReport extends Component {
                                             </tr>
                                         </tbody>
                                     </table>
-                                    <button onClick={() => this.exportList()}>Generate Report</button>
+                                    <div id="generateReportDiv">
+                                        <button id="generateReportButton" onClick={() => this.exportList()}>Generate Report</button>
+                                    </div>
                                 </Col>
                             </Row>
 
                         </Grid>
                     </div>
-                    {this.goToDashboard()}
-                    <Link to={'/DashBoard'}>
-                        <button onClick={() => this.goToDashboard()}>Back</button>
-                    </Link>
-
                 </div>
             );
         }
 
         else if (this.state.gameDetail == true) {
             return (
-
                 <div>
                     <div id="dashboardContainer">
                         <Grid fluid>
                             <Row>
                                 <Col xl={12} id="widgetOne">
-                                    <h3 id="widgetTitle">All Reports</h3>
+                                    <div id="reportsTitle_andSelect">
+                                        <Link to={"/Dashboard"}>
+                                            <span id="backButton" onClick={() => this.goToDashboard()} class="glyphicon glyphicon-arrow-left fa-lg" aria-hidden="true"></span>
+                                        </Link>
+                                    <h2 id="widgetTitle">All Reports</h2>
                                     <form action="/action_page.php">
-                                        <span class="choose">Choose Report: </span>
+                                            <span class="choose">Choose Report: </span>
+                                            <br/>
                                         <select name="chooseReport" onChange={this.makeChange}>
                                             <option value=""></option>
                                             <option value="gameList">Game List</option>
                                             <option value="gameDetail">Game Detail</option>
                                         </select>
 
-                                    </form>
+                                        </form>
+                                     </div>
 
                                     <h3 id="gameInsightsTitle">Game Details</h3>
                                     <table className="table" id="#gamesTable">
@@ -181,19 +184,14 @@ export class EmployeeGameReport extends Component {
 
                                         </tbody>
                                     </table>
-
-                                    <button onClick={() => this.exportDetail()}>Generate Report</button>
+                                    <div id="generateReportDiv">
+                                        <button id="generateReportButton" onClick={() => this.exportDetail()}>Generate Report</button>
+                                        </div>
                                 </Col>
                             </Row>
 
                         </Grid>
                     </div>
-                    {this.goToDashboard()}
-                    <Link to={'/DashBoard'}>
-                        <button onClick={() => this.goToDashboard()}>Back</button>
-                    </Link>
-
-
                 </div>
             );
         }
@@ -204,9 +202,14 @@ export class EmployeeGameReport extends Component {
                         <Grid fluid>
                             <Row>
                                 <Col xl={12} id="widgetOne">
-                                    <h3 id="widgetTitle">All Reports</h3>
+                                    <div id="reportsTitle_andSelect">
+                                        <Link to={"/Dashboard"}>
+                                            <span id="backButton" onClick={() => this.goToDashboard()} class="glyphicon glyphicon-arrow-left fa-lg" aria-hidden="true"></span>
+                                        </Link>
+                                    <h2 id="widgetTitle">All Reports</h2>
                                     <form action="/action_page.php">
-                                        <span>Choose Report: </span>
+                                            <span>Choose Report: </span>
+                                            <br/>
                                         <select name="chooseReport" onChange={this.makeChange}>
                                             <option value=""></option>
                                             <option value="gameList">Game List</option>
@@ -214,19 +217,13 @@ export class EmployeeGameReport extends Component {
                                         </select>
                                     </form>
 
-
+                                 </div>
 
                                 </Col>
                             </Row>
 
                         </Grid>
                     </div>
-                    {this.goToDashboard()}
-                    <Link to={'/DashBoard'}>
-                        <button onClick={() => this.goToDashboard()}>Back</button>
-                    </Link>
-
-
                 </div>
             );
         }

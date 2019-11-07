@@ -64,7 +64,7 @@ export class EmployeeShowGames extends Component {
                              
                                 <div id="filterBar">
                                     <Link to={"/Dashboard"}>
-                                        <span id="backButton" onClick={() => this.goToDashboard()} class="glyphicon glyphicon-arrow-left fa-lg" aria-hidden="true"></span>
+                                        <span id="backButton" onClick={() => this.goToDashboard()} className="glyphicon glyphicon-arrow-left fa-lg" aria-hidden="true"></span>
                                     </Link>
                                     <select onChange={this.filterGames}>
                                         <option value="name_desc">Name: Descending</option>
