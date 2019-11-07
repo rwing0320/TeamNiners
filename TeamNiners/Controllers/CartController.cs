@@ -87,8 +87,65 @@ namespace TeamNiners.Controllers
 
         }
 
+        [HttpGet]
+        [Route("/api/game/showgames_cart")]
+        public List<ShowGameItem> DisplayGames_ShowGamesPage()
+        {
+            List<ShowGameItem> gameList = new List<ShowGameItem>();
+            gameList = ShowGameItem.GetGamesListForCart();
+
+            return gameList;
+        }
+
+        [HttpGet]
+        [Route("/api/cart/getCartCount")]
+        public int GetCartCount()
+        {
+            //List<ShowGameItem> gameList = new List<ShowGameItem>();
+            //gameList = ShowGameItem.GetGamesListForWishList();
+            var cartList = _context.CartItems.Where(p => p.CartId == UserTempStorage.cartID);
+
+            int cartCount = 0;
+
+           foreach(var item in cartList)
+            {
+                cartCount++;
+            }
 
 
+            return cartCount;
+        }
+
+        [HttpPost]
+        [Route("/api/cart/deleteCartItem")]
+        public async Task<IActionResult> DeleteCartItem([FromBody] CartItems ci)
+        {
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+
+            ci.CartId = UserTempStorage.cartID;
+
+
+            IQueryable<CartItems> cartItems = _context.CartItems.Where(p => p.GameId == ci.GameId && p.CartId== UserTempStorage.cartID);
+
+            int recordId = 0;
+            foreach (var item in cartItems)
+            {
+                recordId = item.CartItemdId;
+                break;
+            }
+
+            var cartItem = _context.CartItems.Find(recordId);
+
+            _context.CartItems.Remove(cartItem);
+            await _context.SaveChangesAsync();
+
+            return Ok(ci);
+        }
 
     }
 }

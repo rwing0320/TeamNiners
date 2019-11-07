@@ -10,7 +10,7 @@ export class ProductPage extends Component {
 
     constructor(props) {
         super(props);
-        this.state = { isTrue: false, pageOn: 1, cartCount: 0, gameTitle: "", gameCat: 0, gamePlat: 0, gamePrice: 0, gameDesc: "", isLoggedIn: true, btnDisabled: false};
+        this.state = { isTrue: false, pageOn: 1, cartCount: 0, gameTitle: "", gameCat: 0, gamePlat: 0, gamePrice: 0, gameDesc: "", isLoggedIn: true, btnDisabled: false, games: []};
 
       
         this.addToCart = this.addToCart.bind(this);
@@ -18,12 +18,47 @@ export class ProductPage extends Component {
         this.addToCart = this.addToCart.bind(this);
         this.addToWishList = this.addToWishList.bind(this);
         this.setCartInfo = this.setCartInfo.bind(this);
-
+        this.getGames = this.getGames.bind(this);
+         this.setCartCount = this.setCartCount.bind(this);
 
         this.getProductInfo();
         this.getMemberId();
 
 
+    }
+
+
+    setCartCount() {
+      
+        axios.get(webAddress + 'api/cart/getCartCount', {
+
+        })
+            .then(res => {
+                console.log(res.data);
+                if (res.data != 0) {
+                    this.setState({ cartCount: res.data });
+                }
+                else {
+                    this.setState({ cartCount: 0 });
+                }
+
+            })
+            .catch(function (error) {
+                //errorMessage = "You have entered in incorrect credentails! Please try Again!"
+                console.log("this is the error: " + error);
+            });
+    }
+    
+
+    getGames() {
+
+        axios.get(webAddress + 'api/game/showgames_cart')
+            .then(res => {
+                const games = res.data;
+                this.setState({ games });
+                console.log(res.data);
+
+            })
     }
 
    async getProductInfo() {
@@ -77,6 +112,8 @@ export class ProductPage extends Component {
                     this.setState({ isLoggedIn: false, btnDisabled: true });
                 } else {
                     this.setState({ btnDisabled: false });
+                    this.getGames();
+                    this.setCartCount();
                 }
      
             })
@@ -93,7 +130,9 @@ export class ProductPage extends Component {
             .then(res => {
                 console.log(res.data);
                
-                this.setState({ cartCount: this.state.cartCount + 1 });
+                //this.setState({ cartCount: this.state.cartCount + 1 });
+                this.getGames();
+                this.setCartCount();
             })
             .catch(function (error) {
                 //errormessage = "you have entered in incorrect credentails! please try again!"
@@ -136,24 +175,49 @@ export class ProductPage extends Component {
       
     }
 
+ 
     getcartInfo() {
         return <h4><Glyphicon glyph='shopping-cart' /> Cart <span className="badge">{this.state.cartCount}</span></h4>;
     }
 
     setCartInfo() {
         if (this.state.btnDisabled == false) {
+
             return <Accordion className="accordionPanel" >
 
                 <Panel className="cartPanel" header={this.getcartInfo()} eventKey='1'>
                     <div className="scrollCart">
-                        There are no reviews available!lkdsafhjsalkfjsdlkfjldskfjds
-                               dsflkjsdflkjsdlkfjdslfdasdasdsadsadsadsad
-                       dasdsadsadsadsadsad
-                       dsadasdsadsadsa
-                       dasdsadsadsa
-                       dsadsadsad
+                        <table>
+                            <tbody>
 
-                                                 </div>
+                                {this.state.games.map(game => 
+                                   
+                                    <tr key={game.cartLineId} className="myTableRow" >
+                                        <td width="75%">
+                                            <br />
+                                            <div>
+                                                <div>{game.title}</div>
+                                                <div>Desccription: {game.description}</div>
+                                                <div>Price: ${game.price}</div>
+                                            </div>
+                                        </td>
+
+                                        <td width="25%">
+                                            <br />                                      
+                                            <Button type="button" className="btn btn-small btn-warning btn-block" id="" onClick={() => this.deleteFromCartList(game.gameId)} >Remove</Button>
+                                            <br />
+                                        </td>
+
+                                    </tr>
+
+                                  
+                                )}
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
                 </Panel>
 
             </Accordion>
@@ -162,6 +226,26 @@ export class ProductPage extends Component {
         else {
             return ""
         }
+    }
+
+
+    async  deleteFromCartList(pid) {
+        console.log("the productId for deleteFromWishList is " + pid)
+        await axios.post(webAddress + 'api/cart/deleteCartItem', {
+            gameId: pid
+        })
+            .then(res => {
+                console.log(res.data);
+
+                this.getGames();
+                this.setCartCount();
+                //this.props.changePage(5);
+
+            })
+            .catch(function (error) {
+                //errorMessage = "You have entered in incorrect credentails! Please try Again!"
+                console.log("this is the error: " + error);
+            });
     }
 
 

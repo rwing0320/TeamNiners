@@ -19,6 +19,7 @@ namespace TeamNiners.Helpers
 
         public int gameId { get; set; }
 
+        public int cartLineId { get; set; }
 
         private static IConfiguration connectionString;
 
@@ -196,5 +197,68 @@ namespace TeamNiners.Helpers
             return gamesList;
         }
 
+        public static List<ShowGameItem> GetGamesListForCart()
+        {
+            SetupUserServiceConnection();
+            // int id = UserTempStorage.id;
+
+            int cartId = UserTempStorage.cartID;
+            List<ShowGameItem> gamesList = new List<ShowGameItem>();
+
+            DataSet ds3 = new DataSet();
+
+            using (SqlConnection sqlConnection = new SqlConnection(connectionString.GetSection("ConnectionStrings").GetSection("NinersConnection").Value))
+            {
+                SqlDataAdapter adapter = new SqlDataAdapter();
+
+                sqlConnection.Open();
+
+                // Command will get all the games from GameInfo where GameInfo.GameID == BusinessGame.GameID 
+                // AND BusinessGame.BusinessID == currently signed in ID
+                SqlCommand filteredQueryCommand = new SqlCommand("");
+
+                filteredQueryCommand = new SqlCommand("SELECT* FROM(" +
+                    "SELECT cart.cartItemdID,cart.cartID, game.gameID, game.gameTitle, game.gameDescription, game.gamePrice " +
+                    "FROM CartItems cart " +
+                    "INNER JOIN GamingInfo game ON game.gameID = cart.gameID) resultSet " +
+                    "WHERE resultSet.cartID = " + cartId + ";",
+                    sqlConnection);
+
+
+               
+
+
+                filteredQueryCommand.CommandType = CommandType.Text;
+
+                adapter.SelectCommand = filteredQueryCommand;
+
+                filteredQueryCommand.ExecuteNonQuery();
+
+                adapter.Fill(ds3);
+
+                sqlConnection.Close();
+
+            }
+
+            //Iterating through and mapping table values to object properties before adding to list
+            foreach (DataTable dt in ds3.Tables)
+            {
+                foreach (DataRow dr in dt.Rows)
+                {
+                    ShowGameItem tempGame = new ShowGameItem();
+                    tempGame.cartLineId = (int)dr["cartItemdID"];
+                    tempGame.gameId = (int)dr["gameID"];
+                    tempGame.Title = (string)dr["gameTitle"];
+                    tempGame.Description = (string)dr["gameDescription"];
+                    tempGame.Price = (Int64)dr["gamePrice"];
+                    gamesList.Add(tempGame);
+                }
+            }
+
+            return gamesList;
+        }
+
     }
+
 }
+
