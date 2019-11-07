@@ -17,3 +17,48 @@ th {
 h1{
     text-align: center;
 }
+
+#reportsTitle_andSelect {
+    text-align: center;
+    margin: 0 auto;
+    margin-bottom: 2%;
+}
+
+#generateReportDiv {
+    margin: 0 auto;
+    margin-top: 2%;
+    text-align: center;
+}
+
+#generateReportButton {
+    border-radius: 0px;
+    border-radius: 20px;
+    border: #000;
+    font-weight: bold;
+    font-size: 1.2em;
+    background-image: linear-gradient(to right, rgb(220, 220, 255), rgb(0, 197, 255));
+    /*
+    background-color: rgb(0, 197, 255) is a nice gradient value aswell
+    */
+    box-shadow: -5px -5px 10px rgba(255, 255, 255, 0.2);
+    -webkit-transition: all 0.25s;
+}
+
+    #generateReportButton:hover {
+
+        border-radius: 10px;
+        opacity: 0.75;
+        transition: all ease-in 0.25s;
+    }
+
+#backButton {
+    margin: 0 auto;
+    padding-top: 2%;
+    font-size: 150%;
+    -webkit-transition: all 0.25s;
+}
+
+    #backButton:hover {
+        transform: rotate(10deg);
+        transition: all 0.25s ease;
+    }
