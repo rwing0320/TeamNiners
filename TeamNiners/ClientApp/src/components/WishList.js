@@ -5,6 +5,7 @@ import videoGame from './img/Video_Game.jpg';
 import axios from 'axios';
 import { webAddress } from './reference/reference';
 
+
 export class WishList extends Component {
     displayName = WishList.name
 
@@ -94,9 +95,10 @@ export class WishList extends Component {
                     <tbody>
                         {this.state.games.map(game =>
                             <tr key={game.gameId} className="myTableRow" >
-                                <td width="75%">
+                                <td width="65%">
                                     <br />
-                                    <div>
+                                    <img id="gameImage" src={videoGame} />
+                                    <div id="gameInfoDiv">
                                         <div>{game.title}</div>
                                         <div>Desccription: {game.description}</div>
                                         <div>Price: ${game.price}</div>
