@@ -81,6 +81,7 @@ namespace TeamNiners.Controllers
             return gameList;
         }
 
+     
         [HttpPost]
         [Route("/api/wishList/checkWishList")]
         public async Task<IActionResult> CheckWishList()

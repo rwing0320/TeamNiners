@@ -24,8 +24,7 @@ namespace TeamNiners.Tests
         IMemberService _memberService;
         //Sets up dependency injection to grab connectionString later
         MemberLoginsController ml;
-
-        [SetUp]
+ [SetUp]
         public void Setup()
         {
             var builder = new ConfigurationBuilder().AddJsonFile("appsettings.json").SetBasePath(System.Environment.CurrentDirectory);
@@ -77,5 +76,6 @@ namespace TeamNiners.Tests
 
         }
 
+       
     }
 }
