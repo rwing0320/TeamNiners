@@ -45,9 +45,29 @@ namespace TeamNiners.Controllers
             return Ok(cart);
         }
 
+        //[HttpPost]
+        //[Route("/api/cart/saveCartItems")]
+        //public async Task<IActionResult> SaveCartItem()
+        //{
+        //    CartItems cartItem = new CartItems();
+        //    cartItem.CartId = UserTempStorage.cartID;
+        //    cartItem.GameId = UserTempStorage.gameID;
+        //    //MemberLogin member = new MemberLogin();
+
+        //    if (!ModelState.IsValid)
+        //    {
+        //        return BadRequest(ModelState);
+        //    }
+
+        //    _context.CartItems.Add(cartItem);
+        //    await _context.SaveChangesAsync();
+
+        //    return CreatedAtAction("CreateCart", new { id = cartItem.CartItemdId }, cartItem);
+
+        //}
         [HttpPost]
         [Route("/api/cart/saveCartItems")]
-        public async Task<IActionResult> SaveCartItem()
+        public async Task<ActionResult<CartItems>> SaveCartItem()
         {
             CartItems cartItem = new CartItems();
             cartItem.CartId = UserTempStorage.cartID;
@@ -65,6 +85,7 @@ namespace TeamNiners.Controllers
             return CreatedAtAction("CreateCart", new { id = cartItem.CartItemdId }, cartItem);
 
         }
+
 
         [HttpPost]
         [Route("/api/cart/saveCartItemsFromWishList")]
