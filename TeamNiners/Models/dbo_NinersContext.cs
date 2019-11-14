@@ -343,10 +343,19 @@ namespace TeamNiners.Models
 
                 entity.Property(e => e.MemberId).HasColumnName("memberID");
 
+                entity.Property(e => e.MemberUsername)
+                    .HasColumnName("memberUsername")
+                    .HasMaxLength(255)
+                    .IsUnicode(false);
+
                 entity.Property(e => e.ReviewContent)
                     .HasColumnName("reviewContent")
                     .HasMaxLength(255)
                     .IsUnicode(false);
+
+                entity.Property(e => e.ReviewDate)
+                    .HasColumnName("reviewDate")
+                    .HasColumnType("datetime");
             });
 
             modelBuilder.Entity<WishList>(entity =>

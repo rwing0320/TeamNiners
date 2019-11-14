@@ -21,17 +21,30 @@ namespace TeamNiners.Controllers
             _context = context;
         }
 
+        /*  Returns all of the reviews for the current Game that
+            is being viewed on Products page  */
         [HttpGet]
         [Route("/api/review/reviewlist")]
         public IEnumerable<Review> GetReviews()
         {
-            //var gameID = UserTempStorage.gameID;
-            // var game = _context.GamingInfo.Where(p => p.GameId == gameID);
 
             var gameID = UserTempStorage.gameID;
             var reviews = _context.Review.Where(r => r.GameId == gameID);
 
             return reviews;
+        }
+
+
+        [HttpPost]
+        [Route("/api/review/new")]
+        public async Task<IActionResult> NewReview([FromBody] Review reviewInfo)
+        {
+
+
+            _context.Review.Add(reviewInfo);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction("NewReview", new { id = reviewInfo.ReviewId }, reviewInfo);
         }
     }
 }

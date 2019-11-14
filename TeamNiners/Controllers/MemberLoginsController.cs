@@ -39,6 +39,7 @@ namespace TeamNiners.Controllers
             if (user == null)
                 return BadRequest(new { message = "Username or password is incorrect" });
 
+
             return Ok(user);
         }
 
@@ -195,6 +196,7 @@ namespace TeamNiners.Controllers
             UserTempStorage.email = id.MemberUsername;
             UserTempStorage.salt = id.Salt;
 
+
             return Ok(UserTempStorage.memberID);
         }
 
@@ -213,7 +215,7 @@ namespace TeamNiners.Controllers
             }
 
              UserTempStorage.cartID = cartId;
-            
+
             return Ok();
         }
 
@@ -240,9 +242,26 @@ namespace TeamNiners.Controllers
         [Route("/api/member/memberId")]
         public IActionResult GetEmployeeId()
         {
+            
+
             string[] myArray = { UserTempStorage.memberID.ToString(), UserTempStorage.email, UserTempStorage.salt }; 
             return Ok(myArray);
 
+        }
+
+        [HttpGet]
+        [Route("/api/member/username/{memberID}")]
+        public IActionResult GetMemberUsername(int memberID)
+        {
+            IQueryable<MemberLogin> user = _context.MemberLogin.Where(x => x.MemberId == memberID);
+
+            string username = "";
+            foreach (MemberLogin result in user)
+            {
+                username = result.MemberName;
+            }
+
+            return Ok(username);
         }
 
         [AllowAnonymous]
