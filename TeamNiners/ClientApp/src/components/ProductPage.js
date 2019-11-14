@@ -10,7 +10,7 @@ export class ProductPage extends Component {
 
     constructor(props) {
         super(props);
-        this.state = { isTrue: false, pageOn: 1, cartCount: 0, gameTitle: "", gameCat: 0, gamePlat: 0, gamePrice: 0, gameDesc: "", isLoggedIn: true, btnDisabled: false, games: [] };
+        this.state = { isTrue: false, pageOn: 1, cartCount: 0, gameTitle: "", gameCat: 0, gamePlat: 0, gamePrice: 0, gameDesc: "", isLoggedIn: true, btnDisabled: false, games: [], reviews: [] };
 
 
         this.addToCart = this.addToCart.bind(this);
@@ -20,10 +20,30 @@ export class ProductPage extends Component {
         this.setCartInfo = this.setCartInfo.bind(this);
         this.getGames = this.getGames.bind(this);
         this.setCartCount = this.setCartCount.bind(this);
+        this.getReviewList = this.getReviewList.bind(this);
 
         this.getProductInfo();
         this.getMemberId();
+        this.getReviewList();
 
+
+    }
+
+    getReviewList() {
+
+        axios.get(webAddress + 'api/review/reviewlist', {
+
+        })
+            .then(res => {
+                console.log(res.data);
+                const reviews = res.data;
+                this.setState({ reviews });
+
+            })
+            .catch(function (error) {
+                //errorMessage = "You have entered in incorrect credentails! Please try Again!"
+                console.log("this is the error: " + error);
+            });
 
     }
 
@@ -319,7 +339,23 @@ export class ProductPage extends Component {
 
                                 <Accordion>
                                     <Panel header="Reviews" eventKey='1'>
-                                        There are no reviews available!
+
+                                        {this.state.reviews.map(review =>
+
+                                            <Grid fluid>
+                                            <div key={review.reviewID} id="reviewItem">
+
+                                                
+                                                    <Row>
+                                                        <Col md={12}>
+                                                            <h2>{review.reviewContent}</h2>
+                                                        </Col>
+                                                    </Row>
+                                                
+                                            </div>
+                                            </Grid>
+                                        )}
+
                                     </Panel>
                                 </Accordion>
                             </div>

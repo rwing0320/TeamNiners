@@ -95,3 +95,8 @@
     margin: 0 auto;
 }
 
+#reviewItem {
+    color: #FFF;
+    background: linear-gradient(#4F4F4F, #7F7F7F, #9E9E9E);
+}
+
