@@ -25,7 +25,6 @@ namespace TeamNiners.Models
         public virtual DbSet<GamingPlatform> GamingPlatform { get; set; }
         public virtual DbSet<Member> Member { get; set; }
         public virtual DbSet<MemberLogin> MemberLogin { get; set; }
-        public virtual DbSet<Review> Review { get; set; }
         public virtual DbSet<WishList> WishList { get; set; }
         public virtual DbSet<WishListItems> WishListItems { get; set; }
 
@@ -89,13 +88,13 @@ namespace TeamNiners.Models
                     .WithMany(p => p.BusinessGames)
                     .HasForeignKey(d => d.BusinessId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__BusinessG__busin__3A81B327");
+                    .HasConstraintName("FK__BusinessG__busin__38996AB5");
 
                 entity.HasOne(d => d.Game)
                     .WithOne(p => p.BusinessGames)
                     .HasForeignKey<BusinessGames>(d => d.GameId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__BusinessG__gameI__3B75D760");
+                    .HasConstraintName("FK__BusinessG__gameI__398D8EEE");
             });
 
             modelBuilder.Entity<BusinessLogin>(entity =>
@@ -134,7 +133,7 @@ namespace TeamNiners.Models
                     .WithOne(p => p.BusinessLogin)
                     .HasForeignKey<BusinessLogin>(d => d.Id)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__BusinessLogi__ID__3C69FB99");
+                    .HasConstraintName("FK__BusinessLogi__ID__3A81B327");
             });
 
             modelBuilder.Entity<Cart>(entity =>
@@ -147,7 +146,7 @@ namespace TeamNiners.Models
                     .WithMany(p => p.Cart)
                     .HasForeignKey(d => d.MemberId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Cart__memberID__3D5E1FD2");
+                    .HasConstraintName("FK__Cart__memberID__3B75D760");
             });
 
             modelBuilder.Entity<CartItems>(entity =>
@@ -164,13 +163,13 @@ namespace TeamNiners.Models
                     .WithMany(p => p.CartItems)
                     .HasForeignKey(d => d.CartId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__CartItems__cartI__3E52440B");
+                    .HasConstraintName("FK__CartItems__cartI__3C69FB99");
 
                 entity.HasOne(d => d.Game)
                     .WithMany(p => p.CartItems)
                     .HasForeignKey(d => d.GameId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__CartItems__gameI__3F466844");
+                    .HasConstraintName("FK__CartItems__gameI__3D5E1FD2");
             });
 
             modelBuilder.Entity<GamingCategory>(entity =>
@@ -218,13 +217,13 @@ namespace TeamNiners.Models
                     .WithMany(p => p.GamingInfo)
                     .HasForeignKey(d => d.GameCategory)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__GamingInf__gameC__403A8C7D");
+                    .HasConstraintName("FK__GamingInf__gameC__3E52440B");
 
                 entity.HasOne(d => d.GamePlatformNavigation)
                     .WithMany(p => p.GamingInfo)
                     .HasForeignKey(d => d.GamePlatform)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__GamingInf__gameP__412EB0B6");
+                    .HasConstraintName("FK__GamingInf__gameP__3F466844");
             });
 
             modelBuilder.Entity<GamingPlatform>(entity =>
@@ -332,30 +331,7 @@ namespace TeamNiners.Models
                     .WithOne(p => p.MemberLogin)
                     .HasForeignKey<MemberLogin>(d => d.MemberId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__MemberLog__membe__4222D4EF");
-            });
-
-            modelBuilder.Entity<Review>(entity =>
-            {
-                entity.Property(e => e.ReviewId).HasColumnName("reviewID");
-
-                entity.Property(e => e.GameId).HasColumnName("gameID");
-
-                entity.Property(e => e.MemberId).HasColumnName("memberID");
-
-                entity.Property(e => e.MemberUsername)
-                    .HasColumnName("memberUsername")
-                    .HasMaxLength(255)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.ReviewContent)
-                    .HasColumnName("reviewContent")
-                    .HasMaxLength(255)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.ReviewDate)
-                    .HasColumnName("reviewDate")
-                    .HasColumnType("datetime");
+                    .HasConstraintName("FK__MemberLog__membe__403A8C7D");
             });
 
             modelBuilder.Entity<WishList>(entity =>
@@ -368,7 +344,7 @@ namespace TeamNiners.Models
                     .WithMany(p => p.WishList)
                     .HasForeignKey(d => d.MemberId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__WishList__member__4316F928");
+                    .HasConstraintName("FK__WishList__member__412EB0B6");
             });
 
             modelBuilder.Entity<WishListItems>(entity =>
@@ -381,7 +357,7 @@ namespace TeamNiners.Models
                     .WithMany(p => p.WishListItems)
                     .HasForeignKey(d => d.ProductId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__WishListI__Produ__44FF419A");
+                    .HasConstraintName("FK__WishListI__Produ__4316F928");
             });
         }
     }
