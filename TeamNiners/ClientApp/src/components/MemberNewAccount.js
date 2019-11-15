@@ -251,6 +251,7 @@ export class MemberNewAccount extends Component {
         var memberPassword = this.state.password;
 
         var memberId = 0;
+        var cartId = 0;
         var memberEmail = "";
         var salt = "";
 
@@ -274,12 +275,12 @@ export class MemberNewAccount extends Component {
                 MemberName: this.state.firsname
             })
                 .then(res2 => {
-                    salt = res2.data.Salt;
+                    salt = res2.data.salt;
                     axios.post(webAddress + 'api/cart', {
                         MemberId: memberId                        
                     })
                         .then(res3 => {
-                            var cartId = res3.data.cartID;
+                            cartId = res3.data.cartId;
 
                             axios.post(webAddress + 'api/cart/saveCart', {
                                 cartID: cartId
