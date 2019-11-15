@@ -25,7 +25,7 @@ namespace TeamNiners.Services
 
         //Sets up dependency injection to grab connectionString later
         public IConfiguration connectionString;
-       
+        int tempTablePos = 0;
 
 
         public void SetupUserServiceConnection()
@@ -314,8 +314,19 @@ namespace TeamNiners.Services
             //Handles errors when the email is incorrect so that it won't break
             if (tempTable.Rows.Count != 0 && id != 0)
             {
+                for(var i = 0; i < tempTable.Rows.Count; i++)
+                {
+                    if(tempTable.Rows[i]["memberID"].ToString() == id.ToString())
+                    {
+                        salt = (string)tempTable.Rows[i]["Salt"];
+                        tempTablePos = i;
+                        break;
+                    }
+                }
+                //salt = (string)tempTable.Rows[id - 1]["Salt"];
+                //salt = (string)tempTable.Rows[id-1]["Salt"];
 
-                salt = (string)tempTable.Rows[id - 1]["Salt"];
+                //salt = (string)tempTable.Rows["memberID"][]
 
             }
 
@@ -335,7 +346,8 @@ namespace TeamNiners.Services
                 //Checks the key value pair to see if the stored password value is the same as entered
                 if (userList[username] == HashedPassword)
                 {
-                    string name = (string)tempTable.Rows[id - 1]["memberName"];
+                    //string name = (string)tempTable.Rows[id - 1]["memberName"];
+                    string name = (string)tempTable.Rows[tempTablePos]["memberName"];
                     //Adding the entry to a list for the var to pull from. Allows proper setup of token
                     _users.Add(new MemberLogin { MemberId = id, MemberUsername = username, MemberPassword = HashedPassword, MemberName = name });
 
