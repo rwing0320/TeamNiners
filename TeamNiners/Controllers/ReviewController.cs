@@ -27,14 +27,14 @@ namespace TeamNiners.Controllers
         [Route("/api/review/reviewlist")]
         public IEnumerable<Review> GetReviews()
         {
-            /*
+            
             var gameID = UserTempStorage.gameID;
             var reviews = _context.Review.Where(r => r.GameId == gameID);
-            */
-            return null;
+            
+            return reviews;
         }
 
-        /*
+        
         [HttpPost]
         [Route("/api/review/new")]
         public async Task<IActionResult> NewReview([FromBody] Review reviewInfo)
@@ -47,6 +47,6 @@ namespace TeamNiners.Controllers
             return CreatedAtAction("NewReview", new { id = reviewInfo.ReviewId }, reviewInfo);
         }
 
-    */
+    
     }
 }
