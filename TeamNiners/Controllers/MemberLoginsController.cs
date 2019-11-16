@@ -251,7 +251,7 @@ namespace TeamNiners.Controllers
 
         [HttpGet]
         [Route("/api/member/username/{memberID}")]
-        public IActionResult GetMemberUsername(int memberID)
+        public async Task<IActionResult> GetMemberUsername(int memberID)
         {
             IQueryable<MemberLogin> user = _context.MemberLogin.Where(x => x.MemberId == memberID);
 
@@ -260,6 +260,7 @@ namespace TeamNiners.Controllers
             {
                 username = result.MemberName;
             }
+
 
             return Ok(username);
         }

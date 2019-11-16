@@ -40,7 +40,6 @@ namespace TeamNiners.Controllers
         public async Task<IActionResult> NewReview([FromBody] Review reviewInfo)
         {
 
-
             _context.Review.Add(reviewInfo);
             await _context.SaveChangesAsync();
 

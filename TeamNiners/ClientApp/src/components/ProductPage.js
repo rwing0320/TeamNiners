@@ -32,7 +32,7 @@ export class ProductPage extends Component {
         this.openReviewForm = this.openReviewForm.bind(this);
         this.closeReviewForm = this.closeReviewForm.bind(this);
         this.onChangeReviewContent = this.onChangeReviewContent.bind(this);
-
+      
 
     }
 
@@ -56,12 +56,13 @@ export class ProductPage extends Component {
 
     
 
-     getMemberUsername() {
+     async getMemberUsername() {
 
-         axios.get(webAddress + 'api/member/username/' + this.state.memberID, {
+         await axios.get(webAddress + 'api/member/username/' + this.state.memberID, {
         })
-            .then(res => {
-
+             .then(res => {
+                 this.setState({ memberUsername: res.data });
+                this.addNewReview(res.data);
                 console.log('username: ' + res.data);
               
 
@@ -70,16 +71,20 @@ export class ProductPage extends Component {
                 //errorMessage = "You have entered in incorrect credentails! Please try Again!"
                 console.log("this is the error: " + error);
             });
+
+
+ 
     }
 
 
 
-    async addNewReview() {
+
+    async addNewReview(username) {
 
         if (this.state.reviewContent != "") {
             await axios.post(webAddress + 'api/review/new', {
                 MemberId: this.state.memberID,
-                MemberName: this.state.memberUsername,
+                MemberUsername: username,
                 GameId: this.state.gameID,
                 ReviewContent: this.state.reviewContent
             })
@@ -199,7 +204,7 @@ export class ProductPage extends Component {
                     this.setState({ btnDisabled: false });
                     this.setState({ memberID: res.data});
                     console.log('currentMemberID is : ' + this.state.memberID);
-                    this.getMemberUsername();
+       
                     this.getGames();
                     this.setCartCount();
                 }
@@ -420,7 +425,7 @@ export class ProductPage extends Component {
                                                         <div id="newReviewDiv">
                                                             <label for="ReviewLabel">Review:</label>
                                                             <textarea type="text" onChange={this.onChangeReviewContent} class="form-control" id="reviewContentInput" required autoFocus />
-                                                            <button class="btn btn-info" onClick={this.addNewReview}>Submit</button>
+                                                            <button class="btn btn-info" onClick={this.getMemberUsername}>Submit</button>
                                                            
                                                             <button class="btn btn-warning" onClick={this.openReviewForm}>Cancel</button>
                                                         </div>
