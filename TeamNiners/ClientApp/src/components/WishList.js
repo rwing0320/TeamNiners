@@ -97,7 +97,7 @@ export class WishList extends Component {
                             <tr key={game.gameId} className="myTableRow" >
                                 <td width="65%">
                                     <br />
-                                    <img id="gameImage" src={videoGame} />
+                                    <img id="wishlist_gameImage" src={videoGame} />
                                     <div id="gameInfoDiv">
                                         <div>{game.title}</div>
                                         <div>Desccription: {game.description}</div>

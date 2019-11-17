@@ -351,31 +351,61 @@ export class ProductPage extends Component {
                     <Row>
                         <Col md={6} id="gameImageColumn">
                             <div id="gameImageDiv">
-                                <img id="gameImage" src={videoGame} />
+                                <img id="product_gameImage" src={videoGame} />
                             </div>
                         </Col>
 
-                        <Col sm={3} id="gameInfoColumn">
+                        <Col md={6} id="gameInfoColumn">
+                        
+                            <Row>
 
-                            <div className="gameInfoElement">
+                                <div className="productForm">
 
-                                <div id="gameInfo">
+                                    <div className="gameInfoElement">
+
+                                    <div id="gameInfo">
+
+                                            <Row>
+                                                <div id="rowLabels">
+
+                                                <Col sm={3}>
                                     <label for="gameTitle">Title:</label>
-                                    <input type="text" class="form-control" id="gameTitle" placeholder={this.state.gameTitle} readOnly />
 
-                                    <label for="gamePlatform">Platform:</label>
-                                    <input type="text" class="form-control" id="gamePlatform" placeholder={this.state.gamePlat} readOnly />
+                                                    </Col>
 
-                                    <label for="gameCategory">Category:</label>
-                                    <input type="text" class="form-control" id="gameCategory" placeholder={this.state.gameCat} readOnly />
-                                </div>
+                                                <Col sm={3}>
+                                                        <label for="gamePlatform">Platform:</label>
+                                                    
+                                                </Col>
+
+
+                                                <Col sm={3}>
+                                                        <label for="gameCategory">Category:</label>
+
+                                                    </Col>
+                                                </div>
+                                            </Row>
+
+                                            <Row>
+                                                <div id="rowInfo">
+                                            <Col sm={3}>
+
+                                                    
+                                                <input type="text" class="form-control" id="gameTitle" placeholder={this.state.gameTitle} readOnly />
+                                            </Col>
+
+                                            <Col sm={3}>
+                                                    
+                                                <input type="text" class="form-control" id="gamePlatform" placeholder={this.state.gamePlat} readOnly />
+                                            </Col>
+                                            <Col sm={3}>
+                                                <input type="text" class="form-control" id="gameCategory" placeholder={this.state.gameCat} readOnly />
+                                                    </Col>
+                                                </div>
+                                            </Row>
+                                                        </div>
                             </div>
 
-                        </Col>
-
-                        <Col sm={3} id="gameFormColumn">
-
-                            <div className="productForm">
                                 <form className="">
                                     <h3 className="ProductPrice" align="left">Price: ${this.state.gamePrice}</h3>
                                     <br />
@@ -396,6 +426,8 @@ export class ProductPage extends Component {
 
                                     </form>
                             </div>
+
+                                </Row>
 
                         </Col>
 

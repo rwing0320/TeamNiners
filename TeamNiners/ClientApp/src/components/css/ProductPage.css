@@ -5,6 +5,7 @@
 .productForm {
     
     display: grid;
+    margin-left: 15%;
     width: 100%;
     margin-top: 1%;
 }
@@ -15,7 +16,7 @@
 }
 
 .productForm form {
-    width: 390px;
+    width: 100%;
     border-radius: 5px;
     background-color: #eeeeee;
     padding: 20px;
@@ -30,25 +31,53 @@
 
 
 .gameInfoElement {
-    margin-left: 20%;
-    margin-bottom: 2%;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
     margin-top: 2%;
-    background: linear-gradient(#4F4F4F, #7F7F7F, #9E9E9E);
+    background: linear-gradient(#909090, #323232);
 }
+
+.gameInfoElement label {
+    font-family: "Slabo";
+    color: #FFF;
+    font-size: 1.8em;
+    margin-top: 5%;
+    
+}
+
+
+#rowLabels {
+    
+    margin-left: 5%;
+
+}
+
+
+#rowInfo {
+   
+    margin-left: 5%;
+
+}
+
+.gameInfoElement input {
+    width: 75%;
+} 
 
 #gameInfo {
-    padding: 1% 1%;
+    padding: 5% 5%;
 
 }
 
-#gameInfo input {
-    margin-bottom: 6%;
-}
+
+
+
+
 
 #gameReviewsDiv {
     margin: 0 auto;
     text-align: center;
     margin-top: 2%;
+    margin-left: 7%;
     
 }
 
