@@ -1,4 +1,5 @@
-﻿import React, { Component } from 'react';
+﻿
+import React, { Component } from 'react';
 import { Glyphicon, Button, Accordion, Panel, Col, Grid, Row } from 'react-bootstrap';
 import './css/ProductPage.css';
 import videoGame from './img/Video_Game.jpg';
@@ -348,34 +349,64 @@ export class ProductPage extends Component {
             <div className="productPageDiv">
 
                 <Grid fluid>
-                    <Row>
+                    <Row id="topRow">
                         <Col md={6} id="gameImageColumn">
                             <div id="gameImageDiv">
-                                <img id="gameImage" src={videoGame} />
+                                <img id="product_gameImage" src={videoGame} />
                             </div>
                         </Col>
 
-                        <Col sm={3} id="gameInfoColumn">
+                        <Col md={6} id="gameInfoColumn">
+                        
+                            <Row>
 
-                            <div className="gameInfoElement">
+                                <div className="productForm">
 
-                                <div id="gameInfo">
+                                    <div className="gameInfoElement">
+
+                                    <div id="gameInfo">
+
+                                            <Row>
+                                                <div id="rowLabels">
+
+                                                <Col sm={3}>
                                     <label for="gameTitle">Title:</label>
-                                    <input type="text" class="form-control" id="gameTitle" placeholder={this.state.gameTitle} readOnly />
 
-                                    <label for="gamePlatform">Platform:</label>
-                                    <input type="text" class="form-control" id="gamePlatform" placeholder={this.state.gamePlat} readOnly />
+                                                    </Col>
 
-                                    <label for="gameCategory">Category:</label>
-                                    <input type="text" class="form-control" id="gameCategory" placeholder={this.state.gameCat} readOnly />
-                                </div>
+                                                <Col sm={3}>
+                                                        <label for="gamePlatform">Platform:</label>
+                                                    
+                                                </Col>
+
+
+                                                <Col sm={3}>
+                                                        <label for="gameCategory">Category:</label>
+
+                                                    </Col>
+                                                </div>
+                                            </Row>
+
+                                            <Row>
+                                                <div id="rowInfo">
+                                            <Col sm={3}>
+
+                                                    
+                                                <input type="text" class="form-control" id="gameTitle" placeholder={this.state.gameTitle} readOnly />
+                                            </Col>
+
+                                            <Col sm={3}>
+                                                    
+                                                <input type="text" class="form-control" id="gamePlatform" placeholder={this.state.gamePlat} readOnly />
+                                            </Col>
+                                            <Col sm={3}>
+                                                <input type="text" class="form-control" id="gameCategory" placeholder={this.state.gameCat} readOnly />
+                                                    </Col>
+                                                </div>
+                                            </Row>
+                                                        </div>
                             </div>
 
-                        </Col>
-
-                        <Col sm={3} id="gameFormColumn">
-
-                            <div className="productForm">
                                 <form className="">
                                     <h3 className="ProductPrice" align="left">Price: ${this.state.gamePrice}</h3>
                                     <br />
@@ -397,6 +428,8 @@ export class ProductPage extends Component {
                                     </form>
                             </div>
 
+                                </Row>
+
                         </Col>
 
                     </Row>
@@ -417,8 +450,7 @@ export class ProductPage extends Component {
 
                                         <Popup
                                             open={this.state.formOpen}
-                                            closeOnDocumentClick
-                                            onClose={this.closeForm}>
+                                            onClose={this.closeReviewForm} id="reviewPopup">
                                             <Grid fluid>
                                                 <Row>
                                                     <Col xl={12} id="newReviewColumn">
@@ -426,8 +458,6 @@ export class ProductPage extends Component {
                                                             <label for="ReviewLabel">Review:</label>
                                                             <textarea type="text" onChange={this.onChangeReviewContent} class="form-control" id="reviewContentInput" required autoFocus />
                                                             <button class="btn btn-info" onClick={this.getMemberUsername}>Submit</button>
-                                                           
-                                                            <button class="btn btn-warning" onClick={this.openReviewForm}>Cancel</button>
                                                         </div>
                                                     </Col>
                                                 </Row>
