@@ -1,4 +1,4 @@
-﻿
+﻿@import url('https://fonts.googleapis.com/css?family=Slabo+27px&display=swap');
 
 
 
@@ -73,11 +73,7 @@
     width: 100%;
 }
 
-.cartPanel {
-}
 
-.accordionPanel {
-}
 
 .scrollCart {
     height: 90px;
@@ -93,5 +89,62 @@
 
 #gameFormColumn {
     margin: 0 auto;
+}
+
+#reviewItem {
+    color: #FFF;
+    background: linear-gradient(#0c0c0c, #090909);
+    opacity: 0.75;
+    border: 2px solid #000;
+    border-radius: 20px;
+    box-shadow: 0px 3px 10px #323232;
+    padding: 1% 1%;
+    margin-bottom: 5%;
+}
+
+#reviewItem h2 {
+    font-weight: bolder;
+    font-family: "Slabo";
+}
+
+    #reviewItem h4 {
+        text-align: left;
+        margin-left: 15%;
+        margin-right: 15%;
+    }
+
+Popup {
+    box-shadow: 0px 3px 10px #323232;
+}
+
+#newReviewColumn {
+    margin: 1% 1%;
+    border-radius: 20px;
+  
+}
+
+#newReviewColumn textarea {
+    resize: none;
+    padding:3% 3%;
+    margin-bottom: 5%;
+}
+
+#newReviewDiv {
+    padding: 5% 5%;
+    margin: 2% 2%;
+
+}
+
+#newReviewDiv label {
+    text-align: center;
+    margin: 0 auto;
+    font-family: "Slabo";
+    font-weight: bolder;
+    font-size: 2.5em;
+}
+
+#newReviewDiv button {
+    margin-right: 1%;
+  
 }
 

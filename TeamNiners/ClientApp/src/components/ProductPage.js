@@ -4,13 +4,14 @@ import './css/ProductPage.css';
 import videoGame from './img/Video_Game.jpg';
 import axios from 'axios';
 import { webAddress } from './reference/reference';
+import Popup from "reactjs-popup";
 
 export class ProductPage extends Component {
     displayName = ProductPage.name
 
     constructor(props) {
         super(props);
-        this.state = { isTrue: false, pageOn: 1, cartCount: 0, gameTitle: "", gameCat: 0, gamePlat: 0, gamePrice: 0, gameDesc: "", isLoggedIn: true, btnDisabled: false, games: [] };
+        this.state = { isTrue: false, pageOn: 1, cartCount: 0, gameTitle: "", gameCat: 0, gamePlat: 0, gamePrice: 0, gameDesc: "", isLoggedIn: true, btnDisabled: false, games: [], reviews: [], reviewID: 0, memberID: 0, gameID: 0, reviewContent: "", formOpen: false, memberUsername: "" };
 
 
         this.addToCart = this.addToCart.bind(this);
@@ -20,11 +21,101 @@ export class ProductPage extends Component {
         this.setCartInfo = this.setCartInfo.bind(this);
         this.getGames = this.getGames.bind(this);
         this.setCartCount = this.setCartCount.bind(this);
+        this.getReviewList = this.getReviewList.bind(this);
+        this.addNewReview = this.addNewReview.bind(this);
+        this.getMemberUsername = this.getMemberUsername.bind(this);
 
         this.getProductInfo();
         this.getMemberId();
+        this.getReviewList();
+
+        this.openReviewForm = this.openReviewForm.bind(this);
+        this.closeReviewForm = this.closeReviewForm.bind(this);
+        this.onChangeReviewContent = this.onChangeReviewContent.bind(this);
+      
+
+    }
+
+    getReviewList() {
+
+        axios.get(webAddress + 'api/review/reviewlist', {
+
+        })
+            .then(res => {
+                console.log(res.data);
+                const reviews = res.data;
+                this.setState({ reviews });
+
+            })
+            .catch(function (error) {
+                //errorMessage = "You have entered in incorrect credentails! Please try Again!"
+                console.log("this is the error: " + error);
+            });
+
+    }
+
+    
+
+     async getMemberUsername() {
+
+         await axios.get(webAddress + 'api/member/username/' + this.state.memberID, {
+        })
+             .then(res => {
+                 this.setState({ memberUsername: res.data });
+                this.addNewReview(res.data);
+                console.log('username: ' + res.data);
+              
+
+            })
+            .catch(function (error) {
+                //errorMessage = "You have entered in incorrect credentails! Please try Again!"
+                console.log("this is the error: " + error);
+            });
 
 
+ 
+    }
+
+
+
+
+    async addNewReview(username) {
+
+        if (this.state.reviewContent != "") {
+            await axios.post(webAddress + 'api/review/new', {
+                MemberId: this.state.memberID,
+                MemberUsername: username,
+                GameId: this.state.gameID,
+                ReviewContent: this.state.reviewContent
+            })
+                .then(res => {
+                    console.log(res.data);
+                    this.getReviewList();
+                    this.setState({ formOpen: false });
+
+                })
+                .catch(function (error) {
+                    //errorMessage = "You have entered in incorrect credentails! Please try Again!"
+                    console.log("this is the error: " + error);
+                });
+
+        } else {
+            console.log('must have review content');
+        }
+
+    }
+
+    openReviewForm() {
+        this.setState({ formOpen: true });
+
+    }
+    closeReviewForm() {
+        this.setState({ formOpen: false });
+    }
+
+    onChangeReviewContent(event) {
+        this.state.reviewContent = event.target.value;
+        console.log('Review content: ' + this.state.reviewContent + 'memberID: ' + this.state.memberID + ' gameID: ' + this.state.gameID);
     }
 
 
@@ -67,8 +158,7 @@ export class ProductPage extends Component {
         })
             .then(res => {
                 console.log(res.data[0].gameTitle);
-                this.setState({ gameTitle: res.data[0].gameTitle, gamePrice: res.data[0].gamePrice, gameDesc: res.data[0].gameDescription });
-
+                this.setState({ gameTitle: res.data[0].gameTitle, gamePrice: res.data[0].gamePrice, gameDesc: res.data[0].gameDescription, gameID: res.data[0].gameId });
 
                 axios.post(webAddress + 'api/Game/GetGameCat', {
                     cat: res.data[0].gameCategory
@@ -112,6 +202,9 @@ export class ProductPage extends Component {
                     this.setState({ isLoggedIn: false, btnDisabled: true });
                 } else {
                     this.setState({ btnDisabled: false });
+                    this.setState({ memberID: res.data});
+                    console.log('currentMemberID is : ' + this.state.memberID);
+       
                     this.getGames();
                     this.setCartCount();
                 }
@@ -319,7 +412,45 @@ export class ProductPage extends Component {
 
                                 <Accordion>
                                     <Panel header="Reviews" eventKey='1'>
-                                        There are no reviews available!
+                                        <span id="newReviewButton" className="glyphicon glyphicon-comment fa-lg" onClick={this.openReviewForm} aria-hidden="true"></span>
+                                        
+
+                                        <Popup
+                                            open={this.state.formOpen}
+                                            closeOnDocumentClick
+                                            onClose={this.closeForm}>
+                                            <Grid fluid>
+                                                <Row>
+                                                    <Col xl={12} id="newReviewColumn">
+                                                        <div id="newReviewDiv">
+                                                            <label for="ReviewLabel">Review:</label>
+                                                            <textarea type="text" onChange={this.onChangeReviewContent} class="form-control" id="reviewContentInput" required autoFocus />
+                                                            <button class="btn btn-info" onClick={this.getMemberUsername}>Submit</button>
+                                                           
+                                                            <button class="btn btn-warning" onClick={this.openReviewForm}>Cancel</button>
+                                                        </div>
+                                                    </Col>
+                                                </Row>
+                                            </Grid>
+                                        </Popup>
+
+                                        {this.state.reviews.map(review =>
+
+                                            <Grid fluid>
+                                            <div key={review.reviewID} id="reviewItem">
+
+                                                
+                                                    <Row>
+                                                        <Col md={12}>
+                                                            <h2>User: {review.memberUsername}</h2>
+                                                            <h4>{review.reviewContent}</h4>
+                                                        </Col>
+                                                    </Row>
+                                                
+                                            </div>
+                                            </Grid>
+                                        )}
+
                                     </Panel>
                                 </Accordion>
                             </div>
@@ -330,7 +461,7 @@ export class ProductPage extends Component {
                 </Grid>
 
                 
-                
+               
 
 
 
