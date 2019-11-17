@@ -277,6 +277,7 @@ namespace TeamNiners.Controllers
 
         private bool MemberLoginExists(int id)
         {
+
             return _context.MemberLogin.Any(e => e.MemberId == id);
         }
     }
