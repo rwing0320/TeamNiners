@@ -1,4 +1,5 @@
-﻿import React, { Component } from 'react';
+﻿
+import React, { Component } from 'react';
 import { Glyphicon, Button, Accordion, Panel, Col, Grid, Row } from 'react-bootstrap';
 import './css/ProductPage.css';
 import videoGame from './img/Video_Game.jpg';
@@ -348,7 +349,7 @@ export class ProductPage extends Component {
             <div className="productPageDiv">
 
                 <Grid fluid>
-                    <Row>
+                    <Row id="topRow">
                         <Col md={6} id="gameImageColumn">
                             <div id="gameImageDiv">
                                 <img id="product_gameImage" src={videoGame} />
@@ -449,8 +450,7 @@ export class ProductPage extends Component {
 
                                         <Popup
                                             open={this.state.formOpen}
-                                            closeOnDocumentClick
-                                            onClose={this.closeForm}>
+                                            onClose={this.closeReviewForm} id="reviewPopup">
                                             <Grid fluid>
                                                 <Row>
                                                     <Col xl={12} id="newReviewColumn">
@@ -458,8 +458,6 @@ export class ProductPage extends Component {
                                                             <label for="ReviewLabel">Review:</label>
                                                             <textarea type="text" onChange={this.onChangeReviewContent} class="form-control" id="reviewContentInput" required autoFocus />
                                                             <button class="btn btn-info" onClick={this.getMemberUsername}>Submit</button>
-                                                           
-                                                            <button class="btn btn-warning" onClick={this.openReviewForm}>Cancel</button>
                                                         </div>
                                                     </Col>
                                                 </Row>
