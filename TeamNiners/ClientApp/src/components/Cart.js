@@ -70,7 +70,7 @@ export class Cart extends Component {
     render() {
 
         return (
-            <div className="productPageDiv">
+            <div className="cartPage">
                 <h1 id=""><b>Cart</b></h1>
 
                 <table>
@@ -102,6 +102,10 @@ export class Cart extends Component {
                     </tbody>
 
                 </table>
+                <div class="buttons">
+                    <button className="btn btn-small btn-danger btn-block">Clear Cart</button>
+                    <button className="btn btn-small btn-success btn-block">Purchase Cart</button>
+                    </div>
             </div>
         );
     }
