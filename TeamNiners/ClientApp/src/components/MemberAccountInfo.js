@@ -162,9 +162,9 @@ export class MemberAccountInfo extends Component {
             this.state.oldPassword = "";
             this.state.re_enteredPassword = "";
 
-            this.passwordInput.value = null;
-            this.oldPasswordInput.value = null;
-            this.re_EnteredPasswordInput.value = null;
+            this.passwordInput = null;
+            this.oldPasswordInput = null;
+            this.re_EnteredPasswordInput= null;
 
 
         }

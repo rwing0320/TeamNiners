@@ -79,8 +79,7 @@ namespace TeamNiners.Controllers
         {
             var gameID = UserTempStorage.gameID;
             var game = _context.GamingInfo.Where(p => p.GameId == gameID);
-
-
+           
             return game;
         }
 

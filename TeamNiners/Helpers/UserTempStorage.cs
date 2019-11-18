@@ -11,7 +11,7 @@ namespace TeamNiners.Helpers
         public static string email = "";
         public static int id = 0;
         public static string salt = "";
-
+        public static string memberName = "";
         public static int memberID = 0;
         public static int cartID = 0;
         public static int gameID = 0;
