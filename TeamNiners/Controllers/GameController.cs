@@ -24,6 +24,7 @@ namespace TeamNiners.Controllers
 
         // GET: api/APIBusinesses
         [HttpGet]
+        [Route("/api/Game/GetAllGames")]
         public IEnumerable<GamingInfo> GetGames()
         {
             return _context.GamingInfo;

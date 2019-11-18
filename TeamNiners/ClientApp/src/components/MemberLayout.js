@@ -7,6 +7,7 @@ import { MemberNewAccount } from './MemberNewAccount';
 import { MemberAccountInfo } from './MemberAccountInfo';
 import { MemberLogin } from './MemberLogin';
 import { WishList } from './WishList';
+import { Cart } from './Cart';
 import { Redirect } from 'react-router-dom';
 import { Home } from './Home';
 import { ProductPage } from './ProductPage';
@@ -86,6 +87,11 @@ export class MemberLayout extends Component {
             <Redirect to="/wishlist" push />
             //return <MemberAccountInfo changePage={this.changePage.bind(this)}></MemberAccountInfo>
             return <WishList changePage={this.changePageNumber.bind(this)}></WishList>
+        }
+        else if (this.state.pageNumber == 7) {
+            <Redirect to="/cart" push />
+            //return <MemberAccountInfo changePage={this.changePage.bind(this)}></MemberAccountInfo>
+            return <Cart changePage={this.changePageNumber.bind(this)}></Cart>
         }
     }
 

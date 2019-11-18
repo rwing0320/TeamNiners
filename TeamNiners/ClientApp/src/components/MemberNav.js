@@ -107,7 +107,7 @@ export class MemberNav extends Component {
                 </LinkContainer>
                
                 <LinkContainer to={'/cart'}>
-                    <NavItem >
+                    <NavItem onClick={() => this.passNewPage(7)}>
                         <Glyphicon glyph='shopping-cart' /> Cart
                              </NavItem>
                 </LinkContainer>
