@@ -11,15 +11,29 @@ export class Cart extends Component {
 
     constructor(props) {
         super(props);
-        this.state = { games: [] };
+        this.state = { games: [], count: 0 };
 
         this.getGames = this.getGames.bind(this);
         this.deleteFromCart = this.deleteFromCart.bind(this);
         this.gotToProductPage = this.gotToProductPage.bind(this);
+        this.cartCount = this.cartCount.bind(this);
 
         this.getGames();
 
     }
+
+    cartCount() {
+        axios.get(webAddress + '/api/cart/getCartCount')
+            
+            .then(res => {
+                var cartCount = res.data;
+                this.setState({ count: cartCount })
+                console.log(this.state.count);
+               
+            })
+    }
+
+
 
     getGames() {
 
@@ -28,6 +42,7 @@ export class Cart extends Component {
                 const games = res.data;
                 this.setState({ games });
                 console.log(res.data);
+                this.cartCount();
 
             })
     }
@@ -84,44 +99,49 @@ export class Cart extends Component {
 
     render() {
 
-        return (
-            <div className="cartPage">
-                <h1 id=""><b>Cart</b></h1>
+        if (this.state.count == 0) {
+            <h1 id=""><b>Cart</b></h1>
+            return <h2>Your cart is empty, please go to the home page and fill it up :)</h2>
+        }
+        else {
+            return (
+                <div className="cartPage">
+                    <h1 id=""><b>Cart</b></h1>
+                    <table>
+                        <tbody>
+                            {this.state.games.map(game =>
+                                <tr key={game.gameId} className="myTableRow" >
+                                    <td width="65%">
+                                        <br />
+                                        <img id="wishlist_gameImage" src={videoGame} />
+                                        <div id="gameInfoDiv">
+                                            <div>{game.title}</div>
+                                            <div>Description: {game.description}</div>
+                                            <div>Price: ${game.price}</div>
+                                        </div>
+                                    </td>
 
-                <table>
-                    <tbody>
-                        {this.state.games.map(game =>
-                            <tr key={game.gameId} className="myTableRow" >
-                                <td width="65%">
-                                    <br />
-                                    <img id="wishlist_gameImage" src={videoGame} />
-                                    <div id="gameInfoDiv">
-                                        <div>{game.title}</div>
-                                        <div>Description: {game.description}</div>
-                                        <div>Price: ${game.price}</div>
-                                    </div>
-                                </td>
+                                    <td width="25%">
+                                        <br />
+                                        <Button type="button" className="btn btn-small btn-info btn-block" id="" onClick={() => this.gotToProductPage(game.gameId)}>Go To Product</Button>
+                                        <Button type="button" className="btn btn-small btn-warning btn-block" id="" onClick={() => this.deleteFromCart(game.gameId)}>Remove From Cart</Button>
+                                        <br />
+                                    </td>
 
-                                <td width="25%">
-                                    <br />
-                                    <Button type="button" className="btn btn-small btn-info btn-block" id="" onClick={() => this.gotToProductPage(game.gameId)}>Go To Product</Button>
-                                    <Button type="button" className="btn btn-small btn-warning btn-block" id="" onClick={() => this.deleteFromCart(game.gameId)}>Remove From Cart</Button>
-                                    <br />
-                                </td>
-
-                            </tr>
+                                </tr>
 
 
-                        )}
+                            )}
 
-                    </tbody>
+                        </tbody>
 
-                </table>
-                <div class="buttons">
-                    <button className="btn btn-small btn-danger btn-block" onClick={() => this.clearCart()}>Clear Cart</button>
-                    <button className="btn btn-small btn-success btn-block">Purchase Cart</button>
+                    </table>
+                    <div class="buttons">
+                        <button className="btn btn-small btn-danger btn-block" onClick={() => this.clearCart()}>Clear Cart</button>
+                        <button className="btn btn-small btn-success btn-block">Purchase Cart</button>
                     </div>
-            </div>
-        );
+                </div>
+            );
+        }
     }
 }
