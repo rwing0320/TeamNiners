@@ -29,13 +29,14 @@ namespace TeamNiners.Services
     
         public void DeleteCart(int id)
         {
+            SetupUserServiceConnection();
             DataTable tempTable = new DataTable();
 
             using (SqlConnection sqlConnection = new SqlConnection(connectionString.GetSection("ConnectionStrings").GetSection("NinersConnection").Value))
             {
                 SqlDataAdapter adapter = new SqlDataAdapter();
 
-                adapter.TableMappings.Add("BusinessLogin", "Logins");
+                adapter.TableMappings.Add("CartItems", "Items");
 
                 sqlConnection.Open();
 
@@ -46,6 +47,8 @@ namespace TeamNiners.Services
                 command.CommandType = CommandType.Text;
 
                 adapter.DeleteCommand = command;
+
+                adapter.Update(tempTable);
 
                 command.ExecuteNonQuery();
 

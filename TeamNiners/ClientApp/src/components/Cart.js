@@ -52,7 +52,7 @@ export class Cart extends Component {
     async  deleteFromCart(pid) {
         console.log("the productId for deleteFromCart is " + pid)
         await axios.post(webAddress + 'api/cart/deleteCartItem', {
-            productId: pid
+            gameId: pid
         })
             .then(res => {
                 console.log(res.data);
@@ -68,8 +68,10 @@ export class Cart extends Component {
     }
 
     clearCart() {
-        axios.post(webAddress + '/api/cart/deleteCartItem' + this.props.cartId)
+        axios.post(webAddress + 'api/cart/deleteEntireCartItem/' + 1)
             .then(res => {
+                this.getGames();
+                alert("Cart has been cleared");
                 console.log("Cart Cleared" + res.data);
 
             })
@@ -92,7 +94,7 @@ export class Cart extends Component {
                             <tr key={game.gameId} className="myTableRow" >
                                 <td width="65%">
                                     <br />
-                                    <img id="gameImage" src={videoGame} />
+                                    <img id="wishlist_gameImage" src={videoGame} />
                                     <div id="gameInfoDiv">
                                         <div>{game.title}</div>
                                         <div>Description: {game.description}</div>

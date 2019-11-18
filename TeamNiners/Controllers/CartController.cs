@@ -172,10 +172,12 @@ namespace TeamNiners.Controllers
         }
 
         [HttpPost]
-        [Route("/api/cart/deleteCartItem")]
+        [Route("/api/cart/deleteEntireCartItem/{cartId}")]
         public async Task<IActionResult> DeleteAllFromCartCart([FromRoute] int id)
         {
+            id = UserTempStorage.cartID;
             cartService.DeleteCart(id);
+            await _context.SaveChangesAsync();
             return Ok(id);
         }
 

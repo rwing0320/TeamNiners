@@ -169,7 +169,7 @@ export class Home extends Component {
                         <tr key={game.gameId} className="myTableRow" onClick={() => this.gotToProductPage(game.gameId)}>
                             <td width="65%">
                                 <br />
-                                <img id="gameImage" src={videoGame} />
+                                <img id="home_gameImage" src={videoGame} width="100px" height = "100px" />
                                 <div id="gameInfoDiv">
                                     <div>{game.gameTitle}</div>
                                     <div>Description: {game.gameDescription}</div>
