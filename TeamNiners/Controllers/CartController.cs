@@ -6,24 +6,27 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TeamNiners.Helpers;
 using TeamNiners.Models;
+using TeamNiners.Services;
 
 namespace TeamNiners.Controllers
 {
     [Route("api/[controller]")]
-    
+
     public class CartController : ControllerBase
     {
         private readonly dbo_NinersContext _context;
+        private CartService cartService;
 
         public CartController(dbo_NinersContext context)
         {
             _context = context;
+            cartService = new CartService();
         }
 
         [HttpPost]
         public async Task<IActionResult> CreateCart([FromBody] Cart cart)
         {
-            
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -41,7 +44,7 @@ namespace TeamNiners.Controllers
         {
 
             UserTempStorage.cartID = cart.CartId;
- 
+
             return Ok(cart);
         }
 
@@ -128,7 +131,7 @@ namespace TeamNiners.Controllers
 
             int cartCount = 0;
 
-           foreach(var item in cartList)
+            foreach (var item in cartList)
             {
                 cartCount++;
             }
@@ -151,7 +154,7 @@ namespace TeamNiners.Controllers
             ci.CartId = UserTempStorage.cartID;
 
 
-            IQueryable<CartItems> cartItems = _context.CartItems.Where(p => p.GameId == ci.GameId && p.CartId== UserTempStorage.cartID);
+            IQueryable<CartItems> cartItems = _context.CartItems.Where(p => p.GameId == ci.GameId && p.CartId == UserTempStorage.cartID);
 
             int recordId = 0;
             foreach (var item in cartItems)
@@ -168,5 +171,15 @@ namespace TeamNiners.Controllers
             return Ok(ci);
         }
 
-        
+        [HttpPost]
+        [Route("/api/cart/deleteCartItem")]
+        public async Task<IActionResult> DeleteAllFromCartCart([FromRoute] int id)
+        {
+            cartService.DeleteCart(id);
+            return Ok(id);
+        }
+
+
+
+    }
 }

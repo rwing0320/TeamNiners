@@ -67,6 +67,19 @@ export class Cart extends Component {
             });
     }
 
+    clearCart() {
+        axios.post(webAddress + '/api/cart/deleteCartItem' + this.props.cartId)
+            .then(res => {
+                console.log("Cart Cleared" + res.data);
+
+            })
+            .catch(function (error) {
+                //errorMessage = "You have entered in incorrect credentails! Please try Again!"
+                console.log("this is the error: " + error);
+            });
+
+    }
+
     render() {
 
         return (
@@ -103,7 +116,7 @@ export class Cart extends Component {
 
                 </table>
                 <div class="buttons">
-                    <button className="btn btn-small btn-danger btn-block">Clear Cart</button>
+                    <button className="btn btn-small btn-danger btn-block" onClick={() => this.clearCart()}>Clear Cart</button>
                     <button className="btn btn-small btn-success btn-block">Purchase Cart</button>
                     </div>
             </div>
