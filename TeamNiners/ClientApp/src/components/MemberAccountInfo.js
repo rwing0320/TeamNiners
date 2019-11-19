@@ -238,23 +238,26 @@ export class MemberAccountInfo extends Component {
 
 
                         <div className="input-group">
-                            <input type="text" className="form-control" placeholder="Recipient's first name" aria-describedby="basic-addon2" value={this.state.firstName} readOnly />
                             <span className="input-group-addon" id="basic-addon2">First Name</span>
+                            <input type="text" className="form-control" placeholder="Recipient's first name" aria-describedby="basic-addon2" value={this.state.firstName} readOnly />
+                          
                         </div>
 
                         <br />
 
 
                         <div className="input-group">
-                            <input type="text" className="form-control" placeholder="Recipient's last name" aria-describedby="basic-addon2" value={this.state.lastName} readOnly />
                             <span className="input-group-addon" id="basic-addon2">Last Name</span>
+                            <input type="text" className="form-control" placeholder="Recipient's last name" aria-describedby="basic-addon2" value={this.state.lastName} readOnly />
+
                         </div>
 
                         <br />
 
                         <div className="input-group">
-                            <input type="text" className="form-control" placeholder="Phone Number" aria-describedby="basic-addon2" value={this.state.phoneNumber} readOnly />
                             <span className="input-group-addon" id="basic-addon2">Phone Number</span>
+                            <input type="text" className="form-control" placeholder="Phone Number" aria-describedby="basic-addon2" value={this.state.phoneNumber} readOnly />
+              
                         </div>
 
                         <br />
@@ -275,33 +278,28 @@ export class MemberAccountInfo extends Component {
 
                         <br />
 
-                        <div className="row">
-                            <div className="col-lg-6">
                                 <div className="input-group">
                                     <span className="input-group-addon" id="basic-addon1">Country</span>
                                     <input type="text" className="form-control" placeholder="Country" value={this.state.country} aria-describedby="basic-addon1" readOnly/>
                                 </div>
-                            </div>
-                            <div className="col-lg-6">
+
+
+                        <br />
+
                                 <div className="input-group">
-                                    <input type="text" className="form-control" placeholder="City" value={this.state.city} aria-describedby="basic-addon2" readOnly/>
                                     <span className="input-group-addon" id="basic-addon2">City</span>
+                                    <input type="text" className="form-control" placeholder="City" value={this.state.city} aria-describedby="basic-addon2" readOnly/>
                                 </div>
-                            </div>
-                        </div>
 
                         <br />
 
 
                         <div className="input-group">
-                            <input type="text" className="form-control" placeholder="Postal Code" value={this.state.postalCode} aria-describedby="basic-addon2" readOnly/>
                             <span className="input-group-addon" id="basic-addon2">Postal Code</span>
+                            <input type="text" className="form-control" placeholder="Postal Code" value={this.state.postalCode} aria-describedby="basic-addon2" readOnly/>
                         </div>
 
                         <br />
-                    </Tab>
-                    <Tab eventKey="contact" title="Payment" disabled >
-                        <h1>Contract time old</h1>
                     </Tab>
                 </Tabs>
             </div>
