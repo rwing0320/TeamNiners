@@ -13,7 +13,7 @@ export class Cart extends Component {
 
     constructor(props) {
         super(props);
-        this.state = { games: [], count: 0, showCheckoutForm: false, showCheckoutConfirmationForm: false};
+        this.state = { games: [], count: 0, total: 0, showCheckoutForm: false, showCheckoutConfirmationForm: false};
 
         this.getGames = this.getGames.bind(this);
         this.deleteFromCart = this.deleteFromCart.bind(this);
@@ -88,7 +88,18 @@ export class Cart extends Component {
         axios.get(webAddress + '/api/game/showgames_cart')
             .then(res => {
                 const games = res.data;
-                this.setState({ games });
+                var i;
+                var total = 0;
+                //this.state.games.map(game =>
+                //    total += game.price;
+
+                //    );
+                console.log("length of array is :" + res.data.length)
+                for (i = 0; i < res.data.length; i++) {
+                    total = total + res.data[i].price;
+                    console.log("price is :" + res.data[i].price)
+                }
+                this.setState({ games, total });
                 console.log(res.data);
                 this.cartCount();
 
@@ -147,9 +158,8 @@ export class Cart extends Component {
 
     render() {
 
-        if (this.state.count == 0) {
-            <h1 id=""><b>Cart</b></h1>
-            return <h2>Your cart is empty, please go to the home page and fill it up :)</h2>
+        if (this.state.count === 0) {
+            return <div> <h1>Cart</h1> <h2>Your cart is empty, please go to the home page and fill it up :)</h2> </div>
         }
         else {
             return (
@@ -184,6 +194,9 @@ export class Cart extends Component {
                         </tbody>
 
                     </table>
+
+                    <div><b>Total: ${this.state.total}</b></div>
+                    <div className="buttons">
 
                     <Popup
                         open={this.state.showCheckoutForm}
