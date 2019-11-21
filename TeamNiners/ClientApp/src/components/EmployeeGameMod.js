@@ -1,5 +1,5 @@
 ﻿import React, { Component } from 'react';
-import { Col, Grid, Row, Button, Accordion, Panel } from 'react-bootstrap';
+import { Button} from 'react-bootstrap';
 import axios from 'axios';
 import { Redirect, Link } from 'react-router-dom';
 import './css/EmployeeGameModPage.css';

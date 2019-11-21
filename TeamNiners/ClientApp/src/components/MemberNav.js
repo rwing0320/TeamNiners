@@ -74,7 +74,7 @@ export class MemberNav extends Component {
 
     checkUserName() {
         try {
-            if (this.props.userName != null && this.props.userName != "") {
+            if (this.props.userName !== null && this.props.userName !== "") {
                 this.setState({ memberLoggedIn: true });
             } else {
                 this.setState({ memberLoggedIn: false });

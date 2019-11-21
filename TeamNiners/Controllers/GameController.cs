@@ -51,6 +51,16 @@ namespace TeamNiners.Controllers
 
             return CreatedAtAction("GetGames", new { id = gamingInfo.GameId }, gamingInfo);
         }
+        [HttpPost]
+        [Route("/api/game/editGameItem")]
+        public async Task<IActionResult> EditGame([FromBody] GamingInfo inputValues)
+        {
+            inputValues.GameId = UserTempStorage.gameID;
+            //gi = GamingInfo(inputValues.GameTitle, inputValues.GameDescription, inputValues.ReleaseDate, inputValues.GamePlatform, inputValues.GameCategory, inputValues.GamePrice);
+            _context.GamingInfo.Update(inputValues);
+            await _context.SaveChangesAsync();
+            return Ok(inputValues);
+        }
 
 
         [HttpPost]
@@ -63,7 +73,7 @@ namespace TeamNiners.Controllers
             }
 
             businessGamingInfo.BusinessId = UserTempStorage.id;
-
+            //hello
             _context.BusinessGames.Add(businessGamingInfo);
             await _context.SaveChangesAsync();
 
@@ -74,7 +84,7 @@ namespace TeamNiners.Controllers
         }
 
         [HttpGet]
-        [Route("/api/Game/GetGame")]
+        [Route("/api/Game/GetGame/")]
         public IEnumerable<GamingInfo> GetGame()
         {
             var gameID = UserTempStorage.gameID;
@@ -113,8 +123,43 @@ namespace TeamNiners.Controllers
             return gameList;
         }
 
+        
 
-        public List<ShowGameItem> getBusinessGames(string filter)
+
+        [HttpPost]
+        [Route("/api/game/deleteGameItem/{gId}")]
+        public int DeleteCartItem([FromRoute] int gId)
+        {
+
+          //  if (!ModelState.IsValid)
+        //    {
+         //       return BadRequest(ModelState);
+        //    }
+
+
+            //gId = UserTempStorage.gameID;
+
+
+            var gameItem = _context.GamingInfo.Find(gId);
+            var businessItem = _context.BusinessGames.Find(gId);
+
+            _context.GamingInfo.Remove(gameItem);
+            _context.BusinessGames.Remove(businessItem);
+           _context.SaveChanges();
+
+            return gId;
+        }
+
+        [HttpPost]
+        [Route("/api/game/postId/{gId}")]
+        public int PostGameId([FromRoute] int gId)
+        {
+            UserTempStorage.gameID = gId;
+            return gId;
+        }
+
+
+            public List<ShowGameItem> getBusinessGames(string filter)
         {
             List<ShowGameItem> gameList = new List<ShowGameItem>();
             //ShowGameItem gameHelper = new ShowGameItem();

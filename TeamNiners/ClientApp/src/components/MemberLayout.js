@@ -1,5 +1,4 @@
 ﻿import React, { Component } from 'react';
-import axios from 'axios';
 import { MemberNav } from './MemberNav';
 import { Col, Grid, Row} from 'react-bootstrap';
 import './css/LoginPage.css';
@@ -29,7 +28,7 @@ export class MemberLayout extends Component {
 
     changeMemberNav() {
         try {
-            if (this.state.isLoggedIn == false) {
+            if (this.state.isLoggedIn === false) {
                 this.setState({isLoggedIn: true});
             }
             else {
@@ -44,7 +43,7 @@ export class MemberLayout extends Component {
 
     changePageNumber(newPageNumber, userName, isLoggedIn) {
         if (isLoggedIn == true) {
-            if (this.state.savedUsername == false) {
+            if (this.state.savedUsername === false) {
                 this.setState({ pageNumber: newPageNumber, userName: userName, savedUsername: true });
             }
             else {
@@ -67,28 +66,28 @@ export class MemberLayout extends Component {
     }
 
     changePage() {
-        if (this.state.pageNumber == 1) {
+        if (this.state.pageNumber === 1) {
             return <MemberLogin changePage={this.changePageNumber.bind(this)} loginUser={this.changeIsLoggedIn.bind(this)}></MemberLogin>;
         }
-        else if (this.state.pageNumber == 2) {
+        else if (this.state.pageNumber === 2) {
             return <MemberNewAccount changePage={this.changePageNumber.bind(this)} loginUser={this.changeIsLoggedIn.bind(this)}></MemberNewAccount>;
         } else if (this.state.pageNumber == 3) {
             return <Home changePage={this.changePageNumber.bind(this)}></Home>
-        } else if (this.state.pageNumber == 4) {
+        } else if (this.state.pageNumber === 4) {
             <Redirect to="/AccountInfo" push />
             return <MemberAccountInfo changePage={this.changePageNumber.bind(this)}></MemberAccountInfo>
         }
-        else if(this.state.pageNumber == 5) {
+        else if(this.state.pageNumber === 5) {
             <Redirect to="/product" push />
             //return <MemberAccountInfo changePage={this.changePage.bind(this)}></MemberAccountInfo>
             return <ProductPage changePage={this.changePageNumber.bind(this)}></ProductPage>
         }
-        else if (this.state.pageNumber == 6) {
+        else if (this.state.pageNumber === 6) {
             <Redirect to="/wishlist" push />
             //return <MemberAccountInfo changePage={this.changePage.bind(this)}></MemberAccountInfo>
             return <WishList changePage={this.changePageNumber.bind(this)}></WishList>
         }
-        else if (this.state.pageNumber == 7) {
+        else if (this.state.pageNumber === 7) {
             <Redirect to="/cart" push />
             //return <MemberAccountInfo changePage={this.changePage.bind(this)}></MemberAccountInfo>
             return <Cart changePage={this.changePageNumber.bind(this)}></Cart>
@@ -96,7 +95,7 @@ export class MemberLayout extends Component {
     }
 
     changeNavLayout() {
-        if (this.state.isLoggedIn == false) {
+        if (this.state.isLoggedIn === false) {
             return <MemberNav updatePageState={this.props.updatePageState} userName={this.state.userName} memberLoggedOut={this.changeIsLoggedOut.bind(this)} memberLoggedIn={this.state.isLoggedIn}  changePage={this.changePageNumber.bind(this)} />
         }
         else {

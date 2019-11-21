@@ -1,5 +1,5 @@
 ﻿import React, { Component } from 'react';
-import { Col, Grid, Row, Button, Accordion, Panel } from 'react-bootstrap';
+import { Col, Grid, Row, Button} from 'react-bootstrap';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import './css/ShowGamesPage.css';
@@ -30,8 +30,7 @@ export class EmployeeShowGames extends Component {
         this.props.changePage(1)
     }
 
-    getGames() {
-        
+    getGames() {       
         axios.get(webAddress + 'api/game/showgames_business/' + this.state.filterValue)
             .then(res => {
                 const games = res.data;
@@ -44,6 +43,22 @@ export class EmployeeShowGames extends Component {
             })
     }
 
+    deleteGame(gId) {
+
+        axios.post(webAddress + 'api/game/deleteGameItem/' + gId)
+        .then(res => {
+            console.log(res.data);
+            alert("Game has been successfully deleted");
+            this.getGames()
+        })
+    }
+    gotToEditPage(gId) {
+        axios.post(webAddress + 'api/game/postId/' + gId)
+            .then(res => {
+                console.log(res.data);
+                this.props.changePage(11);
+            })
+    }
 
     filterGames(select) {
 
@@ -89,30 +104,35 @@ export class EmployeeShowGames extends Component {
                                             <Grid fluid>
                                                 <Row>
                                                     <Col xl={12} id="gameColumn">
-                                                        <label for="gameNameLabel">Title:</label>
-                                                        <input type="text" class="form-control" id="gameInputBox" placeholder={game.title} readOnly />
+                                                        <label htmlFor="gameNameLabel">Title:</label>
+                                                        <input type="text" className="form-control" id="gameInputBox" placeholder={game.title} readOnly />
 
-                                                        <label for="gameDescriptionLabel">Description:</label>
-                                                        <input type="text" class="form-control" id="gameInputBox" placeholder={game.description} readOnly />
+                                                        <label htmlFor="gameDescriptionLabel">Description:</label>
+                                                        <input type="text" className="form-control" id="gameInputBox" placeholder={game.description} readOnly />
 
-                                                        <label for="gameReleaseLabel">Release Date:</label>
-                                                        <input type="text" class="form-control" id="gameInputBox" placeholder={game.releaseDate} readOnly />
+                                                        <label htmlFor="gameReleaseLabel">Release Date:</label>
+                                                        <input type="text" className="form-control" id="gameInputBox" placeholder={game.releaseDate} readOnly />
 
                                                     </Col>
                                                 </Row>
 
                                                 <Row>
                                                     <Col xl={12} id="gameColumn2">
-                                                        <label for="gamePlatformLabel">Platform:</label>
-                                                        <input type="text" class="form-control" id="gameInputBox" placeholder={game.platform} readOnly />
+                                                        <label htmlFor="gamePlatformLabel">Platform:</label>
+                                                        <input type="text" className="form-control" id="gameInputBox" placeholder={game.platform} readOnly />
 
-                                                        <label for="gameCategoryLabel">Category:</label>
-                                                        <input type="text" class="form-control" id="gameInputBox" placeholder={game.category} readOnly />
+                                                        <label htmlFor="gameCategoryLabel">Category:</label>
+                                                        <input type="text" className="form-control" id="gameInputBox" placeholder={game.category} readOnly />
 
-                                                        <label for="gamePriceLabel">Price:</label>
-                                                        <input type="text" class="form-control" id="gameInputBox" placeholder={game.price} readOnly />
+                                                        <label htmlFor="gamePriceLabel">Price:</label>
+                                                        <input type="text" className="form-control" id="gameInputBox" placeholder={game.price} readOnly />
                                                         <br/>
                                                     </Col>
+                                                </Row>
+
+                                                <Row>
+                                                    <Button type="button" className="btn btn-small btn-info btn-block" id="" onClick={() => this.gotToEditPage(game.gameId)}>Edit Game</Button>
+                                                    <Button type="button" className="btn btn-small btn-danger btn-block" id="" onClick={() => this.deleteGame(game.gameId)}>Delete Game</Button>
                                                 </Row>
 
                                             </Grid>

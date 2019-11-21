@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { MemberNav } from './MemberNav'
-import { Glyphicon, Button, Accordion, Panel } from 'react-bootstrap';
 import './css/wishList.css';
 import videoGame from './img/Video_Game.jpg';
 import { webAddress } from './reference/reference';

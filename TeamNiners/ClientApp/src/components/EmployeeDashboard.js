@@ -58,6 +58,10 @@ export class Dashboard extends Component {
         else if (this.state.changePage == 3) {
             return <Redirect to='/Report' />
         }
+        else if (this.state.changePage == 5) {
+            return <Redirect to='/EditGame' />
+        }
+
     }
         
     setOldPassword(event) {

@@ -1,7 +1,5 @@
 ﻿import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-import { Glyphicon, Nav, Navbar, NavItem } from 'react-bootstrap';
-import { LinkContainer } from 'react-router-bootstrap';
+import { Glyphicon,  Navbar } from 'react-bootstrap';
 import logo from './img/9ners_Logo.svg';
 import './css/employeeNavBar.css';
 import axios from 'axios';
