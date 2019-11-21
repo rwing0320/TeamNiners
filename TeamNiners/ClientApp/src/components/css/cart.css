@@ -1,0 +1,15 @@
+﻿@import url('https://fonts.googleapis.com/css?family=Slabo+27px|Alata|Open+Sans&display=swap');
+
+#header {
+    text-align: center;
+    margin-bottom: 2%;
+    font-family: "Open Sans";
+}
+
+#CCInfoDiv label {
+    font-family: "Alata";
+}
+
+#CCInfoDiv input {
+    margin-bottom: 2%;
+}

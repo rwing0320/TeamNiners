@@ -1,9 +1,11 @@
 ﻿import React, { Component } from 'react';
-import { Glyphicon, Button, Accordion, Panel } from 'react-bootstrap';
+import { Glyphicon, Button, Accordion, Panel, Grid, Row, Col } from 'react-bootstrap';
 import './css/wishList.css';
+import './css/cart.css';
 import videoGame from './img/Video_Game.jpg';
 import axios from 'axios';
 import { webAddress } from './reference/reference';
+import Popup from "reactjs-popup";
 
 
 export class Cart extends Component {
@@ -11,15 +13,61 @@ export class Cart extends Component {
 
     constructor(props) {
         super(props);
-        this.state = { games: [], count: 0 };
+        this.state = { games: [], count: 0, showCheckoutForm: false, showCheckoutConfirmationForm: false};
 
         this.getGames = this.getGames.bind(this);
         this.deleteFromCart = this.deleteFromCart.bind(this);
         this.gotToProductPage = this.gotToProductPage.bind(this);
         this.cartCount = this.cartCount.bind(this);
+        this.purchaseCart = this.purchaseCart.bind(this);
+        this.openOrderForm = this.openOrderForm.bind(this);
+        this.closeOrderForm = this.closeOrderForm.bind(this);
+        this.orderSubmitted = this.orderSubmitted.bind(this);
+        this.openOrderConfirmationForm = this.openOrderConfirmationForm.bind(this);
+        this.closeOrderConfirmationForm = this.closeOrderConfirmationForm.bind(this);
+        this.finishOrder = this.finishOrder.bind(this);
 
         this.getGames();
 
+    }
+
+    purchaseCart() {
+
+        this.setState({ showCheckoutForm: true });
+
+    }
+
+    openOrderForm() {
+        this.setState({ showCheckoutForm: true });
+
+    }
+
+    closeOrderForm() {
+        this.setState({ showCheckoutForm: false });
+    }
+
+    orderSubmitted() {
+
+        this.closeOrderForm();
+
+        this.openOrderConfirmationForm();
+
+    }
+
+    openOrderConfirmationForm() {
+
+        this.setState({ showCheckoutConfirmationForm: true });
+
+    }
+
+    closeOrderConfirmationForm() {
+        this.setState({ showCheckoutConfirmationForm: false });
+    }
+
+    finishOrder() {
+        this.closeOrderConfirmationForm();
+
+        //add logic to redirect to home page and clear cart
     }
 
     cartCount() {
@@ -136,9 +184,93 @@ export class Cart extends Component {
                         </tbody>
 
                     </table>
+
+                    <Popup
+                        open={this.state.showCheckoutForm}
+                        onClose={this.closeOrderForm} id="purchaseForm">
+                        <Grid fluid>
+
+                            <Row>
+                                <Col xl={12}>
+                                    <div id="header">
+                                        <h2>Order Checkout</h2>
+                                    </div>
+                                </Col>
+                            </Row>
+
+                            <Row>
+                                <Col xl={12} id="CCInfoCol">
+                                    <div id="CCInfoDiv">
+
+                                        <label for="CCNameInput">Card Holder Name:</label>
+                                        <input type="text" class="form-control" id="ccCardholderName" required />
+
+                                        <label for="CCNumInput">Credit Card Number:</label>
+                                        <input type="text" class="form-control" id="ccNum" required />
+
+                                        <label for="CVCInput">CVC:</label>
+                                        <input type="text" class="form-control" maxLength="3" id="ccCVC" required />
+
+                                        <label for="CCExpiryInput">Expiry Date: (MMYY)</label>
+                                        <input type="text" class="form-control" maxLength="4" id="ccExpiry" required />
+
+                                        <br />
+
+                                    </div>
+                                </Col>
+                            </Row>
+
+                            <Row>
+                                <Col xl={12}>
+                                    <div id="buttonDiv">
+                                        <button class="btn btn-info" onClick={this.orderSubmitted}>Submit</button>
+                                        </div>
+                                </Col>
+                            </Row>
+                        </Grid>
+                    </Popup>
+
+
+                    <Popup
+                        open={this.state.showCheckoutConfirmationForm}
+                        onClose={this.closeOrderConfirmationForm} id="confirmationForm">
+                        <Grid fluid>
+
+                            <Row>
+                                <Col xl={12}>
+                                    <div id="header">
+                                        <h2>Order Confirmation</h2>
+                                    </div>
+                                </Col>
+                            </Row>
+
+                            <Row>
+                                <Col xl={12} id="CCInfoCol">
+                                    <div id="CCInfoDiv">
+
+                                        <label for="CCExpiryInput">Expiry Date: (MMYY)</label>
+                                        <input type="text" class="form-control" maxLength="4" id="ccExpiry" required />
+
+                                        <br />
+
+                                    </div>
+                                </Col>
+                            </Row>
+
+                            <Row>
+                                <Col xl={12}>
+                                    <div id="buttonDiv">
+                                        <button class="btn btn-warning" onClick={this.finishOrder}>Close</button>
+                                    </div>
+                                </Col>
+                            </Row>
+                        </Grid>
+                    </Popup>
+
+
                     <div class="buttons">
                         <button className="btn btn-small btn-danger btn-block" onClick={() => this.clearCart()}>Clear Cart</button>
-                        <button className="btn btn-small btn-success btn-block">Purchase Cart</button>
+                        <button onClick={this.purchaseCart} className="btn btn-small btn-success btn-block">Purchase Cart</button>
                     </div>
                 </div>
             );
