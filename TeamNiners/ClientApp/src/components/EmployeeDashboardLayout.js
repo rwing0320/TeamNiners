@@ -5,6 +5,7 @@ import { EmployeeNav } from './EmployeeNav';
 import { EmployeeGameMod } from './EmployeeGameMod';
 import { EmployeeShowGames } from './EmployeeShowGames';
 import { EmployeeGameReport } from './EmployeeGameReport';
+import { EmployeeEditGame } from './EmployeeEditGame';
 import { Link, Redirect } from 'react-router-dom';
 
 export class EmployeeDashBoardLayout extends Component {
@@ -49,6 +50,10 @@ export class EmployeeDashBoardLayout extends Component {
         else if (this.state.pageNumber == 4) {
             <Link to="/Report" ></Link>
             return <EmployeeGameReport data2={this.props.data2} changePage={this.changePageNumber.bind(this)}></EmployeeGameReport>
+        }
+        else if (this.state.pageNumber == 11) {
+            <Link to="/EditGame" ></Link>
+            return <EmployeeEditGame data2={this.props.data2} changePage={this.changePageNumber.bind(this)}></EmployeeEditGame>
         }
     }
 

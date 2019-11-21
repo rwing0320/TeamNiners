@@ -74,7 +74,7 @@ namespace TeamNiners.Controllers
         }
 
         [HttpGet]
-        [Route("/api/Game/GetGame")]
+        [Route("/api/Game/GetGame/")]
         public IEnumerable<GamingInfo> GetGame()
         {
             var gameID = UserTempStorage.gameID;
@@ -141,7 +141,7 @@ namespace TeamNiners.Controllers
         [Route("/api/game/postId/{gId}")]
         public int PostGameId([FromRoute] int gId)
         {
-            gId = UserTempStorage.gameID;
+            UserTempStorage.gameID = gId;
             return gId;
         }
 

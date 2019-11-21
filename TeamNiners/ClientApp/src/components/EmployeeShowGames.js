@@ -55,7 +55,7 @@ export class EmployeeShowGames extends Component {
         axios.post(webAddress + 'api/game/postId/' + gId)
             .then(res => {
                 console.log(res.data);
-                this.props.changePage(4);
+                this.props.changePage(11);
             })
     }
 
