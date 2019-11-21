@@ -13,7 +13,7 @@ export class Cart extends Component {
 
     constructor(props) {
         super(props);
-        this.state = { games: [], count: 0, total: 0, showCheckoutForm: false, showCheckoutConfirmationForm: false};
+        this.state = { games: [], userInfo: [], count: 0, total: 0, showCheckoutForm: false, showCheckoutConfirmationForm: false, ccName: "", ccNum: "", ccCVC: "", ccExp: "" };
 
         this.getGames = this.getGames.bind(this);
         this.deleteFromCart = this.deleteFromCart.bind(this);
@@ -26,6 +26,11 @@ export class Cart extends Component {
         this.openOrderConfirmationForm = this.openOrderConfirmationForm.bind(this);
         this.closeOrderConfirmationForm = this.closeOrderConfirmationForm.bind(this);
         this.finishOrder = this.finishOrder.bind(this);
+        this.onChangeNAME = this.onChangeNAME.bind(this);
+        this.onChangeNUM = this.onChangeNUM.bind(this);
+        this.onChangeCVC = this.onChangeCVC.bind(this);
+        this.onChangeEXP = this.onChangeEXP.bind(this);
+        this.getUserInfo = this.getUserInfo.bind(this);
 
         this.getGames();
 
@@ -57,6 +62,7 @@ export class Cart extends Component {
     openOrderConfirmationForm() {
 
         this.setState({ showCheckoutConfirmationForm: true });
+        this.getUserInfo();
 
     }
 
@@ -68,6 +74,33 @@ export class Cart extends Component {
         this.closeOrderConfirmationForm();
 
         //add logic to redirect to home page and clear cart
+    }
+
+    getUserInfo() {
+
+        axios.get(webAddress + 'api/MemberAccount/GetMember')
+            .then(res => {
+                const userInfo = res.data;
+                this.setState({ userInfo });
+                console.log('test res.data.field' + res.data.lastName);
+            })
+
+    }
+
+    onChangeNAME(event) {
+        this.state.ccName = event.target.value;
+    }
+
+    onChangeNUM(event) {
+        this.state.ccNum = event.target.value;
+    }
+
+    onChangeCVC(event) {
+        this.state.ccCVC = event.target.value;
+    }
+
+    onChangeEXP(event) {
+        this.state.ccExp = event.target.value;
     }
 
     cartCount() {
@@ -215,17 +248,17 @@ export class Cart extends Component {
                                 <Col xl={12} id="CCInfoCol">
                                     <div id="CCInfoDiv">
 
-                                        <label for="CCNameInput">Card Holder Name:</label>
-                                        <input type="text" class="form-control" id="ccCardholderName" required />
+                                            <label for="CCNameInput">Card Holder Name:</label>
+                                            <input type="text" class="form-control" onChange={this.onChangeNAME} id="ccCardholderName" required />
 
-                                        <label for="CCNumInput">Credit Card Number:</label>
-                                        <input type="text" class="form-control" id="ccNum" required />
+                                            <label for="CCNumInput">Credit Card Number:</label>
+                                            <input type="text" class="form-control" onChange={this.onChangeNUM} maxLength="16" id="ccNum" required />
 
                                         <label for="CVCInput">CVC:</label>
-                                        <input type="text" class="form-control" maxLength="3" id="ccCVC" required />
+                                            <input type="text" class="form-control" onChange={this.onChangeCVC} maxLength="3" id="ccCVC" required />
 
                                         <label for="CCExpiryInput">Expiry Date: (MMYY)</label>
-                                        <input type="text" class="form-control" maxLength="4" id="ccExpiry" required />
+                                            <input type="text" class="form-control" onChange={this.onChangeEXP} maxLength="4" id="ccExpiry" required />
 
                                         <br />
 
@@ -252,17 +285,58 @@ export class Cart extends Component {
                             <Row>
                                 <Col xl={12}>
                                     <div id="header">
-                                        <h2>Order Confirmation</h2>
+                                        <h1>Order Confirmation</h1>
                                     </div>
                                 </Col>
                             </Row>
 
+                                <Row>
+                                    <Col xl={12}>
+                                        <div id="CustomerInfoDiv">
+
+                                        <label for="FirstNameInput">First Name:</label>
+                                        <input type="text" class="form-control" value={this.state.userInfo.firstName} id="FirstNameInput" disabled />
+
+                                        <label for="LastNameInput">Last Name:</label>
+                                        <input type="text" class="form-control" value={this.state.userInfo.lastName} id="LastNameInput" disabled />
+
+                                        <label for="AddressInput">Address:</label>
+                                        <input type="text" class="form-control" value={this.state.userInfo.memberAddress} id="AddressInput" disabled />
+
+                                        <label for="CityInput">City:</label>
+                                        <input type="text" class="form-control" value={this.state.memberCity} id="CityInput" disabled />
+
+                                        <label for="CountryInput">Country:</label>
+                                        <input type="text" class="form-control" value={this.state.userInfo.memberCountry} id="CountryInput" disabled />
+
+                                        <label for="PostalCodeInput">Postal Code:</label>
+                                        <input type="text" class="form-control" value={this.state.userInfo.memberPostalCode} id="PostalCodeInput" disabled />
+
+                                        </div>
+
+
+
+                                    </Col>
+                                </Row>
+
+                                <br />
+                                <br />
+
                             <Row>
                                 <Col xl={12} id="CCInfoCol">
-                                    <div id="CCInfoDiv">
+                                        <div id="CCInfoDiv">
 
-                                        <label for="CCExpiryInput">Expiry Date: (MMYY)</label>
-                                        <input type="text" class="form-control" maxLength="4" id="ccExpiry" required />
+                                            <label for="CCNameInput">Card Holder Name:</label>
+                                            <input type="text" class="form-control" value={this.state.ccName} id="ccCardholderName" disabled />
+
+                                            <label for="CCNumInput">Credit Card Number:</label>
+                                            <input type="text" class="form-control" value={this.state.ccNum} id="ccNum" disabled />
+
+                                            <label for="CVCInput">CVC:</label>
+                                            <input type="text" class="form-control" value={this.state.ccCVC} id="ccCVC" disabled />
+
+                                            <label for="CCExpiryInput">Expiry Date: (MMYY)</label>
+                                            <input type="text" class="form-control" value={this.state.ccExp} id="ccExpiry" disabled />
 
                                         <br />
 
@@ -284,6 +358,7 @@ export class Cart extends Component {
                     <div class="buttons">
                         <button className="btn btn-small btn-danger btn-block" onClick={() => this.clearCart()}>Clear Cart</button>
                         <button onClick={this.purchaseCart} className="btn btn-small btn-success btn-block">Purchase Cart</button>
+                    </div>
                     </div>
                 </div>
             );

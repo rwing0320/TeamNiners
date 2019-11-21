@@ -6,10 +6,24 @@
     font-family: "Open Sans";
 }
 
+
+#CCInfoDiv, #CustomerInfoDiv {
+    margin-left: 10%;
+    margin-right: 10%;
+}
+
 #CCInfoDiv label {
     font-family: "Alata";
 }
 
 #CCInfoDiv input {
+    margin-bottom: 2%;
+}
+
+#CustomerInfoDiv label {
+    font-family: "Alata";
+}
+
+#CustomerInfoDiv input {
     margin-bottom: 2%;
 }
