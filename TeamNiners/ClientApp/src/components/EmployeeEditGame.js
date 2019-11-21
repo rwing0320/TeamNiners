@@ -11,12 +11,17 @@ export class EmployeeEditGame extends Component {
 
     constructor(props) {
         super(props);
-        this.state = { game: [], gamePlatform: [], gameCat: [], date: "", category: 0, platform: 0 };
+        this.state = { game: [], gamePlatform: [], gameCat: [], date: "", category: 0, platform: 0, gameName: "", gamePlatform: 1, gameCat: 1, gameReleaseDate: "", gameDesc: "", value: "", gameCost: 0, changePage: false  };
 
 
         this.onChangePlat = this.onChangePlat.bind(this);
         this.onChangeCat = this.onChangeCat.bind(this);
+        this.onChangeCost = this.onChangeCost.bind(this);
+        this.onChangeGameName = this.onChangeGameName.bind(this);
+        this.onChangeGameDesc = this.onChangeGameDesc.bind(this);
+        this.onChangeReleaseDate = this.onChangeReleaseDate.bind(this);
         this.getGame = this.getGame.bind(this);
+        this.goToDashboard = this.goToDashboard.bind(this);
 
         axios.get(webAddress + 'api/GameCategory')
             .then(res => {
@@ -41,6 +46,19 @@ export class EmployeeEditGame extends Component {
 
     }
 
+    changePage() {
+        this.setState({ changePage: true })
+
+    }
+
+
+
+    goToDashboard() {
+        <Redirect to="/DashBoard" push />
+        this.props.changePage(1)
+
+    }
+
     getGame() {
         axios.get(webAddress + 'api/Game/GetGame/')
             .then(res => {
@@ -59,6 +77,44 @@ export class EmployeeEditGame extends Component {
     onChangeCat(event) {
         this.state.gameCat = event.target.value;
         console.log(this.state.gameCat);
+    }
+
+    onChangeCost(event) {
+        this.state.gameCost = event.target.value;
+        console.log(this.state.gameCost);
+    }
+
+    onChangeGameName(event) {
+        this.state.gameName = event.target.value;
+        console.log(this.state.gameCost);
+    }
+
+
+    onChangeGameDesc(event) {
+        this.state.gameDesc = event.target.value;
+        console.log(this.state.gameDesc);
+    }
+
+    onChangeReleaseDate(event) {
+        this.state.gameReleaseDate = event.target.value;
+        console.log(this.state.gameReleaseDate);
+    }
+
+    async editGame() {
+        axios.put(webAddress + 'api/Game/editGameItem',
+            {
+                GameTitle: this.state.gameName,
+                GameDescription: this.state.gameDesc,
+                ReleaseDate: this.state.gameReleaseDate,
+                GamePlatform: this.state.gamePlatform,
+                GameCategory: this.state.gameCat,
+                GamePrice: this.state.gameCost
+            })
+            .then(res => {
+                console.log(res.data);
+                alert("Game Edited Successfully");
+                this.goToDashboard();
+    })
     }
     render() {
         return (
@@ -122,7 +178,7 @@ export class EmployeeEditGame extends Component {
                         </textarea>
 
                         <Link to={"/Dashboard"}>
-                            <Button type="button" className="btn btn-lg btn-success btn-block" id="addButton" onClick={() => this.addGame()}>Add</Button>
+                            <Button type="button" className="btn btn-lg btn-success btn-block" id="addButton" onClick={() => this.editGame()}>Edit</Button>
                         </Link>
                         <br />
 
