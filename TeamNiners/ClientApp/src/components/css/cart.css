@@ -7,7 +7,7 @@
 }
 
 
-#CCInfoDiv, #CustomerInfoDiv {
+#CCInfoDiv, #CustomerInfoDiv, #TotalDiv {
     margin-left: 10%;
     margin-right: 10%;
 }
@@ -26,4 +26,8 @@
 
 #CustomerInfoDiv input {
     margin-bottom: 2%;
+}
+
+#buttonDiv {
+    margin-top: 2%;
 }

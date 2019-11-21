@@ -13,7 +13,7 @@ export class Cart extends Component {
 
     constructor(props) {
         super(props);
-        this.state = { games: [], userInfo: [], count: 0, total: 0, showCheckoutForm: false, showCheckoutConfirmationForm: false, ccName: "", ccNum: "", ccCVC: "", ccExp: "" };
+        this.state = { games: [], userInfo: [], count: 0, total: 0, showCheckoutForm: false, showCheckoutConfirmationForm: false, ccName: "", ccNum: "", ccCVC: "", ccExp: "", comboName: "" };
 
         this.getGames = this.getGames.bind(this);
         this.deleteFromCart = this.deleteFromCart.bind(this);
@@ -32,8 +32,11 @@ export class Cart extends Component {
         this.onChangeEXP = this.onChangeEXP.bind(this);
         this.getUserInfo = this.getUserInfo.bind(this);
         this.prepareCCNumDisplay = this.prepareCCNumDisplay.bind(this);
+        this.addDollarSign_Total = this.addDollarSign_Total.bind(this);
+        this.concatFirstName_LastName = this.concatFirstName_LastName.bind(this);
 
         this.getGames();
+
 
     }
 
@@ -82,10 +85,31 @@ export class Cart extends Component {
 
     }
 
+    addDollarSign_Total() {
+
+        var total = "$";
+
+        var returnVal = total + this.state.total;
+
+        this.setState({ total: returnVal });
+
+    }
+
+    concatFirstName_LastName() {
+
+        console.log('greihjhreihrj' + this.state.userInfo.firstName);
+        var nameConcat = this.state.userInfo.firstName + " " + this.state.userInfo.lastName;
+
+        this.setState({ comboName: nameConcat });
+    }
+
     finishOrder() {
         this.closeOrderConfirmationForm();
 
-        //add logic to redirect to home page and clear cart
+
+        this.clearCart();
+
+        this.props.changePage(3);
     }
 
     getUserInfo() {
@@ -95,6 +119,7 @@ export class Cart extends Component {
                 const userInfo = res.data;
                 this.setState({ userInfo });
                 console.log('test res.data.field' + res.data.lastName);
+                this.concatFirstName_LastName();
             })
 
     }
@@ -147,6 +172,7 @@ export class Cart extends Component {
                 this.setState({ games, total });
                 console.log(res.data);
                 this.cartCount();
+                this.addDollarSign_Total();
 
             })
     }
@@ -190,7 +216,6 @@ export class Cart extends Component {
         axios.post(webAddress + 'api/cart/deleteEntireCartItem/' + 1)
             .then(res => {
                 this.getGames();
-                alert("Cart has been cleared");
                 console.log("Cart Cleared" + res.data);
 
             })
@@ -240,12 +265,14 @@ export class Cart extends Component {
 
                     </table>
 
-                    <div><b>Total: ${this.state.total}</b></div>
+                    <div><b>Total: {this.state.total}</b></div>
                     <div className="buttons">
 
                     <Popup
                         open={this.state.showCheckoutForm}
-                        onClose={this.closeOrderForm} id="purchaseForm">
+                            onClose={this.closeOrderForm} id="purchaseForm">
+                            <Accordion>
+                                <Panel>
                         <Grid fluid>
 
                             <Row>
@@ -285,15 +312,19 @@ export class Cart extends Component {
                                         </div>
                                 </Col>
                             </Row>
-                        </Grid>
+                                    </Grid>
+                                </Panel>
+                            </Accordion>
                     </Popup>
 
 
                     <Popup
                         open={this.state.showCheckoutConfirmationForm}
-                        onClose={this.closeOrderConfirmationForm} id="confirmationForm">
-                        <Grid fluid>
-
+                            onClose={this.closeOrderConfirmationForm} id="confirmationForm">
+                            <Accordion>
+                                <Panel>
+                            <Grid fluid>
+                               
                             <Row>
                                 <Col xl={12}>
                                     <div id="header">
@@ -306,11 +337,8 @@ export class Cart extends Component {
                                     <Col xl={12}>
                                         <div id="CustomerInfoDiv">
 
-                                        <label for="FirstNameInput">First Name:</label>
-                                        <input type="text" class="form-control" value={this.state.userInfo.firstName} id="FirstNameInput" disabled />
-
-                                        <label for="LastNameInput">Last Name:</label>
-                                        <input type="text" class="form-control" value={this.state.userInfo.lastName} id="LastNameInput" disabled />
+                                                    <label for="NameInput">Name:</label>
+                                                    <input type="text" class="form-control" value={this.state.comboName} id="NameInput" disabled />
 
                                         <label for="AddressInput">Address:</label>
                                         <input type="text" class="form-control" value={this.state.userInfo.memberAddress} id="AddressInput" disabled />
@@ -371,7 +399,9 @@ export class Cart extends Component {
                                     </div>
                                 </Col>
                             </Row>
-                        </Grid>
+                                    </Grid>
+                                </Panel>
+                            </Accordion>
                     </Popup>
 
 
