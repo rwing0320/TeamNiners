@@ -31,6 +31,7 @@ export class Cart extends Component {
         this.onChangeCVC = this.onChangeCVC.bind(this);
         this.onChangeEXP = this.onChangeEXP.bind(this);
         this.getUserInfo = this.getUserInfo.bind(this);
+        this.prepareCCNumDisplay = this.prepareCCNumDisplay.bind(this);
 
         this.getGames();
 
@@ -63,11 +64,22 @@ export class Cart extends Component {
 
         this.setState({ showCheckoutConfirmationForm: true });
         this.getUserInfo();
+        this.prepareCCNumDisplay();
 
     }
 
     closeOrderConfirmationForm() {
         this.setState({ showCheckoutConfirmationForm: false });
+    }
+
+    prepareCCNumDisplay() {
+
+        var lastFourDigits = this.state.ccNum.substring(12, 16);
+
+        var displayNum = "************" + lastFourDigits;
+
+        this.setState({ ccNum: displayNum });
+
     }
 
     finishOrder() {
@@ -304,7 +316,7 @@ export class Cart extends Component {
                                         <input type="text" class="form-control" value={this.state.userInfo.memberAddress} id="AddressInput" disabled />
 
                                         <label for="CityInput">City:</label>
-                                        <input type="text" class="form-control" value={this.state.memberCity} id="CityInput" disabled />
+                                        <input type="text" class="form-control" value={this.state.userInfo.memberCity} id="CityInput" disabled />
 
                                         <label for="CountryInput">Country:</label>
                                         <input type="text" class="form-control" value={this.state.userInfo.memberCountry} id="CountryInput" disabled />
@@ -319,7 +331,6 @@ export class Cart extends Component {
                                     </Col>
                                 </Row>
 
-                                <br />
                                 <br />
 
                             <Row>
@@ -343,6 +354,15 @@ export class Cart extends Component {
                                     </div>
                                 </Col>
                             </Row>
+
+                                <Row>
+                                    <Col xl={12}>
+                                        <div id="TotalDiv">
+                                        <label for="TotalDisplay">Total: ($)</label>
+                                            <input type="text" class="form-control" value={this.state.total} id="TotalInput" disabled />
+                                        </div>
+                                    </Col>
+                                </Row>
 
                             <Row>
                                 <Col xl={12}>
