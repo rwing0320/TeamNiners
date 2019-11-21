@@ -44,7 +44,10 @@ namespace TeamNiners.Tests
             _dbContext.WishList.Add(_wl);
             _dbContext.SaveChanges();
 
-            WishListItems _item1 = new WishListItems { };
+            WishListItems _item1 = new WishListItems { WishListId = 1, ProductId = 1};
+            _dbContext.WishListItems.Add(_item1);
+            _dbContext.SaveChanges();
+
 
         }
 
@@ -59,33 +62,30 @@ namespace TeamNiners.Tests
 
 
         [Test]
-        public async Task Check_CheckAddWishListItems_ReturnWishListItemFound()
+        public async Task Check_CheckAddWishListItems_ReturnWishListItemID2()
         {
             // Arrange
-            var dbContext = DbContextMock.context(nameof(Check_CheckAddWishListItems_ReturnWishListItemFound));
-            var controller = new WishListController(dbContext);
+           // var dbContext = DbContextMock.context(nameof(Check_CheckAddWishListItems_ReturnWishListItemFound));
+            var controller = new WishListController(_dbContext);
 
             UserTempStorage.wishID = 1;
             UserTempStorage.gameID = 3;
 
             // Act
-            var returnWishListItem = await controller.SaveCartItem();
-            //OkObjectResult okResult = returnWishListItem as OkObjectResult;
-            string comment = "this is a comment";
-            //string message = okResult.Value.ToString();
-            //string outputMessage = "Game Already In WishList!";
 
-            //string output = "";
 
-            //if (message.ToLower().Contains(outputMessage.ToLower()))
-            //{
-            //    output = "found";
-            //}
+            IActionResult returnWishListItem = await controller.SaveCartItem();
+            CreatedAtActionResult resultWLID = returnWishListItem as CreatedAtActionResult;
+
+            string var = resultWLID.RouteValues["id"].ToString();
 
             // Assert
-            Assert.AreEqual("found", "found");
+
+
+            Assert.AreEqual(var, "2");
 
         }
+
 
 
         [Test]

@@ -75,7 +75,8 @@ namespace TeamNiners.Controllers
             }
             catch (Exception e)
             {
-                string error = e.GetBaseException().Message;
+                return BadRequest(e.GetBaseException().Message);
+                
             }
 
             return CreatedAtAction("CreateCart", new { id = wishItem.Id }, wishItem);
@@ -134,7 +135,7 @@ namespace TeamNiners.Controllers
                 recordId = item.Id;
             }
 
-          var wishListItem = _context.WishListItems.Find(recordId);
+           var wishListItem = _context.WishListItems.Find(recordId);
 
             _context.WishListItems.Remove(wishListItem);
             await _context.SaveChangesAsync();
