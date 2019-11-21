@@ -51,6 +51,16 @@ namespace TeamNiners.Controllers
 
             return CreatedAtAction("GetGames", new { id = gamingInfo.GameId }, gamingInfo);
         }
+        [HttpPost]
+        [Route("/api/game/editGameItem")]
+        public async Task<IActionResult> EditGame([FromBody] GamingInfo inputValues)
+        {
+            inputValues.GameId = UserTempStorage.gameID;
+            //gi = GamingInfo(inputValues.GameTitle, inputValues.GameDescription, inputValues.ReleaseDate, inputValues.GamePlatform, inputValues.GameCategory, inputValues.GamePrice);
+            _context.GamingInfo.Update(inputValues);
+            await _context.SaveChangesAsync();
+            return Ok(inputValues);
+        }
 
 
         [HttpPost]
@@ -113,15 +123,7 @@ namespace TeamNiners.Controllers
             return gameList;
         }
 
-        [HttpPut]
-        [Route("/api/game/editGameItem")]
-        public IActionResult EditGame([FromBody] GamingInfo inputValues)
-        {
-            inputValues.GameId = UserTempStorage.gameID;
-            //gi = GamingInfo(inputValues.GameTitle, inputValues.GameDescription, inputValues.ReleaseDate, inputValues.GamePlatform, inputValues.GameCategory, inputValues.GamePrice);
-            _context.GamingInfo.Update(inputValues);
-            return Ok(inputValues);
-        }
+        
 
 
         [HttpPost]

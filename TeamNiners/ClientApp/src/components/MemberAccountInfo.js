@@ -1,6 +1,6 @@
 ﻿import React, { Component } from 'react';
 
-import { Tabs, Tab, Accordion, Panel, Button } from 'react-bootstrap';
+import { Tabs, Tab, Accordion, Panel } from 'react-bootstrap';
 
 import './css/MemberAccountInfo.css';
 
@@ -96,7 +96,7 @@ export class MemberAccountInfo extends Component {
 
     checkPasswordValidation() {
 
-        if (this.state.oldPassword == "" || this.state.passwordRetypeError == true || (this.state.password == "" || this.state.re_enteredPassword == "")) {
+        if (this.state.oldPassword === "" || this.state.passwordRetypeError === true || (this.state.password === "" || this.state.re_enteredPassword === "")) {
             this.setState({ passwordError: true });
         } else {
             this.setState({ passwordError: false });
@@ -106,7 +106,7 @@ export class MemberAccountInfo extends Component {
     }
 
     addRetypePasswordBreakPoint() {
-        if (this.state.passwordRetypeError == true) {
+        if (this.state.passwordRetypeError === true) {
             return <br />
         }
         else {
@@ -115,7 +115,7 @@ export class MemberAccountInfo extends Component {
     }
 
     addPasswordErrorBreakPoint() {
-        if (this.state.passwordError == true) {
+        if (this.state.passwordError === true) {
             return <br />
         }
         else {
@@ -143,7 +143,7 @@ export class MemberAccountInfo extends Component {
 
     changeAccordion(key) {
         console.log(this.state.accordionVal);
-        if (key == 1 && this.state.accordionVal == 0) {
+        if (key === 1 && this.state.accordionVal === 0) {
             this.state.accordionVal = 1;
 
         }
@@ -174,7 +174,7 @@ export class MemberAccountInfo extends Component {
     }
 
     setAccordion() {
-        if (this.state.onHome == false) {
+        if (this.state.onHome === false) {
             return "";
         }
         else {

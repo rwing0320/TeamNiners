@@ -1,5 +1,5 @@
 ﻿import React, { Component } from 'react';
-import { Col, Grid, Row, Button, Accordion, Panel } from 'react-bootstrap';
+import { Col, Grid, Row, Button} from 'react-bootstrap';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import './css/ShowGamesPage.css';
@@ -104,28 +104,28 @@ export class EmployeeShowGames extends Component {
                                             <Grid fluid>
                                                 <Row>
                                                     <Col xl={12} id="gameColumn">
-                                                        <label for="gameNameLabel">Title:</label>
-                                                        <input type="text" class="form-control" id="gameInputBox" placeholder={game.title} readOnly />
+                                                        <label htmlFor="gameNameLabel">Title:</label>
+                                                        <input type="text" className="form-control" id="gameInputBox" placeholder={game.title} readOnly />
 
-                                                        <label for="gameDescriptionLabel">Description:</label>
-                                                        <input type="text" class="form-control" id="gameInputBox" placeholder={game.description} readOnly />
+                                                        <label htmlFor="gameDescriptionLabel">Description:</label>
+                                                        <input type="text" className="form-control" id="gameInputBox" placeholder={game.description} readOnly />
 
-                                                        <label for="gameReleaseLabel">Release Date:</label>
-                                                        <input type="text" class="form-control" id="gameInputBox" placeholder={game.releaseDate} readOnly />
+                                                        <label htmlFor="gameReleaseLabel">Release Date:</label>
+                                                        <input type="text" className="form-control" id="gameInputBox" placeholder={game.releaseDate} readOnly />
 
                                                     </Col>
                                                 </Row>
 
                                                 <Row>
                                                     <Col xl={12} id="gameColumn2">
-                                                        <label for="gamePlatformLabel">Platform:</label>
-                                                        <input type="text" class="form-control" id="gameInputBox" placeholder={game.platform} readOnly />
+                                                        <label htmlFor="gamePlatformLabel">Platform:</label>
+                                                        <input type="text" className="form-control" id="gameInputBox" placeholder={game.platform} readOnly />
 
-                                                        <label for="gameCategoryLabel">Category:</label>
-                                                        <input type="text" class="form-control" id="gameInputBox" placeholder={game.category} readOnly />
+                                                        <label htmlFor="gameCategoryLabel">Category:</label>
+                                                        <input type="text" className="form-control" id="gameInputBox" placeholder={game.category} readOnly />
 
-                                                        <label for="gamePriceLabel">Price:</label>
-                                                        <input type="text" class="form-control" id="gameInputBox" placeholder={game.price} readOnly />
+                                                        <label htmlFor="gamePriceLabel">Price:</label>
+                                                        <input type="text" className="form-control" id="gameInputBox" placeholder={game.price} readOnly />
                                                         <br/>
                                                     </Col>
                                                 </Row>

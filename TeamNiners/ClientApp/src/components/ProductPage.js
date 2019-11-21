@@ -370,18 +370,18 @@ export class ProductPage extends Component {
                                                 <div id="rowLabels">
 
                                                 <Col sm={3}>
-                                    <label for="gameTitle">Title:</label>
+                                    <label forhtml="gameTitle">Title:</label>
 
                                                     </Col>
 
                                                 <Col sm={3}>
-                                                        <label for="gamePlatform">Platform:</label>
+                                                        <label forhtml="gamePlatform">Platform:</label>
                                                     
                                                 </Col>
 
 
                                                 <Col sm={3}>
-                                                        <label for="gameCategory">Category:</label>
+                                                        <label forhtml="gameCategory">Category:</label>
 
                                                     </Col>
                                                 </div>
@@ -392,15 +392,15 @@ export class ProductPage extends Component {
                                             <Col sm={3}>
 
                                                     
-                                                <input type="text" class="form-control" id="gameTitle" placeholder={this.state.gameTitle} readOnly />
+                                                <input type="text" className="form-control" id="gameTitle" placeholder={this.state.gameTitle} readOnly />
                                             </Col>
 
                                             <Col sm={3}>
                                                     
-                                                <input type="text" class="form-control" id="gamePlatform" placeholder={this.state.gamePlat} readOnly />
+                                                <input type="text" className="form-control" id="gamePlatform" placeholder={this.state.gamePlat} readOnly />
                                             </Col>
                                             <Col sm={3}>
-                                                <input type="text" class="form-control" id="gameCategory" placeholder={this.state.gameCat} readOnly />
+                                                <input type="text" className="form-control" id="gameCategory" placeholder={this.state.gameCat} readOnly />
                                                     </Col>
                                                 </div>
                                             </Row>

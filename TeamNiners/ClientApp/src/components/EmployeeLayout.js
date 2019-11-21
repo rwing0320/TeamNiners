@@ -1,18 +1,13 @@
 ﻿import React, { Component } from 'react';
-import axios from 'axios';
-import { NavMenu } from './NavMenu';
 import { Dashboard } from './EmployeeDashboard';
 import { Redirect, Route, Switch, Router } from 'react-router-dom';
-import { Col, Grid, Row, Button, Accordion, Panel } from 'react-bootstrap';
 import './css/LoginPage.css';
-import { EmployeeNav } from './EmployeeNav';
-import { Layout } from './Layout';
 import { EmployeeLogin } from './EmployeeLogin';
 import { EmployeeGameMod } from './EmployeeGameMod';
 import { EmployeeShowGames } from './EmployeeShowGames';
 import { EmployeeGameReport } from './EmployeeGameReport';
 import { EmployeeEditGame } from './EmployeeEditGame';
-import { EmployeeDashboardLayout, EmployeeDashBoardLayout } from './EmployeeDashboardLayout'
+import { EmployeeDashBoardLayout } from './EmployeeDashboardLayout'
 
 export class EmployeeLayout extends Component {
     displayName = EmployeeLayout.name

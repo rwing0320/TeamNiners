@@ -1,5 +1,5 @@
 ﻿import React, { Component } from 'react';
-import { Col, Grid, Row, Button, Accordion, Panel } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 import axios from 'axios';
 import { Redirect, Link } from 'react-router-dom';
 import './css/EmployeeGameModPage.css';
@@ -11,7 +11,7 @@ export class EmployeeEditGame extends Component {
 
     constructor(props) {
         super(props);
-        this.state = { game: [], gamePlatform: [], gameCat: [], date: "", category: 0, platform: 0, gameName: "", gamePlatform: 1, gameCat: 1, gameReleaseDate: "", gameDesc: "", value: "", gameCost: 0, changePage: false  };
+        this.state = { game: [], gamePlatforms: [], gameCategories: [],  gameName: "", gamePlatform: 1, gameCat: 1, gameReleaseDate: "", gameDesc: "", value: "", gameCost: 0, changePage: false  };
 
 
         this.onChangePlat = this.onChangePlat.bind(this);
@@ -22,6 +22,11 @@ export class EmployeeEditGame extends Component {
         this.onChangeReleaseDate = this.onChangeReleaseDate.bind(this);
         this.getGame = this.getGame.bind(this);
         this.goToDashboard = this.goToDashboard.bind(this);
+
+        this.gameNameInput = null;
+        this.releaseDateInput = null;
+        this.gameDescInput = null;
+        this.gameCostInput = null;
 
         axios.get(webAddress + 'api/GameCategory')
             .then(res => {
@@ -62,10 +67,18 @@ export class EmployeeEditGame extends Component {
     getGame() {
         axios.get(webAddress + 'api/Game/GetGame/')
             .then(res => {
-                var date = res.data[0].releaseDate.split('T')[0];
-                var platform = res.data[0].platformId;
-                this.setState({ game: res.data, date, platform });
+                var gameReleaseDate = res.data[0].releaseDate.split('T')[0];
+                var gamePlatform = res.data[0].gamePlatform;
+                var gameCategory = res.data[0].gameCategory;
+                var gameName = res.data[0].gameTitle;
+                var gameDesc = res.data[0].gameDescription;
+                var gameCost = res.data[0].gamePrice;
+
+                this.state.gameNameInput = gameName;
+                this.setState({ game: res.data, gameReleaseDate, gamePlatform, gameCategory, gameName, gameDesc, gameCost });
                 console.log(res.data);
+
+
             })
     }
 
@@ -86,7 +99,7 @@ export class EmployeeEditGame extends Component {
 
     onChangeGameName(event) {
         this.state.gameName = event.target.value;
-        console.log(this.state.gameCost);
+        console.log(this.state.gameName);
     }
 
 
@@ -101,7 +114,7 @@ export class EmployeeEditGame extends Component {
     }
 
     async editGame() {
-        axios.put(webAddress + 'api/Game/editGameItem',
+        axios.post(webAddress + 'api/Game/editGameItem',
             {
                 GameTitle: this.state.gameName,
                 GameDescription: this.state.gameDesc,
@@ -121,10 +134,10 @@ export class EmployeeEditGame extends Component {
             <div className="rowGame">
                 {this.state.game.map(games =>
                     <form className="form-signin" key={games.gameId} >
-                    <h1>Edit Game</h1>
+                    <h3>Edit Game</h3>
                     <label className="">Game Name</label>
-                    
-                        <input type="email" ref={elem => (this.gameNameInput = elem)} onChange={this.onChangeGameName} id="gameName" className="form-control" value={games.gameTitle} required autoFocus />
+
+                        <input type="text" defaultValue={games.gameTitle} ref={elem => (this.gameNameInput = elem)} onChange={this.onChangeGameName} id="gameName" className="form-control" required autoFocus />
 
                         <br />
                         <br />
@@ -135,8 +148,8 @@ export class EmployeeEditGame extends Component {
 
                         <select name="platform" className="employee_custom_select" onChange={this.onChangePlat} >
                             {this.state.gamePlatforms.map(gamePlat =>
-                                <option key={gamePlat.platformId} >{gamePlat.platformName}</option>
-                            )}
+                                <option key={gamePlat.platformId} value={gamePlat.platformId} defaultValue={games.platformId} > { gamePlat.platformName }</option>
+                        )}
                         </select>
 
                         <br />
@@ -148,7 +161,7 @@ export class EmployeeEditGame extends Component {
 
                         <select name="category" className="employee_custom_select" onChange={this.onChangeCat}>
                             {this.state.gameCategories.map(gameCat =>
-                                <option key={gameCat.categoryId} value={games.gameCategory} selected>{gameCat.categoryName}</option>
+                                <option key={gameCat.categoryId} value={gameCat.categoryId} defaultValue={games.categoryId}>{gameCat.categoryName}</option>
                             )}
                         </select>
 
@@ -159,21 +172,21 @@ export class EmployeeEditGame extends Component {
 
                         <br />
 
-                        <input type="number" min="1" step="any"  value={games.gamePrice} onChange={this.onChangeCost} />
+                        <input type="number" min="1" step="any" ref={elem => (this.gameCostInput = elem)} defaultValue={games.gamePrice} onChange={this.onChangeCost} />
 
                         <br />
                         <br />
 
                         <label className="">Release Date</label>
                         <br />
-                        <input type="date" value={this.state.date} onChange={this.onChangeReleaseDate} />
+                        <input type="date" ref={elem => (this.releaseDateInput = elem)} defaultValue={this.state.gameReleaseDate} onChange={this.onChangeReleaseDate} />
 
                         <br />
                         <br />
 
                         <label className="">Game Description: </label>
                         <br />
-                        <textarea name="message" rows="10" cols="30" value={games.gameDescription} className="gameTextArea">
+                        <textarea name="message" rows="10" cols="30" ref={elem => (this.gameDescInput = elem)} defaultValue={games.gameDescription} onChange={this.onChangeGameDesc} className="gameTextArea">
 
                         </textarea>
 

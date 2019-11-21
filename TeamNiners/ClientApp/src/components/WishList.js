@@ -1,5 +1,5 @@
 ﻿import React, { Component } from 'react';
-import { Glyphicon, Button, Accordion, Panel } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 import './css/wishList.css';
 import videoGame from './img/Video_Game.jpg';
 import axios from 'axios';
@@ -100,7 +100,7 @@ export class WishList extends Component {
                                     <img id="wishlist_gameImage" src={videoGame} />
                                     <div id="gameInfoDiv">
                                         <div>{game.title}</div>
-                                        <div>Desccription: {game.description}</div>
+                                        <div>Description: {game.description}</div>
                                         <div>Price: ${game.price}</div>
                                     </div>
                                 </td>
