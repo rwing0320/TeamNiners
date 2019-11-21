@@ -63,7 +63,7 @@ namespace TeamNiners.Controllers
             }
 
             businessGamingInfo.BusinessId = UserTempStorage.id;
-
+            //hello
             _context.BusinessGames.Add(businessGamingInfo);
             await _context.SaveChangesAsync();
 
