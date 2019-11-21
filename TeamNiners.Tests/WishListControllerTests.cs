@@ -13,20 +13,38 @@ using TeamNiners.Controllers;
 using TeamNiners.Helpers;
 using TeamNiners.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using TeamNiners.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace TeamNiners.Tests
 {
-    class WishListControllerTests
+   public class WishListControllerTests
     {
         public IConfiguration connectionString;
         public static IOptions<AppSettings> _config;
-       
+        private dbo_NinersContext _dbContext;
+
+        public WishListControllerTests()
+        {
+            var options = new DbContextOptionsBuilder<dbo_NinersContext>()
+                .UseInMemoryDatabase(Guid.NewGuid().ToString())
+                .EnableSensitiveDataLogging()
+                .Options;
+            _dbContext = new dbo_NinersContext(options);
+        }
+
         [SetUp]
         public void Setup()
         {
-            var builder = new ConfigurationBuilder().AddJsonFile("appsettings.json").SetBasePath(System.Environment.CurrentDirectory);
-            var config = builder.Build();
-            connectionString = config;
+            //var builder = new ConfigurationBuilder().AddJsonFile("appsettings.json").SetBasePath(System.Environment.CurrentDirectory);
+            //var config = builder.Build();
+            //connectionString = config;
+
+            WishList _wl = new WishList() { MemberId = 1 };
+            _dbContext.WishList.Add(_wl);
+            _dbContext.SaveChanges();
+
+            WishListItems _item1 = new WishListItems { };
 
         }
 
@@ -36,6 +54,36 @@ namespace TeamNiners.Tests
         public void Prepare()
         {
 
+
+        }
+
+
+        [Test]
+        public async Task Check_CheckAddWishListItems_ReturnWishListItemFound()
+        {
+            // Arrange
+            var dbContext = DbContextMock.context(nameof(Check_CheckAddWishListItems_ReturnWishListItemFound));
+            var controller = new WishListController(dbContext);
+
+            UserTempStorage.wishID = 1;
+            UserTempStorage.gameID = 3;
+
+            // Act
+            var returnWishListItem = await controller.SaveCartItem();
+            //OkObjectResult okResult = returnWishListItem as OkObjectResult;
+            string comment = "this is a comment";
+            //string message = okResult.Value.ToString();
+            //string outputMessage = "Game Already In WishList!";
+
+            //string output = "";
+
+            //if (message.ToLower().Contains(outputMessage.ToLower()))
+            //{
+            //    output = "found";
+            //}
+
+            // Assert
+            Assert.AreEqual("found", "found");
 
         }
 

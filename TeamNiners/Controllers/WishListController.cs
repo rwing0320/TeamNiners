@@ -57,15 +57,26 @@ namespace TeamNiners.Controllers
             WishListItems wishItem = new WishListItems();
             wishItem.WishListId = UserTempStorage.wishID;
             wishItem.ProductId = UserTempStorage.gameID;
-            //MemberLogin member = new MemberLogin();
 
-            if (!ModelState.IsValid)
+            try
             {
-                return BadRequest(ModelState);
-            }
+             
+                //MemberLogin member = new MemberLogin();
 
-            _context.WishListItems.Add(wishItem);
-            await _context.SaveChangesAsync();
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+
+                _context.WishListItems.Add(wishItem);
+                await _context.SaveChangesAsync();
+
+                //return CreatedAtAction("CreateCart", new { id = wishItem.Id }, wishItem);
+            }
+            catch (Exception e)
+            {
+                string error = e.GetBaseException().Message;
+            }
 
             return CreatedAtAction("CreateCart", new { id = wishItem.Id }, wishItem);
 
