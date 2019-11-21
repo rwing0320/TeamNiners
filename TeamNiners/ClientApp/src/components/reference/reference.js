@@ -1,1 +1,1 @@
-﻿export const webAddress = 'http://localhost:63559/';
+export const webAddress = 'http://localhost:63559/';
