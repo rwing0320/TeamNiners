@@ -1,10 +1,8 @@
 ﻿import React, { Component } from 'react';
-import { Col, Grid, Row, Glyphicon, Button, Accordion, Panel } from 'react-bootstrap';
+import { Col, Grid, Row, Glyphicon } from 'react-bootstrap';
 import axios from 'axios';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
-import { Redirect, Route } from 'react-router-dom';
-import { EmployeeNav } from './EmployeeNav';
 import { Link } from 'react-router-dom';
 import './css/Report.css';
 import { webAddress } from './reference/reference';
@@ -12,12 +10,12 @@ import { webAddress } from './reference/reference';
 export class EmployeeGameReport extends Component {
     constructor(props) {
         super(props);
-        this.state = { changePage: false, listName: "", gameList: false, gameDetail: false, info: [], gameCategories: [], gamePlatforms: [], platformID: 0, platformName: "" };
+        this.state = { changePage: false, listName: "", gameList: false, gameDetail: false, info: [], gameCategories: [], gamePlatforms: [], platformID: 0, platformName: "", filterValue: 'name_desc' };
 
         this.listInput = null;
         this.makeChange = this.makeChange.bind(this);
 
-        axios.get(webAddress + 'api/game/showgames_business')
+        axios.get(webAddress + 'api/game/showgames_business/' + this.state.filterValue)
             .then(res => {
                 console.log(res.data);
                 this.setState({ info: res.data })
@@ -42,17 +40,17 @@ export class EmployeeGameReport extends Component {
 
     makeChange(event) {
         this.state.listName = event.target.value;
-        if (this.state.listName == "gameList") {
+        if (this.state.listName === "gameList") {
             this.setState({ gameList: true })
             this.setState({ gameDetail: false })
         }
-        if (this.state.listName == "gameDetail") {
+        if (this.state.listName === "gameDetail") {
             this.setState({ gameList: false })
             this.setState({ gameDetail: true })
 
 
         }
-        if (this.state.listName != "gameList" && this.state.listName != "gameDetail") {
+        if (this.state.listName !== "gameList" && this.state.listName != "gameDetail") {
             this.setState({ gameList: false })
             this.setState({ gameDetail: false })
         }
@@ -75,7 +73,7 @@ export class EmployeeGameReport extends Component {
 
     render() {
 
-        if (this.state.gameList == true) {
+        if (this.state.gameList === true) {
             return (
                 <div>
                     <div id="dashboardContainer">
@@ -89,7 +87,7 @@ export class EmployeeGameReport extends Component {
                                         <h2 id="widgetTitle">All Reports</h2>
                                         
                                     <form action="/action_page.php">
-                                            <span class="choose">Choose Report: </span>
+                                            <span className="choose">Choose Report: </span>
                                             <br />
                                         <select name="chooseReport" onChange={this.makeChange}>
                                             <option value=""></option>
@@ -132,7 +130,7 @@ export class EmployeeGameReport extends Component {
             );
         }
 
-        else if (this.state.gameDetail == true) {
+        else if (this.state.gameDetail === true) {
             return (
                 <div>
                     <div id="dashboardContainer">
@@ -141,11 +139,11 @@ export class EmployeeGameReport extends Component {
                                 <Col xl={12} id="widgetOne">
                                     <div id="reportsTitle_andSelect">
                                         <Link to={"/Dashboard"}>
-                                            <span id="backButton" onClick={() => this.goToDashboard()} class="glyphicon glyphicon-arrow-left fa-lg" aria-hidden="true"></span>
+                                            <span id="backButton" onClick={() => this.goToDashboard()} className="glyphicon glyphicon-arrow-left fa-lg" aria-hidden="true"></span>
                                         </Link>
                                     <h2 id="widgetTitle">All Reports</h2>
                                     <form action="/action_page.php">
-                                            <span class="choose">Choose Report: </span>
+                                            <span className="choose">Choose Report: </span>
                                             <br/>
                                         <select name="chooseReport" onChange={this.makeChange}>
                                             <option value=""></option>
@@ -204,7 +202,7 @@ export class EmployeeGameReport extends Component {
                                 <Col xl={12} id="widgetOne">
                                     <div id="reportsTitle_andSelect">
                                         <Link to={"/Dashboard"}>
-                                            <span id="backButton" onClick={() => this.goToDashboard()} class="glyphicon glyphicon-arrow-left fa-lg" aria-hidden="true"></span>
+                                            <span id="backButton" onClick={() => this.goToDashboard()} className="glyphicon glyphicon-arrow-left fa-lg" aria-hidden="true"></span>
                                         </Link>
                                     <h2 id="widgetTitle">All Reports</h2>
                                     <form action="/action_page.php">

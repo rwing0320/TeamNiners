@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Route } from 'react-router';
-import { Layout } from './components/Layout';
 import { Home } from './components/Home';
 import { FetchData } from './components/FetchData';
 import { Counter } from './components/Counter';
@@ -30,7 +29,7 @@ export default class App extends Component {
 
     goToHomePage(pageNum) {
 
-        if (pageNum == 1) {
+        if (pageNum === 1) {
             this.setState({ pageOn: "Member" });
         }
         else {
@@ -41,7 +40,7 @@ export default class App extends Component {
     }
 
     changePage() {
-        if (this.state.pageOn == "Business") {
+        if (this.state.pageOn === "Business") {
             //return <div><EmployeeNav data1={this.state.businessName} updateParentState={this.setIsLoggedOut.bind(this)}></EmployeeNav><Dashboard></Dashboard> <Redirect to='/dashboard' /></div>;
             return<div>
             <EmployeeLayout updatePageState={this.goToHomePage.bind(this)}>

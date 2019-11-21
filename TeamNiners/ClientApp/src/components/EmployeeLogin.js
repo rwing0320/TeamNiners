@@ -1,12 +1,8 @@
 ﻿import React, { Component } from 'react';
 import axios from 'axios';
-import { NavMenu } from './NavMenu';
-import { Dashboard } from './EmployeeDashboard';
-import { Redirect } from 'react-router-dom';
-import { Col, Grid, Row, Button, Accordion, Panel } from 'react-bootstrap';
+import {  Button, Accordion, Panel } from 'react-bootstrap';
 import './css/LoginPage.css';
-import { EmployeeNav } from './EmployeeNav';
-import { Layout } from './Layout';
+
 
 import { webAddress } from './reference/reference';
 
@@ -46,7 +42,7 @@ export class EmployeeLogin extends Component {
         }
         else {
 
-            if (this.state.isLoggedIn === false && this.state.email != "" && this.state.password != "") {
+            if (this.state.isLoggedIn === false && this.state.email !== "" && this.state.password !== "") {
                 console.log("hit me")
                 return true
 
@@ -63,7 +59,7 @@ export class EmployeeLogin extends Component {
                     return false;
                 }
 
-                if (this.state.email == "" && this.state.password == "") {
+                if (this.state.email === "" && this.state.password === "") {
                     this.setState({
                         isLoggedIn: false,
                         error: this.state.error + '/n' + "Please Fill out both the username and the password! "
@@ -73,7 +69,7 @@ export class EmployeeLogin extends Component {
 
                     this.emailInput.focus();
                 }
-                else if (this.state.email == "") {
+                else if (this.state.email === "") {
                     this.setState({
                         isLoggedIn: false,
                         error: "Please Fill out the username! "
@@ -107,7 +103,7 @@ export class EmployeeLogin extends Component {
         var businessId;
 
         try {
-            if (this.makeChange() != false) {
+            if (this.makeChange() !== false) {
                 let successFlag = false;
 
                 var errorMessage;

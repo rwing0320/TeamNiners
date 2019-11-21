@@ -1,12 +1,8 @@
 ﻿import React, { Component } from 'react';
 import axios from 'axios';
-import { NavMenu } from './NavMenu';
-import { Dashboard } from './EmployeeDashboard';
-import { Redirect } from 'react-router-dom';
-import { Col, Grid, Row, Button, Accordion, Panel } from 'react-bootstrap';
+import { Button, Accordion, Panel } from 'react-bootstrap';
 import './css/MemberLoginPage.css';
-import { EmployeeNav } from './EmployeeNav';
-import { Layout } from './Layout';
+
 
 import { webAddress } from './reference/reference';
 
