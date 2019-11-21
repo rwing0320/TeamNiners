@@ -113,8 +113,40 @@ namespace TeamNiners.Controllers
             return gameList;
         }
 
+        [HttpPost]
+        [Route("/api/game/deleteGameItem/{gId}")]
+        public int DeleteCartItem([FromRoute] int gId)
+        {
 
-        public List<ShowGameItem> getBusinessGames(string filter)
+          //  if (!ModelState.IsValid)
+        //    {
+         //       return BadRequest(ModelState);
+        //    }
+
+
+            //gId = UserTempStorage.gameID;
+
+
+            var gameItem = _context.GamingInfo.Find(gId);
+            var businessItem = _context.BusinessGames.Find(gId);
+
+            _context.GamingInfo.Remove(gameItem);
+            _context.BusinessGames.Remove(businessItem);
+           _context.SaveChanges();
+
+            return gId;
+        }
+
+        [HttpPost]
+        [Route("/api/game/postId/{gId}")]
+        public int PostGameId([FromRoute] int gId)
+        {
+            gId = UserTempStorage.gameID;
+            return gId;
+        }
+
+
+            public List<ShowGameItem> getBusinessGames(string filter)
         {
             List<ShowGameItem> gameList = new List<ShowGameItem>();
             //ShowGameItem gameHelper = new ShowGameItem();

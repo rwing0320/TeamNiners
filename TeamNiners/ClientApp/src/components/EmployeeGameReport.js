@@ -12,12 +12,12 @@ import { webAddress } from './reference/reference';
 export class EmployeeGameReport extends Component {
     constructor(props) {
         super(props);
-        this.state = { changePage: false, listName: "", gameList: false, gameDetail: false, info: [], gameCategories: [], gamePlatforms: [], platformID: 0, platformName: "" };
+        this.state = { changePage: false, listName: "", gameList: false, gameDetail: false, info: [], gameCategories: [], gamePlatforms: [], platformID: 0, platformName: "", filterValue: 'name_desc' };
 
         this.listInput = null;
         this.makeChange = this.makeChange.bind(this);
 
-        axios.get(webAddress + 'api/game/showgames_business')
+        axios.get(webAddress + 'api/game/showgames_business/' + this.state.filterValue)
             .then(res => {
                 console.log(res.data);
                 this.setState({ info: res.data })

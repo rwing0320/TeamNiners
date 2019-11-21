@@ -30,8 +30,7 @@ export class EmployeeShowGames extends Component {
         this.props.changePage(1)
     }
 
-    getGames() {
-        
+    getGames() {       
         axios.get(webAddress + 'api/game/showgames_business/' + this.state.filterValue)
             .then(res => {
                 const games = res.data;
@@ -44,6 +43,21 @@ export class EmployeeShowGames extends Component {
             })
     }
 
+    deleteGame(gId) {
+
+        axios.post(webAddress + 'api/game/deleteGameItem/' + gId)
+        .then(res => {
+        console.log(res.data);
+            this.getGames()
+        })
+    }
+    gotToEditPage(gId) {
+        axios.post(webAddress + 'api/game/postId/' + gId)
+            .then(res => {
+                console.log(res.data);
+                this.props.changePage(4);
+            })
+    }
 
     filterGames(select) {
 
@@ -113,6 +127,11 @@ export class EmployeeShowGames extends Component {
                                                         <input type="text" class="form-control" id="gameInputBox" placeholder={game.price} readOnly />
                                                         <br/>
                                                     </Col>
+                                                </Row>
+
+                                                <Row>
+                                                    <Button type="button" className="btn btn-small btn-info btn-block" id="" onClick={() => this.gotToEditPage(game.gameId)}>Edit Game</Button>
+                                                    <Button type="button" className="btn btn-small btn-danger btn-block" id="" onClick={() => this.deleteGame(game.gameId)}>Delete Game</Button>
                                                 </Row>
 
                                             </Grid>

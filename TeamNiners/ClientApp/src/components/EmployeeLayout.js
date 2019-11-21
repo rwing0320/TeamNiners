@@ -11,6 +11,7 @@ import { EmployeeLogin } from './EmployeeLogin';
 import { EmployeeGameMod } from './EmployeeGameMod';
 import { EmployeeShowGames } from './EmployeeShowGames';
 import { EmployeeGameReport } from './EmployeeGameReport';
+import { EmployeeEditGame } from './EmployeeEditGame';
 import { EmployeeDashboardLayout, EmployeeDashBoardLayout } from './EmployeeDashboardLayout'
 
 export class EmployeeLayout extends Component {
@@ -49,7 +50,8 @@ export class EmployeeLayout extends Component {
                     <Route  exact path='/dashboard'  component={Dashboard} />
                     <Route exact path='/ModifyGame' component={EmployeeGameMod} />
                     <Route exact path='/ShowGames' component={EmployeeShowGames} />
-                    <Route exact path='/Report' component={EmployeeGameReport} />
+                <Route exact path='/Report' component={EmployeeGameReport} />
+                <Route exact path='/EditGame' component={EmployeeEditGame} />
 
             </EmployeeDashBoardLayout>;
            
