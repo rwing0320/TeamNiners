@@ -11,7 +11,7 @@ export class EmployeeEditGame extends Component {
 
     constructor(props) {
         super(props);
-        this.state = { game: [], gamePlatform: [], gameCat: [] };
+        this.state = { game: [], gamePlatform: [], gameCat: [], date: "", category: 0, platform: 0 };
 
 
         this.onChangePlat = this.onChangePlat.bind(this);
@@ -42,9 +42,11 @@ export class EmployeeEditGame extends Component {
     }
 
     getGame() {
-        axios.get(webAddress + 'api//Game/GetGame/')
+        axios.get(webAddress + 'api/Game/GetGame/')
             .then(res => {
-                this.setState({ game: res.data });
+                var date = res.data[0].releaseDate.split('T')[0];
+                var platform = res.data[0].platformId;
+                this.setState({ game: res.data, date, platform });
                 console.log(res.data);
             })
     }
@@ -77,7 +79,7 @@ export class EmployeeEditGame extends Component {
 
                         <select name="platform" className="employee_custom_select" onChange={this.onChangePlat} >
                             {this.state.gamePlatforms.map(gamePlat =>
-                                <option key={gamePlat.platformId} value={games.gamePlatform}>{gamePlat.platformName}</option>
+                                <option key={gamePlat.platformId} >{gamePlat.platformName}</option>
                             )}
                         </select>
 
@@ -90,7 +92,7 @@ export class EmployeeEditGame extends Component {
 
                         <select name="category" className="employee_custom_select" onChange={this.onChangeCat}>
                             {this.state.gameCategories.map(gameCat =>
-                                <option key={gameCat.categoryId} value= {games.gameCategory}>{gameCat.categoryName}</option>
+                                <option key={gameCat.categoryId} value={games.gameCategory} selected>{gameCat.categoryName}</option>
                             )}
                         </select>
 
@@ -108,7 +110,7 @@ export class EmployeeEditGame extends Component {
 
                         <label className="">Release Date</label>
                         <br />
-                        <input type="date" value={games.releaseDate} onChange={this.onChangeReleaseDate} />
+                        <input type="date" value={this.state.date} onChange={this.onChangeReleaseDate} />
 
                         <br />
                         <br />

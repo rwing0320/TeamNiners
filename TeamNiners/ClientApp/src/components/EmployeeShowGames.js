@@ -47,7 +47,8 @@ export class EmployeeShowGames extends Component {
 
         axios.post(webAddress + 'api/game/deleteGameItem/' + gId)
         .then(res => {
-        console.log(res.data);
+            console.log(res.data);
+            alert("Game has been successfully deleted");
             this.getGames()
         })
     }
