@@ -109,13 +109,16 @@ export class EmployeeGameReport extends Component {
                                         </thead>
 
                                         <tbody>
-                                            <tr>
+                                            
                                                 {this.state.info.map(gameInfo =>
-                                                    <th scope="col">{gameInfo.title}</th>
-                                                    )}
-                                                <td>3350</td>
-                                                <td>7.8</td>
-                                            </tr>
+                                                    <tr>
+                                                    <td scope="col">{gameInfo.title}</td>
+                                                    <td>3350</td>
+                                                        <td>7.8</td>
+                                                        </tr>
+                                                )}
+                                               
+                                           
                                         </tbody>
                                     </table>
                                     <div id="generateReportDiv">

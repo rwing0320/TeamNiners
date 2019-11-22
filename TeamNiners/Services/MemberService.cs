@@ -425,7 +425,7 @@ namespace TeamNiners.Services
                         sqlConnection.Open();
 
                         SqlCommand command = new SqlCommand(
-                            "UPDATE dbo.MemberLogin SET memberPassword = '" + setNewPassword + "', Salt = '" + NewSalt + "' WHERE email = '" + username + "';",
+                            "UPDATE dbo.MemberLogin SET memberPassword = '" + setNewPassword + "', Salt = '" + NewSalt + "' WHERE memberUsername = '" + username + "';",
                             sqlConnection);
 
                         command.CommandType = CommandType.Text;

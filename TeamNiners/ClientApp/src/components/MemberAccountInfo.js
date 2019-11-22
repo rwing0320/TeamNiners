@@ -132,7 +132,9 @@ export class MemberAccountInfo extends Component {
                 newPasswordConfirmation: this.state.re_enteredPassword
             })
             .then(res => {
-               
+                console.log("Saved Password");
+                alert("Password Saved");
+                this.props.changePage(3);
             })
 
 
