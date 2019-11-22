@@ -53,7 +53,6 @@ namespace TeamNiners.Tests
         public async Task AddReview_CheckIfSuccessfullyAdded()
         {
             // Arrange
-            // var dbContext = DbContextMock.context(nameof(Check_CheckAddWishListItems_ReturnWishListItemFound));
             var controller = new ReviewController(_dbContext);
 
             Review addReviewCheck = new Review();
@@ -82,7 +81,6 @@ namespace TeamNiners.Tests
         public void GetReview_CheckIfSuccessfullyRetrieved()
         {
             // Arrange
-            // var dbContext = DbContextMock.context(nameof(Check_CheckAddWishListItems_ReturnWishListItemFound));
             var controller = new ReviewController(_dbContext);
 
             UserTempStorage.gameID = 1;
