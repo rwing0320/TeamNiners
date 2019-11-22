@@ -13,7 +13,7 @@ export class Cart extends Component {
 
     constructor(props) {
         super(props);
-        this.state = { games: [], userInfo: [], count: 0, total: 0, showCheckoutForm: false, showCheckoutConfirmationForm: false, ccName: "", ccNum: "", ccCVC: "", ccExp: "", comboName: "" };
+        this.state = { games: [], userInfo: [], count: 0, total: 0, showCheckoutForm: false, showCheckoutConfirmationForm: false, ccName: "", ccNum: "", ccCVC: "", ccExp: "", comboName: "", validationErrorList: "" };
 
         this.getGames = this.getGames.bind(this);
         this.deleteFromCart = this.deleteFromCart.bind(this);
@@ -34,6 +34,7 @@ export class Cart extends Component {
         this.prepareCCNumDisplay = this.prepareCCNumDisplay.bind(this);
         this.addDollarSign_Total = this.addDollarSign_Total.bind(this);
         this.concatFirstName_LastName = this.concatFirstName_LastName.bind(this);
+        this.creditCardValidation = this.creditCardValidation.bind(this);
 
         this.getGames();
 
@@ -57,10 +58,23 @@ export class Cart extends Component {
 
     orderSubmitted() {
 
-        this.closeOrderForm();
+        console.log("Validation Error List in in submission before validation check: " + this.state.validationErrorList);
 
-        this.openOrderConfirmationForm();
+        var validationFailed = this.creditCardValidation();
 
+        console.log("Validation Error List in in submission after validation check: " + this.state.validationErrorList);
+
+        if (!validationFailed) {
+
+            this.closeOrderForm();
+
+            this.openOrderConfirmationForm();
+
+        } else {
+            console.log("Validation Error List in in submission before alert: " + this.state.validationErrorList);
+            alert("Validation failed for credit card input. Please fix these errors: \n" + this.state.validationErrorList);
+
+        }
     }
 
     openOrderConfirmationForm() {
@@ -106,10 +120,58 @@ export class Cart extends Component {
     finishOrder() {
         this.closeOrderConfirmationForm();
 
-
         this.clearCart();
 
         this.props.changePage(3);
+    }
+
+    creditCardValidation() {
+
+        var validationFail = false;
+        var validationErrorMessage = "";
+
+        if (this.state.ccName == "") {
+            validationFail = true;
+            validationErrorMessage += "Cardholder name is empty. \n";
+        }
+
+        if (this.state.ccNum == "") {
+            validationFail = true;
+            validationErrorMessage += "Credit Card Number is empty. \n";
+        }
+
+        if (this.state.ccCVC == "") {
+            validationFail = true;
+            validationErrorMessage += "Credit Card CVC is empty. \n";
+        }
+
+        if (this.state.ccExp == "") {
+            validationFail = true;
+            validationErrorMessage += "Credit Card Expiry is empty. \n";
+        }
+
+        if (this.state.ccNum.match(/^[\d]+$/)) {
+            validationFail = true;
+            validationErrorMessage += "Credit Card Number contains incorrect characters. Please use only numbers. \n";
+        }
+
+        if (this.state.ccCVC.match(/^[\d]+$/)) {
+            validationFail = true;
+            validationErrorMessage += "Credit Card CVC contains incorrect characters. Please use only numbers. \n";
+        }
+
+        if (this.state.ccExp.match(/^[\d]+$/)) {
+            validationFail = true;
+            validationErrorMessage += "Credit Card Expiry contains incorrect characters. Please use only numbers. \n";
+        }
+
+
+            this.setState({ validationErrorList: validationErrorMessage });
+
+        console.log("Validation Error List in Validation method: " + this.state.validationErrorList);
+
+        return validationFail;
+
     }
 
     getUserInfo() {
@@ -118,7 +180,6 @@ export class Cart extends Component {
             .then(res => {
                 const userInfo = res.data;
                 this.setState({ userInfo });
-                console.log('test res.data.field' + res.data.lastName);
                 this.concatFirstName_LastName();
             })
 
