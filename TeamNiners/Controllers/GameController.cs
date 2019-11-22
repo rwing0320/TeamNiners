@@ -128,7 +128,7 @@ namespace TeamNiners.Controllers
 
         [HttpPost]
         [Route("/api/game/deleteGameItem/{gId}")]
-        public int DeleteCartItem([FromRoute] int gId)
+        public string DeleteCartItem([FromRoute] int gId)
         {
 
           //  if (!ModelState.IsValid)
@@ -147,7 +147,7 @@ namespace TeamNiners.Controllers
             _context.BusinessGames.Remove(businessItem);
            _context.SaveChanges();
 
-            return gId;
+            return "Deleted Succefully";
         }
 
         [HttpPost]
