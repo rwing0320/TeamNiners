@@ -48,7 +48,7 @@ namespace TeamNiners.Tests
         }
 
         [Test]
-        public async Task Check_DeleteCartItem_ReturnMessage()
+        public async Task Check_DeleteCartItem_ReturnOk()
         {
             // Arrange
             var controller = new CartController(_dbContext);
@@ -65,5 +65,23 @@ namespace TeamNiners.Tests
             Assert.IsInstanceOf<OkObjectResult>(deleteItem);
 
         }
+
+        [Test]
+        public async Task Check_DeleteAllFromCart_ReturnOk()
+        {
+            // Arrange
+            var controller = new CartController(_dbContext);
+            UserTempStorage.cartID = 1;
+            int id = UserTempStorage.cartID;
+            // Act
+            IActionResult deleteCart = await controller.DeleteAllFromCartCart(id);
+
+            //string var = results.RouteValues["id"].ToString();
+            // Assert
+            Assert.IsInstanceOf<OkObjectResult>(deleteCart);
+
+        }
+
+
     }
 }

@@ -45,7 +45,7 @@ namespace TeamNiners.Tests
             _dbContext.GamingPlatform.Add(_pl);
             _dbContext.SaveChanges();
 
-            GamingCategory _ca = new GamingCategory() { CategoryId = 1, CategoryName = "Action" };
+            GamingCategory _ca = new GamingCategory() { CategoryId = 1, CategoryName = "Puzzle" };
             _dbContext.GamingCategory.Add(_ca);
             _dbContext.SaveChanges();
 
@@ -138,13 +138,13 @@ namespace TeamNiners.Tests
         {
             var controller = new GameController(_dbContext);
 
-            string platform = "SNES";
-            GamingPlatform plat = new GamingPlatform();
-            plat.PlatformId = 1;
+            string category = "Puzzle";
+            GamingCategory cat = new GamingCategory();
+            cat.CategoryId = 1;
 
-            string getName = controller.GetGamePlat(plat.PlatformId);
+            string getName = controller.GetGameCategory(cat.CategoryId);
 
-            Assert.AreEqual(getName, platform);
+            Assert.AreEqual(getName, category);
         }
     }
 
