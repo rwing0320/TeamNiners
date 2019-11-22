@@ -156,7 +156,7 @@ export class EmployeeGameReport extends Component {
 
                                     <h3 id="gameInsightsTitle">Game Details</h3>
                                     <table className="table" id="#gamesTable">
-                                        <thead>
+                                        <thead >
                                             <tr>
                                                 <th>Game Name</th>
                                                 <th>Game Description</th>

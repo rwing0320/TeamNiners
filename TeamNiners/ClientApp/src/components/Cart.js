@@ -46,7 +46,7 @@ export class Cart extends Component {
     createReceipt() {
         const doc = new jsPDF();
         doc.text(80, 10, 'Order Receipt');
-        doc.autoTable({ html: '.cartInfoTable' });
+        doc.autoTable({ html: '.hiddenTable' });
         let finalY = doc.lastAutoTable.finalY;
         doc.text(5, finalY, "Total: " + document.getElementById("TotalInput").value);
         doc.text(5, finalY + 10, "Your order will arrive in the next 5-7 business days");
@@ -248,6 +248,29 @@ export class Cart extends Component {
             return (
                 <div className="cartPage">
                     <h1 id=""><b>Cart</b></h1>
+                    <table className="hiddenTable" style="display:none">
+                        <thead style="display:none">
+                            <tr>
+                                <th>Game Name</th>
+                                <th>Platform</th>
+                                <th>Category</th>
+                                <th>Price</th>
+                            </tr>
+                        </thead>
+
+                        <tbody style="display:none">
+
+                            {this.state.games.map(gameInfo =>
+                                <tr key={gameInfo.id}>
+                                    <th scope="col">{gameInfo.title}</th>
+                                    <td>{gameInfo.platform}</td>
+                                    <td>{gameInfo.category}</td>
+                                    <td>${gameInfo.price}</td>
+                                </tr>
+                            )}
+
+                        </tbody>
+                    </table>
                     <table className="cartInfoTable">
                         <tbody>
                             {this.state.games.map(game =>
