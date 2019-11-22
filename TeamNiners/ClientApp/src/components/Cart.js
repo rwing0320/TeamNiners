@@ -6,6 +6,8 @@ import videoGame from './img/Video_Game.jpg';
 import axios from 'axios';
 import { webAddress } from './reference/reference';
 import Popup from "reactjs-popup";
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
 
 
 export class Cart extends Component {
@@ -34,13 +36,29 @@ export class Cart extends Component {
         this.prepareCCNumDisplay = this.prepareCCNumDisplay.bind(this);
         this.addDollarSign_Total = this.addDollarSign_Total.bind(this);
         this.concatFirstName_LastName = this.concatFirstName_LastName.bind(this);
+        this.createReceipt = this.createReceipt.bind(this);
         this.creditCardValidation = this.creditCardValidation.bind(this);
 
         this.getGames();
-
         this.errorMessage = null;
 
+    }
 
+    createReceipt() {
+        const doc = new jsPDF();
+        doc.text(87, 10, 'Order Receipt');
+        doc.autoTable({ html: '.hiddenTable' });
+        let finalY = doc.lastAutoTable.finalY;
+        //doc.text(options.margin.left, doc.autoTable.previous.finalY + 30, "Total: " + document.getElementById("TotalInput").value);
+        doc.text(15, doc.autoTable.previous.finalY + 20, "Total: " + document.getElementById("TotalInput").value);
+        doc.text(15, doc.autoTable.previous.finalY + 25, "Order For: " + this.state.comboName);
+
+        doc.text(15, doc.autoTable.previous.finalY + 30, "Credit Card Information");
+        doc.text(15, doc.autoTable.previous.finalY + 35, "Name Holder: " + this.state.ccName);
+        doc.text(15, doc.autoTable.previous.finalY + 40, "Credit Card Number: " + this.state.ccNum);
+        //doc.text(5, finalY + 25, "Total: " + document.getElementById("TotalInput").value);
+        //doc.text(5, finalY + 25, "Your order will arrive in the next 5-7 business days");
+        doc.save('GameDetail.pdf');
     }
 
     purchaseCart() {
@@ -57,7 +75,6 @@ export class Cart extends Component {
     closeOrderForm() {
         this.setState({ showCheckoutForm: false });
     }
-
     orderSubmitted() {
 
         var validationFailed = this.creditCardValidation();
@@ -70,9 +87,56 @@ export class Cart extends Component {
 
         } else {
             //console.log("Validation Error List in in submission before alert: " + this.state.validationErrorList);
-            alert("Validation failed for credit card input. Please fix these errors: \n" + this.errorMessage );
+            alert("Validation failed for credit card input. Please fix these errors: \n" + this.errorMessage);
 
         }
+    }
+
+    creditCardValidation() {
+
+        var validationFail = false;
+        this.errorMessage = "";
+
+        if (this.state.ccName == "") {
+            validationFail = true;
+            this.errorMessage += "Cardholder name is empty. \n";
+        }
+
+        if (this.state.ccNum == "") {
+            validationFail = true;
+            this.errorMessage += "Credit Card Number is empty. \n";
+        }
+
+        if (this.state.ccCVC == "") {
+            validationFail = true;
+            this.errorMessage += "Credit Card CVC is empty. \n";
+        }
+
+        if (this.state.ccExp == "") {
+            validationFail = true;
+            this.errorMessage += "Credit Card Expiry is empty. \n";
+        }
+
+
+
+        if (/[a-z]/i.test(this.state.ccNum)) {
+            validationFail = true;
+            this.errorMessage += "Credit Card Number contains incorrect characters. Please use only numbers. \n";
+        }
+
+        if (/[a-z]/i.test(this.state.ccCVC)) {
+            validationFail = true;
+            this.errorMessage += "Credit Card CVC contains incorrect characters. Please use only numbers. \n";
+        }
+
+        if (/[a-z]/i.test(this.state.ccExp)) {
+            validationFail = true;
+            this.errorMessage += "Credit Card Expiry contains incorrect characters. Please use only numbers. \n";
+        }
+
+
+        return validationFail;
+
     }
 
     openOrderConfirmationForm() {
@@ -118,56 +182,10 @@ export class Cart extends Component {
     finishOrder() {
         this.closeOrderConfirmationForm();
 
+
         this.clearCart();
 
         this.props.changePage(3);
-    }
-
-    creditCardValidation() {
-
-        var validationFail = false;
-        this.errorMessage  = "";
-
-        if (this.state.ccName == "") {
-            validationFail = true;
-            this.errorMessage  += "Cardholder name is empty. \n";
-        }
-
-        if (this.state.ccNum == "") {
-            validationFail = true;
-            this.errorMessage  += "Credit Card Number is empty. \n";
-        }
-
-        if (this.state.ccCVC == "") {
-            validationFail = true;
-            this.errorMessage  += "Credit Card CVC is empty. \n";
-        }
-
-        if (this.state.ccExp == "") {
-            validationFail = true;
-            this.errorMessage  += "Credit Card Expiry is empty. \n";
-        }
-
-
-
-        if (/[a-z]/i.test(this.state.ccNum)) {
-            validationFail = true;
-            this.errorMessage  += "Credit Card Number contains incorrect characters. Please use only numbers. \n";
-        }
-
-        if (/[a-z]/i.test(this.state.ccCVC)) {
-            validationFail = true;
-            this.errorMessage  += "Credit Card CVC contains incorrect characters. Please use only numbers. \n";
-        }
-
-        if (/[a-z]/i.test(this.state.ccExp)) {
-            validationFail = true;
-            this.errorMessage  += "Credit Card Expiry contains incorrect characters. Please use only numbers. \n";
-        }
-
-
-        return validationFail;
-
     }
 
     getUserInfo() {
@@ -176,6 +194,7 @@ export class Cart extends Component {
             .then(res => {
                 const userInfo = res.data;
                 this.setState({ userInfo });
+                console.log('test res.data.field' + res.data.lastName);
                 this.concatFirstName_LastName();
             })
 
@@ -292,7 +311,26 @@ export class Cart extends Component {
             return (
                 <div className="cartPage">
                     <h1 id=""><b>Cart</b></h1>
-                    <table>
+                    <table className="hiddenTable">
+                        <thead >
+                            <tr>
+                                <th>Game Name</th>
+                                 <th>Price</th>
+                            </tr>
+                        </thead>
+
+                        <tbody >
+
+                            {this.state.games.map(gameInfo =>
+                                <tr key={gameInfo.id}>
+                                    <th scope="col">{gameInfo.title}</th>
+                                    <td>${gameInfo.price}</td>
+                                </tr>
+                            )}
+
+                        </tbody>
+                    </table>
+                    <table className="cartInfoTable">
                         <tbody>
                             {this.state.games.map(game =>
                                 <tr key={game.gameId} className="myTableRow" >
@@ -451,8 +489,8 @@ export class Cart extends Component {
 
                             <Row>
                                 <Col xl={12}>
-                                    <div id="buttonDiv">
-                                        <button class="btn btn-warning" onClick={this.finishOrder}>Close</button>
+                                                <div id="buttonDiv">
+                                                    <button class="btn btn-warning" onClick={this.finishOrder}>Close</button> <button className="btn btn-succes" onClick={this.createReceipt}>Print Receipt</button>
                                     </div>
                                 </Col>
                             </Row>
