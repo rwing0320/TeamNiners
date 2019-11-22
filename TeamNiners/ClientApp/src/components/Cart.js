@@ -6,6 +6,8 @@ import videoGame from './img/Video_Game.jpg';
 import axios from 'axios';
 import { webAddress } from './reference/reference';
 import Popup from "reactjs-popup";
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
 
 
 export class Cart extends Component {
@@ -34,10 +36,21 @@ export class Cart extends Component {
         this.prepareCCNumDisplay = this.prepareCCNumDisplay.bind(this);
         this.addDollarSign_Total = this.addDollarSign_Total.bind(this);
         this.concatFirstName_LastName = this.concatFirstName_LastName.bind(this);
+        this.createReceipt = this.createReceipt.bind(this);
 
         this.getGames();
 
 
+    }
+
+    createReceipt() {
+        const doc = new jsPDF();
+        doc.text(80, 10, 'Order Receipt');
+        doc.autoTable({ html: '.cartInfoTable' });
+        let finalY = doc.lastAutoTable.finalY;
+        doc.text(5, finalY, "Total: " + document.getElementById("TotalInput").value);
+        doc.text(5, finalY + 10, "Your order will arrive in the next 5-7 business days");
+        doc.save('GameDetail.pdf');
     }
 
     purchaseCart() {
@@ -235,7 +248,7 @@ export class Cart extends Component {
             return (
                 <div className="cartPage">
                     <h1 id=""><b>Cart</b></h1>
-                    <table>
+                    <table className="cartInfoTable">
                         <tbody>
                             {this.state.games.map(game =>
                                 <tr key={game.gameId} className="myTableRow" >
@@ -394,8 +407,8 @@ export class Cart extends Component {
 
                             <Row>
                                 <Col xl={12}>
-                                    <div id="buttonDiv">
-                                        <button class="btn btn-warning" onClick={this.finishOrder}>Close</button>
+                                                <div id="buttonDiv">
+                                                    <button class="btn btn-warning" onClick={this.finishOrder}>Close</button> <button className="btn btn-succes" onClick={this.createReceipt}>Print Receipt</button>
                                     </div>
                                 </Col>
                             </Row>
