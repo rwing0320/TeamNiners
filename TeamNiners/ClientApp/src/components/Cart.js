@@ -13,7 +13,7 @@ export class Cart extends Component {
 
     constructor(props) {
         super(props);
-        this.state = { games: [], userInfo: [], count: 0, total: 0, showCheckoutForm: false, showCheckoutConfirmationForm: false, ccName: "", ccNum: "", ccCVC: "", ccExp: "", comboName: "" };
+        this.state = { games: [], userInfo: [], count: 0, total: 0, showCheckoutForm: false, showCheckoutConfirmationForm: false, ccName: "", ccNum: "", ccCVC: "", ccExp: "", comboName: "", validationErrorList: "" };
 
         this.getGames = this.getGames.bind(this);
         this.deleteFromCart = this.deleteFromCart.bind(this);
@@ -34,8 +34,11 @@ export class Cart extends Component {
         this.prepareCCNumDisplay = this.prepareCCNumDisplay.bind(this);
         this.addDollarSign_Total = this.addDollarSign_Total.bind(this);
         this.concatFirstName_LastName = this.concatFirstName_LastName.bind(this);
+        this.creditCardValidation = this.creditCardValidation.bind(this);
 
         this.getGames();
+
+        this.errorMessage = null;
 
 
     }
@@ -57,10 +60,19 @@ export class Cart extends Component {
 
     orderSubmitted() {
 
-        this.closeOrderForm();
+        var validationFailed = this.creditCardValidation();
 
-        this.openOrderConfirmationForm();
+        if (!validationFailed) {
 
+            this.closeOrderForm();
+
+            this.openOrderConfirmationForm();
+
+        } else {
+            //console.log("Validation Error List in in submission before alert: " + this.state.validationErrorList);
+            alert("Validation failed for credit card input. Please fix these errors: \n" + this.errorMessage );
+
+        }
     }
 
     openOrderConfirmationForm() {
@@ -106,10 +118,56 @@ export class Cart extends Component {
     finishOrder() {
         this.closeOrderConfirmationForm();
 
-
         this.clearCart();
 
         this.props.changePage(3);
+    }
+
+    creditCardValidation() {
+
+        var validationFail = false;
+        this.errorMessage  = "";
+
+        if (this.state.ccName == "") {
+            validationFail = true;
+            this.errorMessage  += "Cardholder name is empty. \n";
+        }
+
+        if (this.state.ccNum == "") {
+            validationFail = true;
+            this.errorMessage  += "Credit Card Number is empty. \n";
+        }
+
+        if (this.state.ccCVC == "") {
+            validationFail = true;
+            this.errorMessage  += "Credit Card CVC is empty. \n";
+        }
+
+        if (this.state.ccExp == "") {
+            validationFail = true;
+            this.errorMessage  += "Credit Card Expiry is empty. \n";
+        }
+
+
+
+        if (/[a-z]/i.test(this.state.ccNum)) {
+            validationFail = true;
+            this.errorMessage  += "Credit Card Number contains incorrect characters. Please use only numbers. \n";
+        }
+
+        if (/[a-z]/i.test(this.state.ccCVC)) {
+            validationFail = true;
+            this.errorMessage  += "Credit Card CVC contains incorrect characters. Please use only numbers. \n";
+        }
+
+        if (/[a-z]/i.test(this.state.ccExp)) {
+            validationFail = true;
+            this.errorMessage  += "Credit Card Expiry contains incorrect characters. Please use only numbers. \n";
+        }
+
+
+        return validationFail;
+
     }
 
     getUserInfo() {
@@ -118,7 +176,6 @@ export class Cart extends Component {
             .then(res => {
                 const userInfo = res.data;
                 this.setState({ userInfo });
-                console.log('test res.data.field' + res.data.lastName);
                 this.concatFirstName_LastName();
             })
 
