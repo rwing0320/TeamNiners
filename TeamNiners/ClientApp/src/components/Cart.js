@@ -38,6 +38,8 @@ export class Cart extends Component {
 
         this.getGames();
 
+        this.errorMessage = null;
+
 
     }
 
@@ -58,11 +60,7 @@ export class Cart extends Component {
 
     orderSubmitted() {
 
-        console.log("Validation Error List in in submission before validation check: " + this.state.validationErrorList);
-
         var validationFailed = this.creditCardValidation();
-
-        console.log("Validation Error List in in submission after validation check: " + this.state.validationErrorList);
 
         if (!validationFailed) {
 
@@ -71,8 +69,8 @@ export class Cart extends Component {
             this.openOrderConfirmationForm();
 
         } else {
-            console.log("Validation Error List in in submission before alert: " + this.state.validationErrorList);
-            alert("Validation failed for credit card input. Please fix these errors: \n" + this.state.validationErrorList);
+            //console.log("Validation Error List in in submission before alert: " + this.state.validationErrorList);
+            alert("Validation failed for credit card input. Please fix these errors: \n" + this.errorMessage );
 
         }
     }
@@ -128,47 +126,43 @@ export class Cart extends Component {
     creditCardValidation() {
 
         var validationFail = false;
-        var validationErrorMessage = "";
+        this.errorMessage  = "";
 
         if (this.state.ccName == "") {
             validationFail = true;
-            validationErrorMessage += "Cardholder name is empty. \n";
+            this.errorMessage  += "Cardholder name is empty. \n";
         }
 
         if (this.state.ccNum == "") {
             validationFail = true;
-            validationErrorMessage += "Credit Card Number is empty. \n";
+            this.errorMessage  += "Credit Card Number is empty. \n";
         }
 
         if (this.state.ccCVC == "") {
             validationFail = true;
-            validationErrorMessage += "Credit Card CVC is empty. \n";
+            this.errorMessage  += "Credit Card CVC is empty. \n";
         }
 
         if (this.state.ccExp == "") {
             validationFail = true;
-            validationErrorMessage += "Credit Card Expiry is empty. \n";
+            this.errorMessage  += "Credit Card Expiry is empty. \n";
         }
 
         if (this.state.ccNum.match(/^[\d]+$/)) {
             validationFail = true;
-            validationErrorMessage += "Credit Card Number contains incorrect characters. Please use only numbers. \n";
+            this.errorMessage  += "Credit Card Number contains incorrect characters. Please use only numbers. \n";
         }
 
         if (this.state.ccCVC.match(/^[\d]+$/)) {
             validationFail = true;
-            validationErrorMessage += "Credit Card CVC contains incorrect characters. Please use only numbers. \n";
+            this.errorMessage  += "Credit Card CVC contains incorrect characters. Please use only numbers. \n";
         }
 
         if (this.state.ccExp.match(/^[\d]+$/)) {
             validationFail = true;
-            validationErrorMessage += "Credit Card Expiry contains incorrect characters. Please use only numbers. \n";
+            this.errorMessage  += "Credit Card Expiry contains incorrect characters. Please use only numbers. \n";
         }
 
-
-            this.setState({ validationErrorList: validationErrorMessage });
-
-        console.log("Validation Error List in Validation method: " + this.state.validationErrorList);
 
         return validationFail;
 
