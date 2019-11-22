@@ -148,17 +148,19 @@ export class Cart extends Component {
             this.errorMessage  += "Credit Card Expiry is empty. \n";
         }
 
-        if (this.state.ccNum.match(/^[\d]+$/)) {
+
+
+        if (/[a-z]/i.test(this.state.ccNum)) {
             validationFail = true;
             this.errorMessage  += "Credit Card Number contains incorrect characters. Please use only numbers. \n";
         }
 
-        if (this.state.ccCVC.match(/^[\d]+$/)) {
+        if (/[a-z]/i.test(this.state.ccCVC)) {
             validationFail = true;
             this.errorMessage  += "Credit Card CVC contains incorrect characters. Please use only numbers. \n";
         }
 
-        if (this.state.ccExp.match(/^[\d]+$/)) {
+        if (/[a-z]/i.test(this.state.ccExp)) {
             validationFail = true;
             this.errorMessage  += "Credit Card Expiry contains incorrect characters. Please use only numbers. \n";
         }
