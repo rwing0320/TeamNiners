@@ -46,11 +46,18 @@ export class Cart extends Component {
 
     createReceipt() {
         const doc = new jsPDF();
-        doc.text(80, 10, 'Order Receipt');
+        doc.text(87, 10, 'Order Receipt');
         doc.autoTable({ html: '.hiddenTable' });
         let finalY = doc.lastAutoTable.finalY;
-        doc.text(5, finalY, "Total: " + document.getElementById("TotalInput").value);
-        doc.text(5, finalY + 10, "Your order will arrive in the next 5-7 business days");
+        //doc.text(options.margin.left, doc.autoTable.previous.finalY + 30, "Total: " + document.getElementById("TotalInput").value);
+        doc.text(15, doc.autoTable.previous.finalY + 20, "Total: " + document.getElementById("TotalInput").value);
+        doc.text(15, doc.autoTable.previous.finalY + 25, "Order For: " + this.state.comboName);
+
+        doc.text(15, doc.autoTable.previous.finalY + 30, "Credit Card Information");
+        doc.text(15, doc.autoTable.previous.finalY + 35, "Name Holder: " + this.state.ccName);
+        doc.text(15, doc.autoTable.previous.finalY + 40, "Credit Card Number: " + this.state.ccNum);
+        //doc.text(5, finalY + 25, "Total: " + document.getElementById("TotalInput").value);
+        //doc.text(5, finalY + 25, "Your order will arrive in the next 5-7 business days");
         doc.save('GameDetail.pdf');
     }
 
@@ -304,23 +311,19 @@ export class Cart extends Component {
             return (
                 <div className="cartPage">
                     <h1 id=""><b>Cart</b></h1>
-                    <table className="hiddenTable" style="display:none">
-                        <thead style="display:none">
+                    <table className="hiddenTable">
+                        <thead >
                             <tr>
                                 <th>Game Name</th>
-                                <th>Platform</th>
-                                <th>Category</th>
-                                <th>Price</th>
+                                 <th>Price</th>
                             </tr>
                         </thead>
 
-                        <tbody style="display:none">
+                        <tbody >
 
                             {this.state.games.map(gameInfo =>
                                 <tr key={gameInfo.id}>
                                     <th scope="col">{gameInfo.title}</th>
-                                    <td>{gameInfo.platform}</td>
-                                    <td>{gameInfo.category}</td>
                                     <td>${gameInfo.price}</td>
                                 </tr>
                             )}
